@@ -1,0 +1,2610 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Estimating the signal model &#8212; fmristats 0.2.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.2.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Some notes on speed" href="tutorials/notes.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="estimating-the-signal-model">
+<h1>Estimating the signal model<a class="headerlink" href="#estimating-the-signal-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fmriirritation">
+<h2>fmriirritation<a class="headerlink" href="#fmriirritation" title="Permalink to this headline">¶</a></h2>
+<p>Create a block irritation instances</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriirritation</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">onsetsx</span> <span class="n">ONSETSX</span> <span class="p">[</span><span class="n">ONSETSX</span> <span class="o">...</span><span class="p">]]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">onsetsy</span> <span class="n">ONSETSY</span> <span class="p">[</span><span class="n">ONSETSY</span> <span class="o">...</span><span class="p">]]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">durationsx</span> <span class="n">DURATIONSX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">durationsy</span> <span class="n">DURATIONSY</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">namex</span> <span class="n">NAMEX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">namey</span> <span class="n">NAMEY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">epi</span> <span class="n">EPI</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;irritation</kbd></td>
+<td><p class="first">input file;irritation file.  File name containing the irritation
+instance for this session.  An irritation instance contains all
+information of the paradigm of this session, i.e., whether the paradigm
+follows a block design, the names of the respective blocks, their
+respective onsets and respective durations.</p>
+<p class="last">Default: &#8221;../data/irr/{2}/{0}-{1:04d}-{2}-{3}.irr&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fmriirritation.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;onsetsx</kbd></td>
+<td><p class="first">times of onsets of condition x, which will be interpreted
+as the control irritation of the subject.  Should, e.g., be given in the
+form:</p>
+<blockquote>
+<div>&#8211;onsetx 2 84 166 248 330</div></blockquote>
+<p class="last">to be parsed correctly.  If onsets are not given in order, they will be
+sorted automatically.  Must be specified if &#8211;irritation is not.</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;onsetsy</kbd></td>
+<td><p class="first">times of onset of condition y, which will be interpreted as
+the stimulus irritation of the subject.  Should, e.g., be given in the
+form:</p>
+<blockquote>
+<div>&#8211;onsety 37 119 201 283</div></blockquote>
+<p class="last">to be parsed correctly.  If onsets are not given in order, they will be
+sorted automatically.  Must be specified if &#8211;irritation is not.</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;durationsx</kbd></td>
+<td>duration of the irritation of the subject under condition
+x.  Must be specified if &#8211;irritation is not.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;durationsy</kbd></td>
+<td>duration of the irritation of the subject under condition
+y.  Must be specified if &#8211;irritation is not.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;namex</kbd></td>
+<td><p class="first">name of block x</p>
+<p class="last">Default: &#8220;control&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;namey</kbd></td>
+<td><p class="first">name of block y</p>
+<p class="last">Default: &#8220;stimulus&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;epi</kbd></td>
+<td>code for the direction of the normal vector of the EPIs assuming the
+data is in RAS+. For example, if the EPIs have been measured inferior to
+superior, then set EP to 2, if they have been measured superior to
+inferior, set EP to -2, if they have been measured posterior to
+anterior, i.e., they are parallel to the left&#8211;right-inferior&#8211;superior
+plain, then set EP to 1.  Values in a protocol file will take precedence</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;remove-lock</kbd></td>
+<td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ignore-lock</kbd></td>
+<td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default population space files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="mat2irr">
+<h2>mat2irr<a class="headerlink" href="#mat2irr" title="Permalink to this headline">¶</a></h2>
+<p>Will convert MATLAB coded logfiles to irritation instances for fmristats</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">mat2irr</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">mat</span> <span class="n">MAT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;mat</kbd></td>
+<td><p class="first">input file;a Matlab coded irritation design of on- and offsets.</p>
+<p class="last">Default: &#8221;../raw/mat/{2}/{0}-{1:04d}-{2}-{3}.mat&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;irritation</kbd></td>
+<td><p class="first">input file;irritation file.  File name containing the irritation
+instance for this session.  An irritation instance contains all
+information of the paradigm of this session, i.e., whether the paradigm
+follows a block design, the names of the respective blocks, their
+respective onsets and respective durations.</p>
+<p class="last">Default: &#8221;../data/irr/{2}/{0}-{1:04d}-{2}-{3}.irr&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-mat2irr.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;remove-lock</kbd></td>
+<td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ignore-lock</kbd></td>
+<td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default population space files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="nii2ses">
+<h2>nii2ses<a class="headerlink" href="#nii2ses" title="Permalink to this headline">¶</a></h2>
+<p>Command line tool to create a fmristats session instance</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">nii2ses</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">nii</span> <span class="n">NII</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">epi</span><span class="o">-</span><span class="n">code</span> <span class="n">EPI_CODE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span> <span class="o">|</span> <span class="o">--</span><span class="nb">set</span><span class="o">-</span><span class="n">foreground</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">foreground</span> <span class="n">FOREGROUND</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;nii</kbd></td>
+<td><p class="first">input file;
+the output of a fMRI session.  The file should contain a 4D-image of a
+fMRI session in any file format understood by the NiBabel project, e.g,
+any of ANALYZE (plain, SPM99, SPM2 and later), GIFTI, NIfTI1, NIfTI2,
+MINC1, MINC2, MGH and ECAT as well as Philips PAR/REC.  For more details
+see <a class="reference external" href="http://nipy.org/nibabel/">http://nipy.org/nibabel/</a>.  Please note that fmristats has only been
+tested with Nifti1 files.</p>
+<p class="last">Default: &#8221;../raw/nii/{2}/{0}-{1:04d}-{2}-{3}.nii&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;irritation</kbd></td>
+<td><p class="first">input file;irritation file.  File name containing the irritation
+instance for this session.  An irritation instance contains all
+information of the paradigm of this session, i.e., whether the paradigm
+follows a block design, the names of the respective blocks, their
+respective onsets and respective durations.</p>
+<p class="last">Default: &#8221;../data/irr/{2}/{0}-{1:04d}-{2}-{3}.irr&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;session</kbd></td>
+<td><p class="first">output file;path to a session file or a template which defines the path
+where to find or save the respected session files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/ses/{2}/{0}-{1:04d}-{2}-{3}.ses&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-nii2ses.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;epi-code</kbd></td>
+<td>code for the direction of the normal vector of the EPIs assuming the
+data is in RAS+. For example, if the EPIs have been measured inferior to
+superior, then set EP to 2, if they have been measured superior to
+inferior, set EP to -2, if they have been measured posterior to
+anterior, i.e., they are parallel to the left&#8211;right-inferior&#8211;superior
+plain, then set EP to 1.  Values in a protocol file will take precedence</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;detect-foreground</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">detect foreground.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;set-foreground</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">set foreground.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;foreground</kbd></td>
+<td><p class="first">set foreground.</p>
+<p class="last">Default: &#8221;../raw/frg/{2}/{0}-{1:04d}-{2}-{3}-foreground.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;remove-lock</kbd></td>
+<td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ignore-lock</kbd></td>
+<td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default population space files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmririgid">
+<h2>fmririgid<a class="headerlink" href="#fmririgid" title="Permalink to this headline">¶</a></h2>
+<p>Command line tool to create a fmristats session instance</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmririgid</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">grubbs</span> <span class="n">GRUBBS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;session</kbd></td>
+<td><p class="first">output file;path to a session file or a template which defines the path
+where to find or save the respected session files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/ses/{2}/{0}-{1:04d}-{2}-{3}.ses&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;reference-maps</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">output file;reference maps.</p>
+<p class="last">Default: &#8221;../data/ref/{2}/{0}-{1:04d}-{2}-{3}.ref&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fmririgid.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;grubbs</kbd></td>
+<td><p class="first">an outlier detection is performed to identify scans which
+may have been acquired during severe head movements. More precisely, a
+Grubbs&#8217; outlying test will be performed on the set of estimated
+principle semi axis for each full scan cycle on the given level of
+significance.</p>
+<p>When using fmririgid to create ReferenceMaps, the default is 0.1, and
+the information of outlying scans is saved to disk together with the
+estimated rigid body transformations. Then, when running fmrifit,
+this information is used. When setting &#8211;grubbs in fmrifit, outlier
+estimation is performed again.</p>
+<p class="last">Default: 0.1</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;remove-lock</kbd></td>
+<td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ignore-lock</kbd></td>
+<td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default population space files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmrifit">
+<h2>fmrifit<a class="headerlink" href="#fmrifit" title="Permalink to this headline">¶</a></h2>
+<p>Fit a signal model to FMRI data</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmrifit</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">POPULATION_MAP</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">formula</span> <span class="n">FORMULA</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">parameter</span> <span class="n">PARAMETER</span> <span class="p">[</span><span class="n">PARAMETER</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">STIMULUS_BLOCK</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">CONTROL_BLOCK</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">acquisition</span><span class="o">-</span><span class="n">burn</span><span class="o">-</span><span class="ow">in</span> <span class="n">ACQUISITION_BURN_IN</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">offset</span><span class="o">-</span><span class="n">beginning</span> <span class="n">OFFSET_BEGINNING</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">offset</span><span class="o">-</span><span class="n">end</span> <span class="n">OFFSET_END</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">scale</span> <span class="n">SCALE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">factor</span> <span class="n">FACTOR</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">mass</span> <span class="n">MASS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">mask</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">at</span><span class="o">-</span><span class="nb">slice</span> <span class="n">AT_SLICE</span> <span class="p">[</span><span class="n">AT_SLICE</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="o">|</span> <span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">grubbs</span> <span class="n">GRUBBS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="input files">
+<h3>input files<a class="headerlink" href="#input files" title="Permalink to this headline">¶</a></h3>
+<p>Paths or templates for the paths to input fiels.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;session</kbd></td>
+<td><p class="first">input file;path to a session file or a template which defines the path
+where to find or save the respected session files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/ses/{2}/{0}-{1:04d}-{2}-{3}.ses&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;reference-maps</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">input file;reference maps.</p>
+<p class="last">Default: &#8221;../data/ref/{2}/{0}-{1:04d}-{2}-{3}.ref&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-map</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">input file;instance of a population map.</p>
+<p class="last">Default: &#8221;../data/pop/{2}/{4}/{0}-{1:04d}-{2}-{3}-{4}.pop&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
+<p class="last">Default: &#8220;reference&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="output files">
+<h3>output files<a class="headerlink" href="#output files" title="Permalink to this headline">¶</a></h3>
+<p>Paths or templates for the paths to output field.</p>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">output file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fmrifit.pkl&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="define the signal model">
+<h3>define the signal model<a class="headerlink" href="#define the signal model" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which define the model that shall be fitted to</dt>
+<dd>the data by the RS estimator.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;formula</kbd></td>
+<td><p class="first">formula</p>
+<p class="last">Default: &#8220;C(task)/C(block, Sum)&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;parameter</kbd></td>
+<td><p class="first">parameter</p>
+<p class="last">Default: [&#8216;intercept&#8217;, &#8216;task&#8217;]</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="define the experimental design">
+<h3>define the experimental design<a class="headerlink" href="#define the experimental design" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which define the experimental design of the</dt>
+<dd>session.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;stimulus-block</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of the stimulus block.</p>
+<p class="last">Default: &#8220;stimulus&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;control-block</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of the control block.</p>
+<p class="last">Default: &#8220;control&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;acquisition-burn-in</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">acquisition burn in. The <em>first</em> scan cycle that should
+enter the model.</p>
+<p class="last">Default: 4</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;offset-beginning</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">The haemodynamic response to stimulus is not immediate.  It is usually
+assumed that the HR-function spikes approximately five seconds after the
+first stimulus.  The value of OFFSET_BEGINNING is added to the onset
+times of the irritation phases to allow you to wait till the subject&#8217;s
+brain is in the respected irritation modus.</p>
+<p class="last">Default: 5.242</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;offset-end</kbd></td>
+<td><p class="first">Similar to OFFSET_BEGINNING the value OFFSET_END is removed from the end
+of each irritation phase and not considered in the fitting.</p>
+<p class="last">Default: 1.242</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="control the weighting of observations">
+<h3>control the weighting of observations<a class="headerlink" href="#control the weighting of observations" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which control the weighting scheme used in RS</dt>
+<dd>estimation.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;scale</kbd></td>
+<td>standard deviation of a Gaussian kernel that defines the weighting
+scheme of the underlying WLS regression.  If not given explicitly, scale
+will be set to one half of the length of the diagonal of the
+orthorhombic measure lattice of the session (and this is recommended).
+This default behaviour corresponds to the SCALE_TYPE <code class="docutils literal"><span class="pre">diagonal</span></code> and
+can be overwritten by setting SCALE_TYPE to a different value. The
+parameter SCALE will determine the final curvature of the fitted effect
+field. The larger SCALE, the flatter the fitted effect field will
+appear.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;factor</kbd></td>
+<td><p class="first">Only observations within an area of FACTOR standard deviations under
+the Gaussian distribution defined by SCALE will find their way into the
+WLS regression.</p>
+<p class="last">Default: 3</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;mass</kbd></td>
+<td>Only observations within an area of mass <cite>mass</cite> under the Gaussian
+distribution defined by SCALE will find their way into the WLS
+regression.  If specified, must be a value between 0 and 1, and should
+be a value close to 1.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="where to fit">
+<h3>where to fit<a class="headerlink" href="#where to fit" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>By default, fmrifit will respect the brain mask which is</dt>
+<dd>saved in the population map, and it will fit the model at
+all points within this mask. This default behaviour can, of
+course, be changed.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;ignore-mask</kbd></td>
+<td><dl class="first docutils">
+<dt>Ignore any brain masks saved in the respective</dt>
+<dd>population map.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;at-slice</kbd></td>
+<td>only fit the model at a slice of the index lattice</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying the protocol entries to process">
+<h3>specifying the protocol entries to process<a class="headerlink" href="#specifying the protocol entries to process" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which give control which protocol entries to</dt>
+<dd>process. If no protocol file is given, it will be checked
+if files being processed comply to the given information.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="file handling">
+<h3>file handling<a class="headerlink" href="#file handling" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>-r, &#8211;remove-lock</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-i, &#8211;ignore-lock</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default fit files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="detections">
+<h3>detections<a class="headerlink" href="#detections" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>If these things have not already happend, you may perform</dt>
+<dd>these operations know.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;grubbs</kbd></td>
+<td><p class="first">an outlier detection is performed to identify scans which
+may have been acquired during severe head movements. More precisely, a
+Grubbs&#8217; outlying test will be performed on the set of estimated
+principle semi axis for each full scan cycle on the given level of
+significance.</p>
+<p class="last">When using fmririgid to create ReferenceMaps, the default is 0.1, and
+the information of outlying scans is saved to disk together with the
+estimated rigid body transformations. Then, when running fmrifit,
+this information is used. When setting &#8211;grubbs in fmrifit, outlier
+estimation is performed again.</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;detect-foreground</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">detect foreground.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="miscellaneous">
+<h3>miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmriassessment">
+<h2>fmriassessment<a class="headerlink" href="#fmriassessment" title="Permalink to this headline">¶</a></h2>
+<p>Quality assessment statistics for image quality, ability to track head
+movements, and descriptive statistics of fitted effect fields.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriassessment</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">assess</span><span class="o">-</span><span class="n">sessions</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">assess</span><span class="o">-</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">assess</span><span class="o">-</span><span class="n">fits</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;session</kbd></td>
+<td><p class="first">input file;path to a session file or a template which defines the path
+where to find or save the respected session files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/ses/{2}/{0}-{1:04d}-{2}-{3}.ses&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;reference-maps</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">input file;reference maps.</p>
+<p class="last">Default: &#8221;../data/ref/{2}/{0}-{1:04d}-{2}-{3}.ref&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">input file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
+<p class="last">Default: &#8220;resolution&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fitassessment.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;assess-sessions</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>whether to assess descriptive statistics of the</dt>
+<dd>sessions</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;assess-reference-maps</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>whether to assess descriptive statistics of the</dt>
+<dd>reference maps</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;assess-fits</kbd></td>
+<td><dl class="first docutils">
+<dt>whether to assess descriptive statistics of the</dt>
+<dd>fits</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="estimating-the-population-model">
+<h1>Estimating the population model<a class="headerlink" href="#estimating-the-population-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fmriati">
+<h2>fmriati<a class="headerlink" href="#fmriati" title="Permalink to this headline">¶</a></h2>
+<p>Creates a scalar unit field for ATI reference by smoothing the input
+image to given curvature.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriati</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">mask</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">name</span> <span class="n">NAME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">factor</span> <span class="n">FACTOR</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+               <span class="n">scale</span> <span class="nb">input</span> <span class="n">output</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>scale</kbd></td>
+<td>scale (standard deviation) of the kernel</td></tr>
+<tr><td class="option-group">
+<kbd>input</kbd></td>
+<td>input image file</td></tr>
+<tr><td class="option-group">
+<kbd>output</kbd></td>
+<td>output image file</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;ignore-mask</kbd></td>
+<td><p class="first">ignore image mask</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;name</kbd></td>
+<td><dl class="first last docutils">
+<dt>if not given, the name will be set equal to the</dt>
+<dd>input image.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;factor</kbd></td>
+<td><p class="first">factor</p>
+<p class="last">Default: 3</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmrisample">
+<h2>fmrisample<a class="headerlink" href="#fmrisample" title="Permalink to this headline">¶</a></h2>
+<p>Command line tool to create a sample of fits of the FMRI signal model</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmrisample</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
+                  <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+                  <span class="n">sample</span> <span class="n">population_space</span> <span class="n">population_ati</span> <span class="n">protocol</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>sample</kbd></td>
+<td>path where to save the sample</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>population_space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td>path to a population space</td></tr>
+<tr><td class="option-group">
+<kbd>population_ati</kbd></td>
+<td>path to a population ATI reference</td></tr>
+<tr><td class="option-group">
+<kbd>protocol</kbd></td>
+<td>protocol file.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">output file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fmrisample.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default result files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="wrappers-to-fsl">
+<h1>Wrappers to FSL<a class="headerlink" href="#wrappers-to-fsl" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fsl4prune">
+<h2>fsl4prune<a class="headerlink" href="#fsl4prune" title="Permalink to this headline">¶</a></h2>
+<p>Prune</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fsl4prune</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">pruned</span> <span class="n">PRUNED</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
+                 <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PROPORTION</span> <span class="o">|</span> <span class="o">-</span><span class="n">t</span> <span class="n">THRESHOLD</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">cmd</span><span class="o">-</span><span class="n">bet</span> <span class="n">CMD_BET</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">variante</span> <span class="n">VARIANTE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">file</span> <span class="n">VB_FILE</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">mask</span> <span class="n">VB_MASK</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">input file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;pruned</kbd></td>
+<td><p class="first">input file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fsl4prune.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
+<p class="last">Default: &#8220;reference&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-p, &#8211;proportion</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>estimates which degrees of freedom are below the</dt>
+<dd>proportional threshold of the degrees of freedom in the
+effect field estimate are set to null.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-t, &#8211;threshold</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>estimates which degrees of freedom are below the</dt>
+<dd>threshold of the degrees of freedom in the effect field
+estimate are set to null.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">Overwrite mask if it already exits</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cmd-bet</kbd></td>
+<td><p class="first">FSL bet command. Must be in your path.</p>
+<p class="last">Default: &#8220;fsl5.0-bet&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;variante</kbd></td>
+<td><p class="first">FSL bet command. Must be in your path.</p>
+<p class="last">Default: &#8220;R&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;vb-file</kbd></td>
+<td><p class="first">brain mask in image space.</p>
+<p class="last">Default: &#8220;pruning/{0}-{1:04d}-{2}-{3}-{4}-{5}-intercept.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;vb-mask</kbd></td>
+<td><p class="first">brain mask in image space.</p>
+<p class="last">Default: &#8220;pruning/{0}-{1:04d}-{2}-{3}-{4}-{5}-mask.nii.gz&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fsl4pop">
+<h2>fsl4pop<a class="headerlink" href="#fsl4pop" title="Permalink to this headline">¶</a></h2>
+<p>On the one hand, this tool is a wrapper to <code class="docutils literal"><span class="pre">std2imgcoord</span></code> and converts
+a FSL warp coefficient file produced by <code class="docutils literal"><span class="pre">fnirt</span></code> and produces
+population map for the corresponding session.  On the other hand, it can
+be used as a wrapper to the FSL command line tools <code class="docutils literal"><span class="pre">fnirt</span></code> to estimate
+former warp coefficient file from the intercept field of a signal model
+and a given template brain.  The resulting population diffeomorphism is
+save to disk.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fsl4pop</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">template</span> <span class="n">TEMPLATE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">template</span><span class="o">-</span><span class="n">mask</span> <span class="n">TEMPLATE_MASK</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">image</span> <span class="n">IMAGE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">POPULATION_MAP</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">nb</span><span class="o">-</span><span class="n">nii</span> <span class="n">NB_NII</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">warpcoef</span> <span class="n">WARPCOEF</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">existing</span><span class="o">-</span><span class="n">warpcoef</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">nb</span><span class="o">-</span><span class="n">fit</span> <span class="n">NB_FIT</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">nb</span><span class="o">-</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span> <span class="p">[</span><span class="o">--</span><span class="n">nb</span> <span class="n">NB</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">cmd</span><span class="o">-</span><span class="n">fnirt</span> <span class="n">CMD_FNIRT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cmd</span><span class="o">-</span><span class="n">config</span> <span class="n">CMD_CONFIG</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">cmd</span><span class="o">-</span><span class="n">std2imgcoord</span> <span class="n">CMD_STD2IMGCOORD</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">preimage</span> <span class="n">PREIMAGE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">cpopulation</span> <span class="n">CPOPULATION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">csubject</span> <span class="n">CSUBJECT</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;template</kbd></td>
+<td><p class="first">template file used for the population space. The file
+should contain a 3D-image of a brain in any file format understood by
+the NiBabel project, e.g, any of ANALYZE (plain, SPM99, SPM2 and later),
+GIFTI, NIfTI1, NIfTI2, MINC1, MINC2, MGH and ECAT as well as Philips
+PAR/REC (For more details see <a class="reference external" href="http://nipy.org/nibabel/">http://nipy.org/nibabel/</a>). On the other
+hand, it should also be understood by FSL.</p>
+<p class="last">Default: &#8220;/usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;template-mask</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">template mask file used for the population space. The
+file should contain a 3D-image of a brain in any file format understood
+by the NiBabel project, e.g, any of ANALYZE (plain, SPM99, SPM2 and
+later), GIFTI, NIfTI1, NIfTI2, MINC1, MINC2, MGH and ECAT as well as
+Philips PAR/REC (For more details see <a class="reference external" href="http://nipy.org/nibabel/">http://nipy.org/nibabel/</a>). On the
+other hand, it should also be understood by FSL.</p>
+<p class="last">Default: &#8220;/usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">output name;name of a population space.</p>
+<p class="last">Default: &#8220;MNI152_T1_2mm&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;image</kbd></td>
+<td><p class="first">output name;directory in which to save the
+population space.</p>
+<p class="last">Default: &#8221;../data/vbs/{}.image&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-map</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">output file;instance of a population map.</p>
+<p class="last">Default: &#8221;../data/pop/{2}/{4}/{0}-{1:04d}-{2}-{3}-{4}.pop&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fsl4pop.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nb-nii</kbd></td>
+<td><p class="first">reference image used for the subject.</p>
+<p class="last">Default: &#8220;warping/{0}-{1:04d}-{2}-{3}-{4}-{5}-intercept.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;warpcoef</kbd></td>
+<td><p class="first">warp coefficient file created by fnirt.</p>
+<p class="last">Default: &#8220;warping/{0}-{1:04d}-{2}-{3}-{4}-{5}-intercept_warpcoef.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;ignore-existing-warpcoef</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>by default <code class="docutils literal"><span class="pre">fsl4pop</span></code> will use the warp coefficient</dt>
+<dd>files it finds on disk, as it will assume that you will have
+created them to fit your needs. When this flag is set,
+<code class="docutils literal"><span class="pre">fsl4pop</span></code> will re-fit the warp coefficients using FNIRT
+using some reasonable defaults.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nb-fit</kbd></td>
+<td><dl class="first docutils">
+<dt>input file; if warp coefficient files are provided</dt>
+<dd>you don&#8217;t need thispath to a result file or a template which defines the path</dd>
+</dl>
+<p>where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;nb-scale-type</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Possible choices: diagonal, max, min</p>
+<p>only needed if part of the template for &#8211;nb-fit
+should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nb</kbd></td>
+<td><dl class="first docutils">
+<dt>name of the population space that was originally</dt>
+<dd>used for the fitname of a population space.</dd>
+</dl>
+<p class="last">Default: &#8220;reference&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cmd-fnirt</kbd></td>
+<td><p class="first">FSL fnirt command. Must be in your path.</p>
+<p class="last">Default: &#8220;fsl5.0-fnirt&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cmd-config</kbd></td>
+<td><p class="first">Config file for FSL FNIRT.</p>
+<p class="last">Default: &#8220;T1_2_MNI152_2mm&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;cmd-std2imgcoord</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">FSL std2imgcoord command. Must be in your path.</p>
+<p class="last">Default: &#8220;fsl5.0-std2imgcoord&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;preimage</kbd></td>
+<td><p class="first">warped INTERCEPT image estimated by fnirt.</p>
+<p class="last">Default: &#8220;warping/{0}-{1:04d}-{2}-{3}-{4}-{5}-preimage.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cpopulation</kbd></td>
+<td><dl class="first docutils">
+<dt>coordinates of the template&#8217;s image grid in</dt>
+<dd>population space</dd>
+</dl>
+<p class="last">Default: &#8220;warping/{0}-{1:04d}-{2}-{3}-{4}-{5}-cpopulation.txt&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;csubject</kbd></td>
+<td><dl class="first docutils">
+<dt>coordinates of the template&#8217;s image grid in subject</dt>
+<dd>space</dd>
+</dl>
+<p class="last">Default: &#8220;warping/{0}-{1:04d}-{2}-{3}-{4}-{5}-csubject.txt&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;remove-lock</kbd></td>
+<td><p class="first">remove lock</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ignore-lock</kbd></td>
+<td><p class="first">You can either ignore the lock, remove the lock, or
+respect the lock.  Respect the lock: skip protocol entry. Remove the
+lock, removes the lock and skips the protocol entry.</p>
+<p>ignore whether a file has been locked by a different
+program. Only use this if orphans exists, and you now for sure no other
+program is running that may have looked the respected files. Together
+with &#8211;skip this may be used to delete orphan lock files. Short -is</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default population space files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-s, &#8211;skip</kbd></td>
+<td><p class="first">do not create or fit anything</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-j, &#8211;cores</kbd></td>
+<td>Number of cores to use. Default is the number of cores on the machine</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying the protocol entries to process">
+<h3>specifying the protocol entries to process<a class="headerlink" href="#specifying the protocol entries to process" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which give control which protocol entries to</dt>
+<dd>process. If no protocol file is given, it will be checked
+if files being processed comply to the given information.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="export-to-the-nifti1image-format">
+<h1>Export to the Nifti1Image format<a class="headerlink" href="#export-to-the-nifti1image-format" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fit2nii">
+<h2>fit2nii<a class="headerlink" href="#fit2nii" title="Permalink to this headline">¶</a></h2>
+<p>Export fit to Nifti1</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fit2nii</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">nii</span> <span class="n">NII</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">mask</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">parameter</span> <span class="n">PARAMETER</span> <span class="p">[</span><span class="n">PARAMETER</span> <span class="o">...</span><span class="p">]]</span>
+               <span class="p">[</span><span class="o">--</span><span class="n">value</span> <span class="n">VALUE</span> <span class="p">[</span><span class="n">VALUE</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="nb">round</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">integer</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">input file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nii</kbd></td>
+<td><p class="first">output file</p>
+<p class="last">Default: &#8221;../results/nii/{2}/{0}-{1:04d}-{2}-{3}-{4}-{5}-{{}}-{{}}.nii.gz&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fit2nii.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;parameter</kbd></td>
+<td><dl class="first docutils">
+<dt>which parameter field or which parameter fields to</dt>
+<dd>plot.  Available options are <cite>intercept</cite>, <cite>activation</cite>, or
+<cite>time</cite>. If you want to plot more than one parameter field,
+then separate these by a space.</dd>
+</dl>
+<p class="last">Default: [&#8216;intercept&#8217;, &#8216;activation&#8217;]</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;value</kbd></td>
+<td><dl class="first docutils">
+<dt>which summary statistic to choose for the parameters</dt>
+<dd>in PARAMETER. Available options are <cite>point</cite> (the point
+estimate), <cite>stderr</cite> (standard deviation of the point
+estimator), or <cite>tstatistic</cite> (the t-test statistic testing
+whether the respected parameter is non zero). If you want to
+plot more than one parameter field, then separate these by a
+space.</dd>
+</dl>
+<p class="last">Default: [&#8216;point&#8217;, &#8216;tstatistic&#8217;]</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;round-to-integer</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>if this flag is set and the output field is the</dt>
+<dd>intercept of a fit, then round the grey scales of the
+intercept field to the next nearest integer, and cast the
+array to integer data type.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default result files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="where to">
+<h3>where to<a class="headerlink" href="#where to" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>By default, fit2nii will respect the brain mask which is</dt>
+<dd>saved in the population map. This default behaviour can, of
+course, be changed.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;ignore-mask</kbd></td>
+<td><dl class="first docutils">
+<dt>Ignore any brain masks saved in the respective</dt>
+<dd>population map.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying the protocol entries to process">
+<h3>specifying the protocol entries to process<a class="headerlink" href="#specifying the protocol entries to process" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which give control which protocol entries to</dt>
+<dd>process. If no protocol file is given, it will be checked
+if files being processed comply to the given information.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying fit and population space">
+<h3>specifying fit and population space<a class="headerlink" href="#specifying fit and population space" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>If in-  and output files are specified as templates, set</dt>
+<dd>some of the fixed terms in the template.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
+<p class="last">Default: &#8220;reference&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="export-to-pdf-png-jpg-and-other">
+<h1>Export to pdf, png, jpg and other<a class="headerlink" href="#export-to-pdf-png-jpg-and-other" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="ref2plot">
+<h2>ref2plot<a class="headerlink" href="#ref2plot" title="Permalink to this headline">¶</a></h2>
+<p>Quality assessment statistics for the ability to track head movements.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">ref2plot</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">d</span> <span class="n">DIRECTORY</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">e</span> <span class="n">EXTENSION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">dpi</span> <span class="n">DPI</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">t</span> <span class="n">TEMPLATE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">grubbs</span> <span class="n">GRUBBS</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;reference-maps</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">input file;reference maps.</p>
+<p class="last">Default: &#8221;../data/ref/{2}/{0}-{1:04d}-{2}-{3}.ref&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-d, &#8211;directory</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">output directory</p>
+<p class="last">Default: &#8220;figures/{2}/assessments&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-e, &#8211;extension</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">anything that matplotlib understands</p>
+<p class="last">Default: &#8220;pdf&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;dpi</kbd></td>
+<td><p class="first">dpi.</p>
+<p class="last">Default: 1200</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-t, &#8211;template</kbd></td>
+<td><p class="first">template for the file name</p>
+<p class="last">Default: &#8220;{0}-{1:04d}-{2}-{3}&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;grubbs</kbd></td>
+<td><p class="first">an outlier detection is performed to identify scans which
+may have been acquired during severe head movements. More precisely, a
+Grubbs&#8217; outlying test will be performed on the set of estimated
+principle semi axis for each full scan cycle on the given level of
+significance.</p>
+<p class="last">When using fmririgid to create ReferenceMaps, the default is 0.1, and
+the information of outlying scans is saved to disk together with the
+estimated rigid body transformations. Then, when running fmrifit,
+this information is used. When setting &#8211;grubbs in fmrifit, outlier
+estimation is performed again.</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fit2plot">
+<h2>fit2plot<a class="headerlink" href="#fit2plot" title="Permalink to this headline">¶</a></h2>
+<p>Plot summary field statistics of the effect field of a fitted RSM Signal
+Model, e.g. the estimated activation pattern fields, activation
+certainty fields, t-test statistic fields, or intercept fields.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fit2plot</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">figure</span> <span class="n">FIGURE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">mask</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">parameter</span> <span class="n">PARAMETER</span> <span class="p">[</span><span class="n">PARAMETER</span> <span class="o">...</span><span class="p">]]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">value</span> <span class="n">VALUE</span> <span class="p">[</span><span class="n">VALUE</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">epi</span> <span class="n">EPI</span> <span class="p">[</span><span class="n">EPI</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">nx</span> <span class="n">NX</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">ny</span> <span class="n">NY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">interpolation</span> <span class="n">INTERPOLATION</span><span class="p">]</span>
+                <span class="p">[</span><span class="o">--</span><span class="n">cmap</span> <span class="n">CMAP</span> <span class="p">[</span><span class="n">CMAP</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">dpi</span> <span class="n">DPI</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">m</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;fit</kbd></td>
+<td><p class="first">input file;path to a result file or a template which defines the path
+where to find or save the respected result files when using a protocol
+file.</p>
+<p class="last">Default: &#8221;../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;figure</kbd></td>
+<td><p class="first">output file</p>
+<p class="last">Default: &#8221;../results/figures/{2}/fields/{0}-{1:04d}-{2}-{3}-{4}-{5}-{{}}-{{}}.pdf&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-o, &#8211;protocol-log</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
+<p class="last">Default: &#8220;logs/{}-fit2plot.pkl&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;protocol</kbd></td>
+<td>protocol file.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;population-space</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
+<p class="last">Default: &#8220;reference&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>should be either one of <code class="docutils literal"><span class="pre">diagonal</span></code>, <code class="docutils literal"><span class="pre">max</span></code>, or <code class="docutils literal"><span class="pre">min</span></code>.</p>
+<p>If SCALE_TYPE is <code class="docutils literal"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
+length of the diagonal of the orthorhombic measure lattice.  If
+SCALE_TYPE is <code class="docutils literal"><span class="pre">min</span></code> (or <code class="docutils literal"><span class="pre">max</span></code>), then SCALE is one half of the
+minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p class="last">Default: &#8220;max&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;parameter</kbd></td>
+<td><dl class="first docutils">
+<dt>which parameter field or which parameter fields to</dt>
+<dd>plot.  Available options are <cite>intercept</cite>, <cite>activation</cite>, or
+<cite>time</cite>. If you want to plot more than one parameter field,
+then separate these by a space.</dd>
+</dl>
+<p class="last">Default: [&#8216;intercept&#8217;, &#8216;task&#8217;]</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;value</kbd></td>
+<td><dl class="first docutils">
+<dt>which summary statistic to choose for the parameters</dt>
+<dd>in PARAMETER. Available options are <cite>point</cite> (the point
+estimate), <cite>stderr</cite> (standard deviation of the point
+estimator), or <cite>tstatistic</cite> (t-test statistic testing
+whether the respected parameter is non zero). If you want to
+plot more than one parameter field, then separate these by a
+space.</dd>
+</dl>
+<p class="last">Default: [&#8216;point&#8217;, &#8216;tstatistic&#8217;]</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;epi</kbd></td>
+<td><dl class="first docutils">
+<dt>plot along EPI-CODE axis. You may provide more than</dt>
+<dd>one. Default is: 1 2 3.</dd>
+</dl>
+<p class="last">Default: [3]</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;nx</kbd></td>
+<td><p class="first">number of images on the x-axis.</p>
+<p class="last">Default: 6</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;ny</kbd></td>
+<td><p class="first">number of images on the y-axis.</p>
+<p class="last">Default: 6</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>&#8211;interpolation</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">anything understood by pyplot.imshow.</p>
+<p class="last">Default: &#8220;none&#8221;</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;cmap</kbd></td>
+<td><dl class="first docutils">
+<dt>anything that is understood by matplotlib. For a</dt>
+<dd>list see <cite>http://matplotlib.org/users/colormaps.html</cite>.
+Colour maps are allocated to parameter-value fields in the
+same order as they appear in VALUE.  E.g., if VALUE is the
+(default) list: point std teststat, then the first entry is
+used for the point estimate, second for standard deviation
+field, third for test fields.</dd>
+</dl>
+<p class="last">Default: [&#8216;magma&#8217;, &#8216;inferno&#8217;, &#8216;seismic&#8217;]</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;dpi</kbd></td>
+<td><p class="first">dpi.</p>
+<p class="last">Default: 1200</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>-m, &#8211;mark-peak</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">increase output verbosity.</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="where to fit">
+<h3>where to fit<a class="headerlink" href="#where to fit" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>By default, fmrifit will respect the brain mask which is</dt>
+<dd>saved in the population map. This default behaviour can, of
+course, be changed.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;ignore-mask</kbd></td>
+<td><dl class="first docutils">
+<dt>Ignore any brain masks saved in the respective</dt>
+<dd>population map.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="miscellaneous">
+<h3>miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default result files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="the-protocol-interface">
+<h1>The protocol interface<a class="headerlink" href="#the-protocol-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fmriprotocol">
+<h2>fmriprotocol<a class="headerlink" href="#fmriprotocol" title="Permalink to this headline">¶</a></h2>
+<p>Query protocol files</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriprotocol</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+                    <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+                    <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">update</span> <span class="n">UPDATE</span> <span class="p">[</span><span class="n">UPDATE</span> <span class="o">...</span><span class="p">]]</span>
+                    <span class="p">[</span><span class="o">--</span><span class="n">query</span> <span class="n">QUERY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">head</span> <span class="n">HEAD</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="n">csv</span> <span class="n">TO_CSV</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+                    <span class="n">protocol</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>protocol</kbd></td>
+<td>protocol file.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-o, &#8211;output</kbd></td>
+<td>output file</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;update</kbd></td>
+<td><dl class="first last docutils">
+<dt>update field &#8216;valid&#8217; in the protocol file with the</dt>
+<dd>entries in the file UPDATE. This step will
+be applied <em>after</em> applying your filters.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;query</kbd></td>
+<td>apply a QUERY to the data frame.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;head</kbd></td>
+<td><dl class="first last docutils">
+<dt>print the first HEAD number of lines to standard</dt>
+<dd>output.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;to-csv</kbd></td>
+<td>export protocol file to CSV</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="specifying the protocol entries to process">
+<h3>specifying the protocol entries to process<a class="headerlink" href="#specifying the protocol entries to process" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Arguments which give control which protocol entries to</dt>
+<dd>process.</dd>
+</dl>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;cohort</kbd></td>
+<td>only use entries instances which belong to this cohort. If
+no protocol file is used, then this is the name of the cohort to which
+this subject belongs.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;id</kbd></td>
+<td>only use entries which belong to this subject id. If no protocol
+file is used, then this is the id of the subject in its cohort.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;datetime</kbd></td>
+<td>only use entries which are stamped with this date and
+time.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;paradigm</kbd></td>
+<td>only use entries which belong to this irritation design.
+The name of the irritation will appear as part of the default file names
+produced by various fmristats command line tools.  Unless you are
+planing to provide custom file names to all of fmristats&#8217; command line
+tools, it is recommend not to use any special characters in this
+name.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="miscellaneous">
+<h3>miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default protocol files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmricovariate">
+<h2>fmricovariate<a class="headerlink" href="#fmricovariate" title="Permalink to this headline">¶</a></h2>
+<p>Query covariate files</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmricovariate</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUTPUT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">covariate</span> <span class="n">COVARIATE</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">--</span><span class="n">update</span> <span class="n">UPDATE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">merge</span> <span class="n">MERGE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">query</span> <span class="n">QUERY</span><span class="p">]</span>
+                     <span class="p">[</span><span class="o">--</span><span class="n">head</span> <span class="n">HEAD</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">to</span><span class="o">-</span><span class="n">csv</span> <span class="n">TO_CSV</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+                     <span class="n">protocol</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>protocol</kbd></td>
+<td>protocol file.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-o, &#8211;output</kbd></td>
+<td>output file</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;covariate</kbd></td>
+<td><dl class="first last docutils">
+<dt>update field &#8216;valid&#8217; in the protocol file such that</dt>
+<dd>only entries which are valid in the protocol <em>and</em> in
+COVARIATE file are marked as valid entries.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;update</kbd></td>
+<td><dl class="first last docutils">
+<dt>update field &#8216;valid&#8217; in the protocol file with the</dt>
+<dd>entries in the file UPDATE.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;merge</kbd></td>
+<td>merge with covariate file MERGE.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;query</kbd></td>
+<td>apply a QUERY to the data frame.</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;head</kbd></td>
+<td>print the first HEAD number of lines</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;to-csv</kbd></td>
+<td>export protocol file to CSV</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="miscellaneous">
+<h3>miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-f, &#8211;force</kbd></td>
+<td><p class="first">by default protocol files will not be overwritten but parsed
+instead.  This will force to re-create any of these files.</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">increase output verbosity.</p>
+<p class="last">Default: 0</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="csv2protocol">
+<h2>csv2protocol<a class="headerlink" href="#csv2protocol" title="Permalink to this headline">¶</a></h2>
+<p>Converts a csv to protocol</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">csv2protocol</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="n">csv</span> <span class="n">output</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>csv</kbd></td>
+<td>csv file</td></tr>
+<tr><td class="option-group">
+<kbd>output</kbd></td>
+<td>output file</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>&#8211;strftime</kbd></td>
+<td><p class="first">convert time to string according to this format specification.</p>
+<p class="last">Default: &#8220;%Y-%m-%d-%H%M&#8221;</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="csv2covariate">
+<h2>csv2covariate<a class="headerlink" href="#csv2covariate" title="Permalink to this headline">¶</a></h2>
+<p>Converts a csv to a covariate file</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">csv2covariate</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">csv</span> <span class="n">output</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>csv</kbd></td>
+<td>csv file</td></tr>
+<tr><td class="option-group">
+<kbd>output</kbd></td>
+<td>output file</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+<div class="section" id="miscellaneous">
+<h1>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="fmriinfo">
+<h2>fmriinfo<a class="headerlink" href="#fmriinfo" title="Permalink to this headline">¶</a></h2>
+<p>Extract information from instance files and print information to
+standard output</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriinfo</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="n">files</span> <span class="p">[</span><span class="n">files</span> <span class="o">...</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>files</kbd></td>
+<td>input files</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+<div class="section" id="fmrimap">
+<h2>fmrimap<a class="headerlink" href="#fmrimap" title="Permalink to this headline">¶</a></h2>
+<p>Functions that return the image of a coordinate given in one space in
+the coordinates of the image space of a given map.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmrimap</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">inverse</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="nb">input</span> <span class="n">first</span> <span class="n">second</span> <span class="n">third</span>
+</pre></div>
+</div>
+<div class="section" id="Positional Arguments">
+<h3>Positional Arguments<a class="headerlink" href="#Positional Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>input</kbd></td>
+<td><dl class="first last docutils">
+<dt>a population space, a population map, any</dt>
+<dd>diffeomorphism, or an image file.</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>first</kbd></td>
+<td>first coordinate</td></tr>
+<tr><td class="option-group">
+<kbd>second</kbd></td>
+<td>second coordinate</td></tr>
+<tr><td class="option-group">
+<kbd>third</kbd></td>
+<td>third coordinate</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="Named Arguments">
+<h3>Named Arguments<a class="headerlink" href="#Named Arguments" title="Permalink to this headline">¶</a></h3>
+<table class="docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd>-i, &#8211;index</kbd></td>
+<td><dl class="first docutils">
+<dt>by default coordinates are assumed to live in Euclidean</dt>
+<dd>space. If &#8211;index is set, coordinate are interpreted to live in
+index space instead.</dd>
+</dl>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>&#8211;inverse</kbd></td>
+<td><p class="first">inverse</p>
+<p class="last">Default: False</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-v, &#8211;verbose</kbd></td>
+<td><p class="first">verbose output</p>
+<p class="last">Default: False</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+<p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Estimating the signal model</a><ul>
+<li><a class="reference internal" href="#fmriirritation">fmriirritation</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#mat2irr">mat2irr</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nii2ses">nii2ses</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmririgid">fmririgid</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmrifit">fmrifit</a><ul>
+<li><a class="reference internal" href="#input files">input files</a></li>
+<li><a class="reference internal" href="#output files">output files</a></li>
+<li><a class="reference internal" href="#define the signal model">define the signal model</a></li>
+<li><a class="reference internal" href="#define the experimental design">define the experimental design</a></li>
+<li><a class="reference internal" href="#control the weighting of observations">control the weighting of observations</a></li>
+<li><a class="reference internal" href="#where to fit">where to fit</a></li>
+<li><a class="reference internal" href="#specifying the protocol entries to process">specifying the protocol entries to process</a></li>
+<li><a class="reference internal" href="#file handling">file handling</a></li>
+<li><a class="reference internal" href="#detections">detections</a></li>
+<li><a class="reference internal" href="#miscellaneous">miscellaneous</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmriassessment">fmriassessment</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#estimating-the-population-model">Estimating the population model</a><ul>
+<li><a class="reference internal" href="#fmriati">fmriati</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmrisample">fmrisample</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#wrappers-to-fsl">Wrappers to FSL</a><ul>
+<li><a class="reference internal" href="#fsl4prune">fsl4prune</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fsl4pop">fsl4pop</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#specifying the protocol entries to process">specifying the protocol entries to process</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export-to-the-nifti1image-format">Export to the Nifti1Image format</a><ul>
+<li><a class="reference internal" href="#fit2nii">fit2nii</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#where to">where to</a></li>
+<li><a class="reference internal" href="#specifying the protocol entries to process">specifying the protocol entries to process</a></li>
+<li><a class="reference internal" href="#specifying fit and population space">specifying fit and population space</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#export-to-pdf-png-jpg-and-other">Export to pdf, png, jpg and other</a><ul>
+<li><a class="reference internal" href="#ref2plot">ref2plot</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fit2plot">fit2plot</a><ul>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#where to fit">where to fit</a></li>
+<li><a class="reference internal" href="#miscellaneous">miscellaneous</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#the-protocol-interface">The protocol interface</a><ul>
+<li><a class="reference internal" href="#fmriprotocol">fmriprotocol</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#specifying the protocol entries to process">specifying the protocol entries to process</a></li>
+<li><a class="reference internal" href="#miscellaneous">miscellaneous</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmricovariate">fmricovariate</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+<li><a class="reference internal" href="#miscellaneous">miscellaneous</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csv2protocol">csv2protocol</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#csv2covariate">csv2covariate</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li><a class="reference internal" href="#fmriinfo">fmriinfo</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#fmrimap">fmrimap</a><ul>
+<li><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
+<li><a class="reference internal" href="#Named Arguments">Named Arguments</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tutorials/notes.html" title="previous chapter">Some notes on speed</a></li>
+      <li>Next: <a href="modules.html" title="next chapter">Modules</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/cli.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Thomas W. D. Möbius.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/cli.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

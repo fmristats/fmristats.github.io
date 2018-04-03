@@ -1,0 +1,556 @@
+Quick start
+-----------
+
+fmristats provides command line tools which allow to access most of its
+functionality, in particular when it comes to fitting the signal model
+to subject data.
+
+**Do NOT alter your images. Do NOT do motion correction, do NOT correct
+for slice timing differences, and do NOT smooth your data.**
+
+Protocol interface for large studies
+....................................
+
+Needless to say, fmristats allows to fit models to data one subject at a
+time. If the plan, though, is to fit the data of multiple FMRI sessions
+in a semi-automatic way, fmristats provides its so-called *protocol
+interface*. The interface works with two files: a protocol file and a
+covariates file (although it is possible for these two files to be one
+and the same file).
+
+The protocol file contains basic information *about the FMRI sessions*
+in a study, the covariates file information *about the subjects* in the
+study.
+
+Both files are provided to fmristats as a pickled DataFrame_. Thus, you
+have all the powers of Pandas_ at you disposal. fmristats, though, does
+provide an interface for csv files, too.
+
+.. _DataFrame : https://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
+
+.. _Pandas : https://pandas.pydata.org/pandas-docs/stable/
+
+Protocol files
+::::::::::::::
+
+Have a look at the first five lines of an example *protocol.csv*:
+
+.. code:: shell
+
+    head -n5 protocol.csv
+
+.. code:: shell
+
+    cohort,id,date,paradigm,valid,epi
+    FOOBAR,1,2014-04-22,FP,True,3
+    FOOBAR,2,2014-04-24,FP,True,3
+    FOOBAR,3,2014-04-25,FP,True,3
+    FOOBAR,4,2014-04-25,FP,True,3
+
+We see, the first column contains a label for the cohort, here a study
+labelled *FOOBAR*. (If your study only contains a single cohort, simply
+name the cohort with the name of your study.) The second column contains
+integer ids which uniquely identify a subject within its cohort. The
+third column contains the time and date at which the FMRI session of the
+respective subject has taken place. The forth column contains a short
+token of the name of the FMRI paradigm used in this session. The column
+`valid` indicates whether it can be assumed that this session contains
+valid data or if this session should be excluded from the downstream
+analysis. It may take one of two values: ``True`` or ``False``. If
+`valid` is False, fmristats will exclude this measurement from the
+study.
+
+The last column, ``epi`` codes the direction in which the EPI in the
+session have been measured. The epi codes are coded as follows:
+
+==== =====================
+epi  direction
+==== =====================
+-3   superior to inferior
+-2   anterior to posterior
+-1   right to left
+ 1   left to right
+ 2   posterior to anterior
+ 3   inferior to superior
+==== =====================
+
+If a subject has been measured multiple times, each FMRI session has its
+own entry in the protocol file.
+
+.. code:: shell
+
+    cat protocol.csv | ag ,114,
+
+.. code:: shell
+
+    FOOBAR,114,2016-02-17,FP,True,3
+    FOOBAR,114,2016-02-17,BP,False,3
+    FOOBAR,114,2016-02-17,LT,True,3
+    FOOBAR,114,2016-02-17,WGT,True,3
+    FOOBAR,114,2016-02-17,Neglect,True,3
+    FOOBAR,114,2016-02-17,Motion,True,3
+
+Here, we see that subject 114 was measured six times with respect to
+different FMRI paradigms labelled *FP*, *BP*, *LT*, *WGT*, *Neglect*,
+and *Motion*. The session *BP* has been flagged invalid (here due to an
+unfortunate error in the presentation software).
+
+Creating a protocol file for fmristats from a csv file is easy:
+
+.. code:: shell
+
+    csv2protocol protocol.csv protocol.pkl --strftime short
+
+This will save the protocol to ``protocol.pkl``. The option ``--strftime
+short`` tells the parser that the date time strings  in ``protocol.csv``
+do not contain *time* but only the date of the session. The option
+``--strftime short`` is equivalent to ``--strftime '%Y-%m-%d'``. The
+default, though, is ``--strftime '%Y-%m-%d-%H%M'``.
+
+Have a look at the first ten entries:
+
+.. code:: shell
+
+    fmriprotocol protocol.pkl --head 10
+
+.. code:: shell
+
+                                   cohort  id       date paradigm  valid  epi
+    cohort id paradigm date
+    FOOBAR 1  BP       2014-04-22  FOOBAR   1 2014-04-22       BP   True    3
+              FP       2014-04-22  FOOBAR   1 2014-04-22       FP   True    3
+              LT       2014-04-22  FOOBAR   1 2014-04-22       LT   True    3
+              Neglect  2014-04-22  FOOBAR   1 2014-04-22  Neglect   True    3
+              WGT      2014-04-22  FOOBAR   1 2014-04-22      WGT   True    3
+           2  BP       2014-04-24  FOOBAR   2 2014-04-24       BP   True    3
+              FP       2014-04-24  FOOBAR   2 2014-04-24       FP   True    3
+              LT       2014-04-24  FOOBAR   2 2014-04-24       LT   True    3
+              Neglect  2014-04-24  FOOBAR   2 2014-04-24  Neglect   True    3
+              WGT      2014-04-24  FOOBAR   2 2014-04-24      WGT   True    3
+
+As you can see, fmristats will generate an index and sort the index,
+too. An example on how to export the protocol file back to csv but only
+keep the *WGT* sessions of the first 100 subjects:
+
+.. code:: shell
+
+    fmriprotocol protocol.pkl \
+        --cohort FOOBAR --id 1 100 \
+        --paradigm WGT \
+        --to-csv test.csv -f
+
+Covariate files
+:::::::::::::::
+
+In contrast, the covariate file contains information about the subjects
+under study, such as *age*, *sex*, case/control *status*, or
+*handedness*. Again, have a look at the first five lines of an example
+covariate file:
+
+.. code:: shell
+
+    head -n5 covariate.csv
+
+.. code:: shell
+
+    cohort,id,sex,age,waterloo,valid
+    FOOBAR,1,female,23,-67.0,False
+    FOOBAR,2,female,24,49.0,True
+    FOOBAR,3,female,25,37.0,True
+    FOOBAR,4,male,26,59.0,True
+
+We see that subject 2 is a right-handed 24 year old female with a
+`Waterloo Handedness Score`_ of 49. Again, there exists a column *valid*
+in the data table indicating whether a subject should be included or
+excluded from downstream analysis. Here, subject 1 has been flagged as
+invalid due to incompliance of the subject to the study protocol. The
+column ``valid`` is optional, and will be set to ``True`` by default.
+
+Creating a covariate file for fmristats from a csv file is easy:
+
+.. code:: shell
+
+    csv2covariate covariate.csv covariate.pkl
+
+Have a look at the first five entries:
+
+.. code:: shell
+
+    fmricovariate covariate.pkl --head 5
+
+.. code:: shell
+
+                   sex   age  waterloo valid
+    cohort id
+    FOOBAR 1    female  23.0     -67.0  True
+           2    female  24.0      49.0  True
+           3    female  25.0      37.0  True
+           4      male  26.0      59.0  True
+           5    female  23.0      44.0  True
+
+Export the file back to csv but only keep the right handed subjects:
+
+.. code:: shell
+
+    fmricovariate covariate.pkl \
+        --query 'waterloo > 0' \
+        --to-csv test.csv -f
+
+The idea is that the covariate file may be maintained *independent* of
+the respective study protocol file. Say, FMRI session data for a subject
+is available and there would be no doubt in the quality of the data
+(thus, one would want to include the subject in a study) but meanwhile
+the subject had to be excluded from the study (say due to false
+statements by the subject). Instead of going through the whole protocol
+and marking each FMRI session of the subject as invalid, you may work
+with a *master file* instead, and every time, just prior to performing
+any population inference, you update your sample:
+
+.. code:: shell
+
+    fmriprotocol protocol.pkl \
+        --update masterfile.pkl \
+        --output sample-for-population-inference.pkl
+
+Assuming that each subject in a study is not only measured once and not
+only with respect to one single paradigm, fmristats recommends to work
+with two separate files.
+
+Defining a sample for population inference
+::::::::::::::::::::::::::::::::::::::::::
+
+Say, we are interested in language processing in a simple word
+generation task (*WGT*) in a right-handed population (say with a
+`Waterloo Handedness Score`_ above 20), we select the respective sample
+from the pool of available subject as:
+
+.. code:: shell
+
+    csv2covariate masterfile.csv masterfile.pkl
+
+    fmriprotocol protocol.pkl \
+        --paradigm WGT \
+        --update masterfile.pkl covariate.pkl \
+        --query  'waterloo > 20' \
+        --output ../results/sample.pkl \
+        --verbose --head 10 -f
+
+.. _`Waterloo Handedness Score`: https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf
+
+Default file layout
+...................
+
+As long as you are not changing the defaults, fmristats will assume
+the following file layout:
+
+.. code:: shell
+
+    path/to/study/
+    ├── raw
+    │   ├── mat
+    │   │   └── PARADIGM_TOKEN
+    │   │       ├── …
+    │   │       ├── files.mat
+    │   │       ├── …
+    │   └── nii
+    │       └── PARADIGM_TOKEN
+    │           ├── …
+    │           ├── files.nii.gz
+    │           ├── …
+    ├── results
+    └── tables
+        ├── covariates.csv
+        └── protocol.csv
+
+Say, FMRI data of a paradigm called WGT had been converted from DICOM to
+the Nifti1 format using the dcm2nii_ tool with (essentially) all the
+default settings:
+
+- 4D=1: "will generate 4D files (FSL style)",
+- SingleNIIFile=1: "will create .nii files (FSL style)",
+- Gzip=1: "will create compressed .nii.gz files (FSL style)",
+- SPM2=0: "headers will be in NIfTI (SPM5/FSL)."
+
+.. _dcm2nii: http://people.cas.sc.edu/rorden/mricron/dcm2nii.html
+
+Then save the data to ``path/to/study/raw/nii/WGT/`` in the format:
+
+    ``{study}-{id}-{paradigm}-{datetime}.nii.gz``.
+
+As SPM is among the standard software tools for FMRI analysis, your
+presentation software may be able to save all relevant information
+concerning the *irritation* or *conditioning* of the subject in a
+``.mat``-file as it is described in the `SPM Manual`_ on page 65 in the
+section *Multiple conditions*. fmristats contains a parser for these
+files, thus, you may save the files to ``path/to/study/mat/WGT`` in the
+format:
+
+    ``{study}-{id}-{paradigm}-{datetime}.mat``
+
+At the end, your file hierarchy should (or may) look as follows:
+
+.. _`SPM Manual`: http://www.fil.ion.ucl.ac.uk/spm/doc/manual.pdf
+
+.. code:: shell
+
+    path/to/study/
+    ├── raw
+    │   ├── mat
+    │   │   └── WGT
+    │   │       ├── FOOBAR-0001-WGT-2014-04-22.mat
+    │   │       ├── FOOBAR-0002-WGT-2014-04-24.mat
+    │   │       ├── FOOBAR-0003-WGT-2014-04-25.mat
+    │   │       ├── FOOBAR-0004-WGT-2014-04-25.mat
+    │   │       ├── …
+    │   └── nii
+    │       └── WGT
+    │           ├── FOOBAR-0001-WGT-2014-04-22.nii
+    │           ├── FOOBAR-0002-WGT-2014-04-24.nii
+    │           ├── FOOBAR-0003-WGT-2014-04-25.nii
+    │           ├── FOOBAR-0004-WGT-2014-04-25.nii
+    │           ├── …
+    ├── results
+    │   └── sample.pkl
+    └── tables
+        ├── covariates.csv
+        ├── covariates.pkl
+        ├── protocol.pkl
+        └── protocol.csv
+
+Fit the signal model to all members of a sample
+...............................................
+
+Assuming you are in ``path/to/study/results/``, the following will fit
+the signal model to the data of all entries in ``sample.pkl`` which are
+marked as valid:
+
+.. code:: shell
+
+    # Create Irritation Designs
+    mat2irr --protocol sample.pkl -v
+
+    # Create Session Designs
+    nii2ses --protocol sample.pkl -v --detect-foreground
+
+    # Fit head movements
+    fmririgid --protocol sample.pkl -v
+
+    # Assessment of head tracking ability
+    ref2plot --protocol sample.pkl -v
+
+    # Create the *identity population map* for each subject
+    fmripop --protocol sample.pkl -v
+
+    # Fit in subject reference space (resolution: (2 mm)^3)
+    fmrifit --protocol sample.pkl --stimulus-block letter -v
+
+To be conform with the above example, we would need to add ``--strftime
+short`` to each call, as *time* is not part of the naming scheme in the
+example.
+
+.. code:: shell
+
+    # Create Irritation Designs
+    mat2irr --protocol sample.pkl -v --strftime short -f
+
+    # Create Session Designs
+    nii2ses --protocol sample.pkl -v --detect-foreground --strftime short
+
+    # Fit head movements
+    fmririgid --protocol sample.pkl -v --strftime short
+
+    # Assessment of head tracking ability
+    ref2plot --protocol sample.pkl -v --strftime short
+
+    # Create the *identity population map* for each subject
+    fmripop --protocol sample.pkl -v --strftime short
+
+    # Fit in subject reference space (resolution: (2 mm)^3)
+    fmrifit --protocol sample.pkl --stimulus-block letter -v --strftime short
+
+Then either
+
+.. code:: shell
+
+    # Prune parameter fields from none-brain areas
+    fmriprune --protocol sample.pkl -v -p .5
+
+or
+
+.. code:: shell
+
+    # Prune parameter fields from none-brain areas
+    fsl4prune --protocol sample.pkl -v -p .5
+
+.. _BET: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET
+
+Plot parameter fits
+...................
+
+fmristats has some plotting capabilities
+
+.. code:: shell
+
+    fit2plot --protocol sample.pkl -v
+
+Population inference
+....................
+
+If you aim for population inference, you need to relate the brains
+:math:`R_j` of all subjects :math:`j` in your study to each other, i.e.
+you need to chose a representative, say a template brain :math:`M` in
+MNI Standard Space, and fit diffeomorphisms :math:`ψ_j` which map
+:math:`M` to each :math:`R_j`.
+
+.. math::
+
+    ψ_j: M \to R_j.
+
+Good candidates for :math:`R_j` may be the intercept fields of fits of
+the signal models in an isometric coordinate system with respect to each
+subject, namely the created fits above.
+
+Extract the intercepts from fits:
+
+.. code:: shell
+
+    fit2nii --protocol sample.pkl -v \
+        --parameter intercept --value point \
+        --round-to-integer
+
+Or:
+
+.. code:: shell
+
+    fit2nii --protocol sample.pkl -v \
+        --parameter intercept --value point \
+        --round-to-integer --strftime short
+
+if *time* is not part of the naming scheme of your files.
+
+If you are using the software FNIRT_ to fit the respective :math:`ψ_j`,
+then you may use the command line tool ``fsl4pop`` (which is distributed
+together with fmristats) to parse the `warp coefficient files`_ which
+were created by FNIRT_.
+
+.. _FNIRT: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT
+
+.. _`warp coefficient files`: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide#A--cout
+
+.. code:: shell
+
+    # you may have done something along the line…
+    fsl5.0-fnirt --in=intercept.nii.gz --config=T1_2_MNI152_2mm \
+        --cout=warping/FOOBAR-0002-WGT-2015-01-01-reference-max-intercept_warpcoef.nii.gz
+
+If you have followed the suggested naming scheme:
+
+    ``warping/{study}-{id}-{paradigm}-{datetime}-intercept_warpcoef.nii.gz``
+
+(but you can change the defaults), you can convert the warp coefficient
+files to PopulationMaps via
+
+.. code:: shell
+
+    fsl4pop --protocol sample.pkl -v
+
+Or:
+
+.. code:: shell
+
+    fsl4pop --protocol sample.pkl -v --strftime short
+
+if *time* is not part of the naming scheme of your files.
+
+By default (but you may change the defaults), ``fsl4pop`` will assume
+that the template ``MNI152_T1_2mm`` has been used to define the domains
+of each :math:`ψ_j`, and that FNIRT has been provided with a reference
+mask that is a dichotomised version of ``MNI152_T1_2mm_brain``, and both
+these files reside in
+
+.. code:: shell
+
+    /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz
+    /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz
+
+which is the default location of these files when you installed FSL.
+
+To fit the signal model at all points at which the template mask
+``MNI152_T1_2mm_brain`` has valid entries, i.e. grey scale intensities
+:math:`>0`:
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl --stimulus-block letter -v \
+        --population-space MNI152_T1_2mm
+
+Or:
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl --stimulus-block letter -v \
+        --population-space MNI152_T1_2mm --strftime short
+
+if *time* is not part of the naming scheme of your files.
+
+By default, the population space :math:`M` is saved to
+``../data/vbs/MNI152_T1_2mm-mask.image`` and the brain mask to
+``../data/vbs/MNI152_T1_2mm-mask.image``.
+
+Fitting the population model
+............................
+
+Create an ATI reference field:
+
+.. code:: shell
+
+    fmriati 2.09 ../data/vbs/MNI152_T1_2mm-mask.image ati-reference.image -v
+
+To see the correct order of the positional arguments for ``fmrisample``:
+
+.. code:: shell
+
+    fmrisample -h
+
+Create the samle for population inference:
+
+.. code:: shell
+
+    fmrisample sample.sample \
+        ../data/vbs/MNI152_T1_2mm.image  \
+        ati-reference.image \
+        -v --strftime short \
+        sample.pkl
+
+Now, fit the population model to your sample.
+
+.. code:: python
+
+    from fmristats import *
+
+    smp = load('sample.sample')
+
+    pop = PopulationModel(smp)
+    result = pop.fit()
+
+    result.save('sample.meta')
+
+To get the Knapp-Hartung adjusted tstatistics field testing for non-zero
+task activation in the population:
+
+.. code:: python
+
+    # t-test statistics field (Knapp-Hartung adjusted)
+    tpattern = result.get_tvalues()
+    # as an image
+    timage = Image(data=tpattern[0], reference=result.population_space.reference)
+
+If you need to adjust for covariates:
+
+.. code:: python
+
+    from fmristats import *
+
+    pop = PopulationModel(smp, 'status + smoking + sex + cohort')
+    result = pop.fit()
+

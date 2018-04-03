@@ -1,0 +1,176 @@
+Estimating the signal model
+---------------------------
+
+fmriirritation
+..............
+
+.. argparse::
+    :module: fmristats.cmd.api.fmriirritation
+    :func: create_argument_parser
+    :prog: fmriirritation
+
+mat2irr
+.......
+
+.. argparse::
+    :module: fmristats.cmd.imp.mat2irr
+    :func: create_argument_parser
+    :prog: mat2irr
+
+nii2ses
+.......
+
+.. argparse::
+    :module: fmristats.cmd.imp.nii2ses
+    :func: create_argument_parser
+    :prog: nii2ses
+
+fmririgid
+.........
+
+.. argparse::
+    :module: fmristats.cmd.api.fmririgid
+    :func: create_argument_parser
+    :prog: fmririgid
+
+fmrifit
+.......
+
+.. argparse::
+    :module: fmristats.cmd.api.fmrifit
+    :func: create_argument_parser
+    :prog: fmrifit
+
+fmriassessment
+..............
+
+.. argparse::
+    :module: fmristats.cmd.api.fmriassessment
+    :func: create_argument_parser
+    :prog: fmriassessment
+
+Estimating the population model
+-------------------------------
+
+fmriati
+.......
+
+.. argparse::
+    :module: fmristats.cmd.api.fmriati
+    :func: create_argument_parser
+    :prog: fmriati
+
+fmrisample
+..........
+
+.. argparse::
+    :module: fmristats.cmd.api.fmrisample
+    :func: create_argument_parser
+    :prog: fmrisample
+
+Wrappers to FSL
+---------------
+
+fsl4prune
+.........
+
+.. argparse::
+    :module: fmristats.cmd.wrp.fsl4prune
+    :func: create_argument_parser
+    :prog: fsl4prune
+
+fsl4pop
+.......
+
+.. argparse::
+    :module: fmristats.cmd.wrp.fsl4pop
+    :func: create_argument_parser
+    :prog: fsl4pop
+
+Export to the Nifti1Image format
+--------------------------------
+
+fit2nii
+.......
+
+.. argparse::
+    :module: fmristats.cmd.exp.fit2nii
+    :func: create_argument_parser
+    :prog: fit2nii
+
+Export to pdf, png, jpg and other
+---------------------------------
+
+ref2plot
+........
+
+.. argparse::
+    :module: fmristats.cmd.plt.ref2plot
+    :func: create_argument_parser
+    :prog: ref2plot
+
+fit2plot
+........
+
+.. argparse::
+    :module: fmristats.cmd.plt.fit2plot
+    :func: create_argument_parser
+    :prog: fit2plot
+
+The protocol interface
+----------------------
+
+fmriprotocol
+............
+
+.. argparse::
+    :module: fmristats.cmd.qry.fmriprotocol
+    :func: create_argument_parser
+    :prog: fmriprotocol
+
+
+fmricovariate
+.............
+
+.. argparse::
+    :module: fmristats.cmd.qry.fmricovariate
+    :func: create_argument_parser
+    :prog: fmricovariate
+
+
+csv2protocol
+............
+
+.. argparse::
+    :module: fmristats.cmd.imp.csv2protocol
+    :func: create_argument_parser
+    :prog: csv2protocol
+
+
+csv2covariate
+.............
+
+.. argparse::
+    :module: fmristats.cmd.imp.csv2covariate
+    :func: create_argument_parser
+    :prog: csv2covariate
+
+Miscellaneous
+-------------
+
+fmriinfo
+........
+
+.. argparse::
+    :module: fmristats.cmd.qry.fmriinfo
+    :func: create_argument_parser
+    :prog: fmriinfo
+
+fmrimap
+.......
+
+.. argparse::
+    :module: fmristats.cmd.qry.fmrimap
+    :func: create_argument_parser
+    :prog: fmrimap
+

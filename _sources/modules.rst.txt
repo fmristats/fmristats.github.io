@@ -1,0 +1,51 @@
+Modules
+=======
+
+Affine transformations
+----------------------
+
+.. automodule:: fmristats.affines
+    :members:
+
+The FMRI Session
+----------------
+
+.. automodule:: fmristats.session
+    :members:
+
+The Reference Maps
+------------------
+
+.. automodule:: fmristats.reference
+    :members:
+
+The Population Space
+--------------------
+
+.. automodule:: fmristats.pmap
+    :members:
+
+The Population Map
+------------------
+
+.. automodule:: fmristats.diffeomorphisms
+    :members:
+
+The FMRI Signal Model
+---------------------
+
+.. automodule:: fmristats.smodel
+    :members:
+
+The Sample
+----------
+
+.. automodule:: fmristats.sample
+    :members:
+
+The FMRI Population Model
+-------------------------
+
+.. automodule:: fmristats.pmodel
+    :members:
+
