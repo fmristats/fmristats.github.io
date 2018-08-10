@@ -68,6 +68,17 @@ fmrisample
     :func: create_argument_parser
     :prog: fmrisample
 
+Wrappers to ANTS
+----------------
+
+ants4pop
+........
+
+.. argparse::
+    :module: fmristats.cmd.wrp.ants4pop
+    :func: create_argument_parser
+    :prog: ants4pop
+
 Wrappers to FSL
 ---------------
 
@@ -87,8 +98,8 @@ fsl4pop
     :func: create_argument_parser
     :prog: fsl4pop
 
-Export to the Nifti1Image format
---------------------------------
+Export to the Nifti1
+--------------------
 
 fit2nii
 .......
@@ -98,8 +109,8 @@ fit2nii
     :func: create_argument_parser
     :prog: fit2nii
 
-Export to pdf, png, jpg and other
----------------------------------
+Export to PDF, PNG, and JPG
+---------------------------
 
 ref2plot
 ........

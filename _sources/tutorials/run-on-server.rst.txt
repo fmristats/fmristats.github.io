@@ -1,0 +1,63 @@
+Run analysis on a server
+------------------------
+
+You have created the session files, estimated the head movements (aka.\
+reference maps), and the diffeomorphisms mapping form standard space to
+the respective subject spaces (aka.\ population maps). What is missing,
+now: you would like to fit the subject model to the FMRI of each subject
+but you don't have enough resources on your local hardware. Solution:
+move the stuff to a server.
+
+On your computer, your data tree will thus far look as follows:
+
+.. code:: shell
+
+    data
+    ├── irr
+    ├── pop
+    ├── ref
+    ├── ses
+    └── vbs
+        ├── MNI152_T1_2mm_brain.image
+        └── MNI152_T1_2mm.image
+
+What you need at minimum on the host computer in order to run the
+analysis:
+
+.. code:: shell
+
+    data
+    ├── pop
+    ├── ref
+    ├── ses
+    └── vbs
+        ├── MNI152_T1_2mm_brain.image
+        └── MNI152_T1_2mm.image
+
+Solution: copy the tree to the host server:
+
+.. code:: shell
+
+    scp -r data username@hostname:~/path/to/project
+
+Also copy the sample, you would like to analyse:
+
+.. code:: shell
+
+    scp -r results/mysample.pkl username@hostname:~/path/to/project/results
+
+Then log in to the server and run the analysis:
+
+.. code:: shell
+
+    ssh hostname
+
+    cd ~/path/to/project/results
+
+    fmrifit --protocol mysample.pkl -v --strftime short \
+        --stimulus-block letter \
+        --vb mni152 --diffeomorphism ants
+
+The advantage is that none of the software that you have needed to
+create the population maps (such as ANTS, FSL, or SPM) is needed on the
+server side. Just fmristats.

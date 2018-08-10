@@ -1,43 +1,54 @@
-Rigorous statistical estimation of FMRI models
-==============================================
+Complete, transparent, and data-oriented fitting of FMRI models
+===============================================================
 
-Most current approaches to the statistical analysis of functional
-magnetic resonance imaging (FMRI) data involve varieties of
-preprocessing steps which alter the signal to noise ratio of the
-original data.
-
-Enhancing the SNR prior to a formal analysis, though, shakes at primary
-principles of statistical decision making and it will generally inflate
-the type I error of the analysis.
+All current approaches to the statistical analysis of functional
+magnetic resonance imaging (FMRI) data involve the application of
+various preprocessing steps which alter the signal to noise ratio (SNR)
+of the original data. Enhancing the SNR prior to a formal analysis,
+though, shakes at primary principles of statistical decision making and
+it will generally inflate the type I error of the analysis.
 
 This is the first statistical software tool which implements the
-*rigorous statistical (RS)* estimator for FMRI data models, a new and
-original method for the statistical analysis of FMRI data of brain
-scans. The method fits a weighted least squares model to points of a
-random vector field. Without prior spacial smoothings, i.e. without
-altering the original 4D-image, the method nevertheless results in
-smooth fits of the underlying activation parameter fields. More
-importantly, though, the method yields a trustworthy estimate of the
-uncertainty of the estimated activation field for each subject in a
-study. The availability of these uncertainty fields allows to model FMRI
-studies using random effects meta regression techniques acknowledging
-the fact that (i) individual subjects are random entities, and that (ii)
-the variability in the estimated individual activation patterns vary
-across the brain and between subjects.
+*data-oriented method (DOM)* estimator for FMRI, a new and original
+method for the statistical analysis of FMRI data of brain scans. The
+method fits a weighted least squares model to points of a random vector
+field. Without prior spacial smoothings, i.e. without altering the
+original 4D-image, the method nevertheless results in smooth fits of the
+underlying activation parameter fields. More importantly, though, the
+method yields a trustworthy estimate of the uncertainty of the estimated
+activation field for each subject in a study. The availability of these
+uncertainty fields allows to model FMRI studies using random effects
+meta regression techniques acknowledging the fact that (i) individual
+subjects are random entities, and that (ii) the variability in the
+estimated individual activation patterns varies across the brain and
+between subjects.
+
+How to cite this software
+-------------------------
+
+The `Harvard UoB format`_ suggests to cite this software in this form:
+
+    Thomas W. D. Möbius (2018) fmristats: Data oriented method for
+    fitting of FMRI models (Version 0.0.3) [Computer program]. Available
+    at http://fmristats.github.io/
+
+Thank you for using and citing this software.
+
+.. _`Harvard UoB format`: http://lrweb.beds.ac.uk/guides/a-guide-to-referencing/cite_computer_program
 
 Installation
 ------------
 
-An easy way to install fmristats is to install Anaconda3_, a cross
-platform distribution for data analysis and scientific computing, and
-then using pip_, the "PyPA recommended tool for installing Python
-packages", to install fmristats itself.
+An easy way to install fmristats is to install Anaconda3_, a cross platform
+distribution for data analysis and scientific computing, and then using pip_,
+the "PyPA recommended tool for installing Python packages", to install
+fmristats itself.
 
 .. code:: shell
 
     % pip install fmristats
 
-Now, you should be good to go.
+That's it. You should be good to go.
 
 .. _Anaconda3: https://docs.anaconda.com/anaconda/install/
 
@@ -46,14 +57,19 @@ Now, you should be good to go.
 Tutorials
 ---------
 
-Tutorials discussing various parts of fmristats; expect this list to
-grow.
+Tutorials discussing various parts of fmristats; expect this list to grow.
 
 .. toctree::
    :maxdepth: 2
 
    tutorials/very-quick-start
    tutorials/quick-start
+   tutorials/population-inference-preliminaries
+   tutorials/population-inference-explorative
+   tutorials/population-inference-confirmative
+   tutorials/subject-inference-at-one-point
+
+   tutorials/run-on-server
    tutorials/notes
 
 Command line interface
@@ -64,8 +80,8 @@ Command line interface
 
    cli
 
-Modules
--------
+Python interface
+----------------
 
 .. toctree::
    :maxdepth: 2

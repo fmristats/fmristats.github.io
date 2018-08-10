@@ -1,0 +1,426 @@
+Population inference (confirmative)
+-----------------------------------
+
+
+
+
+Load subject data
+.................
+
+
+.. code:: python
+
+    
+    from fmristats import *
+    from fmristats.plot import *
+    
+    result = load(path_to_fit)
+    tsubject = result.get_field('task', 'tstatistic')
+
+
+
+
+Plot:
+
+
+.. code:: python
+
+    _ = picture(tsubject,3,6,4)
+
+
+.. image:: figures/population-inference-confirmative_figure3_1.png
+   :width: 15 cm
+
+
+
+Select the highest t-statistics peak:
+
+
+.. code:: python
+
+    
+    peak = np.nanargmax(tsubject.data)
+    index = np.unravel_index(peak, tsubject.data.shape)
+    
+    print(index)
+
+
+.. code::
+
+    (39, 23, 40)
+    
+
+
+
+Plot the respective slice in subject space:
+
+
+.. code:: python
+
+    
+    picture(tsubject,3,1,1,[index[-1]], interpolation='bilinear')
+    pt.plot([index[0]], [index[1]], 'ko')
+    pt.plot([index[0]], [index[1]], 'w+')
+    
+    print(tsubject.data[index])
+
+
+.. code::
+
+    7.9078320395958235
+    
+
+.. image:: figures/population-inference-confirmative_figure5_1.png
+   :width: 15 cm
+
+
+
+Find the coordinates of the peak in standard space:
+
+
+.. code:: python
+
+    
+    coordinate = tsubject.apply_to_index(index)
+    print(coordinate)
+
+
+.. code::
+
+    [ 12. -80.   8.]
+    
+
+
+
+Use the ``atlasquery`` tool from the FSL project to see to which
+structure these coordinates belong:
+
+.. code:: shell
+
+    atlasquery -a "MNI Structural Atlas" -c 12,-80,8
+    MNI Structural Atlas % Occipital Lobe
+
+Load population data, fit the model
+...................................
+
+Load data
+
+
+.. code:: python
+
+    
+    population_sample = load(path_to_sample)
+
+
+
+
+Number of subjects in the sample:
+
+
+.. code:: python
+
+    len(population_sample.covariates)
+
+
+.. code::
+
+    32
+    
+
+
+
+Number of subjects that are *not* right handed:
+
+
+.. code:: python
+
+    
+    (population_sample.covariates.waterloo < 20).sum()
+
+
+.. code::
+
+    0
+    
+
+
+
+Remove the initial subject from the sample.
+
+
+.. code:: python
+
+    
+    subsample = population_sample.filter(
+                    population_sample.covariates.id != 2)
+
+
+
+
+Have a look at the sample size per template voxel. It appears that there
+are some voxels close to the surface areas of the template where one or
+more population diffeomorphisms :math:`ψ_j` did not fully map the
+template brain onto the subject brain. This is probably to be expected.
+
+
+.. code:: python
+
+    
+    sample_size = Image(
+        population_sample.vb.reference,
+        np.isfinite(subsample.statistics).all(axis=-2).sum(axis=-1))
+    
+    sample_size.mask()
+    
+    vb = subsample.vb
+    vb.mask()
+    
+    picture(subsample.vb,3,6,4,cmap=cm.gray)
+    picture(sample_size,3,6,4,cmap=cm.viridis)
+    pt.colorbar()
+    
+    _=pt.tight_layout()
+
+
+.. image:: figures/population-inference-confirmative_figure11_1.png
+   :width: 15 cm
+
+
+
+Fit the population model to the sample of (estimated) neural activities.
+
+
+.. code:: python
+
+    
+    pop = PopulationModel(subsample)
+    meta = pop.fit()
+
+
+.. code::
+
+      … all voxels in the mask are identifiable.
+      … some voxel have missing data along the subject dimension.
+      … mask has shape: (91, 109, 91)
+      … number of pixels to be fitted: 163431
+      … a meta analysis will be performed
+    
+
+
+
+Get the Knapp-Hartung adjusted t-statistics field that tests for task
+related neural activity in the population:
+
+
+.. code:: python
+
+    tstatistics = meta.get_tstatistic()
+
+
+
+
+Plot:
+
+
+.. code:: python
+
+    picture(tstatistics,3,6,4)
+    pt.colorbar()
+    
+    _=pt.tight_layout()
+
+
+.. image:: figures/population-inference-confirmative_figure14_1.png
+   :width: 15 cm
+
+
+
+Plot the respective slice in population space:
+
+
+.. code:: python
+
+    
+    picture(tstatistics,3,1,1,[index[-1]], interpolation='bilinear')
+    pt.plot([index[0]], [index[1]], 'ko')
+    pt.plot([index[0]], [index[1]], 'w+')
+    pt.colorbar()
+    pt.tight_layout()
+    
+    print(tstatistics.data[index])
+
+
+.. code::
+
+    2.1369966712391775
+    
+
+.. image:: figures/population-inference-confirmative_figure15_1.png
+   :width: 15 cm
+
+
+
+
+
+
+Extract data at index
+.....................
+
+Extract the meta data from the sample and the fit:
+
+
+.. code:: python
+
+    
+    df = population_sample.at_index(index)
+    df.valid.all()
+    df.sort_values(by='waterloo', inplace=True)
+    
+    dm = meta.at_index(index)
+    dm.set_index('parameter', inplace=True)
+
+
+
+
+Make some nice visualisations
+.............................
+
+Define the critical values for the plots:
+
+
+.. code:: python
+
+    
+    from scipy.stats.distributions import t
+    from scipy.stats.distributions import norm
+    
+    crt_subject = norm.ppf(q=.95)
+    crt_population = t.ppf(q=.95, df = dm.loc['intercept', 'df'])
+    
+    print(crt_subject, crt_population)
+
+
+.. code::
+
+    1.6448536269514722 1.6972608943617378
+    
+
+
+
+Forest plot
+:::::::::::
+
+Forest Plot in ascending order of handiness (left handed on the bottom,
+right handed on the top):
+
+
+.. code:: python
+
+    
+    df['yvec'] = range(len(df.task))
+    df['reci'] = 1/ df.stderr**2
+    
+    x = dm.loc['intercept', 'point']
+    s = dm.loc['intercept', 'stderr']
+    
+    fig, ax = pt.subplots()
+    ax.axvline(0,c='k',lw=.9, ls=':')
+    ax.errorbar(df.task[df.id!=2], df.yvec[df.id!=2], xerr=crt_subject*df.stderr[df.id!=2], fmt='o', label='Sample')
+    ax.errorbar(df.task[df.id==2], df.yvec[df.id==2], xerr=crt_subject*df.stderr[df.id==2], fmt='o', label='Initial Subject')
+    pt.box(False)
+    ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
+    ax.set_ylabel('Waterloo')
+    ax.errorbar(x, -1, xerr=crt_population*s, fmt='o', label='Population')
+    ax.axhline(-.5,c='k',lw=.9, ls='-')
+    pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
+    ax.yaxis.set_ticks_position('none')
+    pt.legend()
+    
+    _=pt.tight_layout()
+
+
+.. image:: figures/population-inference-confirmative_figure19_1.png
+   :width: 15cm
+
+
+
+
+
+
+There was one subject in the sample, who showed an even larger task
+related neural activity at the coordinates.
+
+Funnel Plot
+:::::::::::
+
+
+.. code:: python
+
+    
+    pt.close()
+    fig, ax = pt.subplots()
+    ax.axvline(0,c='k',lw=.9, ls=':')
+    ax.errorbar(df.task[df.id!=2], df.reci[df.id!=2], xerr=crt_subject*df.stderr[df.id!=2], fmt='o', label='Sample')
+    ax.errorbar(df.task[df.id==2], df.reci[df.id==2], xerr=crt_subject*df.stderr[df.id==2], fmt='o', label='Initial Subject')
+    ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
+    ax.set_ylabel('Reciprocal of the Squared Standard Error')
+    pt.legend()
+    
+    _=pt.tight_layout()
+
+
+.. image:: figures/population-inference-confirmative_figure21_1.png
+   :width: 15 cm
+
+
+
+
+
+
+Formal
+......
+
+Effect
+::::::
+
+
+.. code:: python
+
+    x = dm.loc['intercept', 'point']
+    s = dm.loc['intercept', 'stderr']
+    
+    # Effect
+    print(x)
+    
+    # 95% confidence interval
+    print('lower: {:.2f}, upper {:.2f}'.format(
+        x-crt_population*s, x+crt_population*s))
+
+
+.. code::
+
+    8.32452269187408
+    lower: 1.71, upper 14.94
+    
+
+
+
+p-Value
+:::::::
+
+
+.. code:: python
+
+    print(dm.loc['intercept', 'pvalue'])
+
+
+.. code::
+
+    0.020434503851498254
+    
+
+
+
+**Note:** This is the actual p-value for neural activity at these
+coordinates in standard space: any prior knowledge had been removed
+prior to the fitting. There was no multiple testing.

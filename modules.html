@@ -1,47 +1,181 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Modules &mdash; fmristats 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>Modules &#8212; fmristats 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Estimating the signal model" href="cli.html" />
+    <link rel="prev" title="Estimating the signal model" href="cli.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/very-quick-start.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference (set-up)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference (explorative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Estimating the signal model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#estimating-the-population-model">Estimating the population model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#the-protocol-interface">The protocol interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.affines">Affine transformations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.session">The FMRI Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.reference">The Reference Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.pmap">The Population Space</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.diffeomorphisms">The Population Map</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.smodel">The FMRI Signal Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.sample">The Sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-fmristats.pmodel">The FMRI Population Model</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Modules</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/modules.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="modules">
 <h1>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h1>
@@ -59,7 +193,7 @@ calculating inverses of affine transformations.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>affine</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation in homologous coordinates.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>affine</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation in homologous coordinates.</td>
 </tr>
 </tbody>
 </table>
@@ -72,7 +206,7 @@ calculating inverses of affine transformations.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>) or </em><em></em><em>(</em><em>..</em><em>,</em><em>3</em><em>)</em><em></em>) &#8211; Vector or matrix of (row) vectors.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>) or </em><em>(</em><em>..</em><em>,</em><em>3</em><em>)</em>) – Vector or matrix of (row) vectors.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the affine applied to the matrix (or vector)
 x, in particular, it will be of the same shape.</td>
@@ -91,7 +225,7 @@ x, in particular, it will be of the same shape.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) &#8211; 3-tuple of int</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) – 3-tuple of int</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the affine applied to the index.</td>
 </tr>
@@ -109,7 +243,7 @@ x, in particular, it will be of the same shape.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) &#8211; 3-tuple of Slice or Ellipse objects.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) – 3-tuple of Slice or Ellipse objects.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the affine applied to the indices.</td>
 </tr>
@@ -127,8 +261,8 @@ x, in particular, it will be of the same shape.</td>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>int</em><em>, </em><em>either 0</em><em>,</em><em>1</em><em>,</em><em>2</em>) &#8211; x</li>
-<li><strong>y</strong> (<em>int</em><em>, </em><em>either 0</em><em>,</em><em>1</em><em>,</em><em>2</em>) &#8211; y</li>
+<li><strong>x</strong> (<em>int</em><em>, </em><em>either 0</em><em>,</em><em>1</em><em>,</em><em>2</em>) – x</li>
+<li><strong>y</strong> (<em>int</em><em>, </em><em>either 0</em><em>,</em><em>1</em><em>,</em><em>2</em>) – y</li>
 </ul>
 </td>
 </tr>
@@ -150,7 +284,7 @@ x, in particular, it will be of the same shape.</td>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><a class="reference internal" href="#fmristats.affines.Affines" title="fmristats.affines.Affines"><em>Affines</em></a>) &#8211; An affine transformation.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><a class="reference internal" href="#fmristats.affines.Affines" title="fmristats.affines.Affines"><em>Affines</em></a>) – An affine transformation.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Output has the same type as x.</td>
 </tr>
@@ -191,9 +325,9 @@ algorithm for calculating the inverse is used than otherwise.</p>
 <dd><p>Resolution</p>
 <p>The resolution is the length of the base vectors (1,0,0),
 (0,1,0), and (0,0,1) after being mapped to by this affine
-transformations. The length of <code class="docutils literal"><span class="pre">A⋅b</span></code>, for <code class="docutils literal"><span class="pre">A</span></code> being this
-affine transformation and <code class="docutils literal"><span class="pre">b</span></code> being one of the three basis
-vectors is the norm of <code class="docutils literal"><span class="pre">A⋅b</span> <span class="pre">-</span> <span class="pre">A⋅0</span></code>.</p>
+transformations. The length of <code class="docutils literal notranslate"><span class="pre">A⋅b</span></code>, for <code class="docutils literal notranslate"><span class="pre">A</span></code> being this
+affine transformation and <code class="docutils literal notranslate"><span class="pre">b</span></code> being one of the three basis
+vectors is the norm of <code class="docutils literal notranslate"><span class="pre">A⋅b</span> <span class="pre">-</span> <span class="pre">A⋅0</span></code>.</p>
 </dd></dl>
 
 <dl class="method">
@@ -204,7 +338,7 @@ vectors is the norm of <code class="docutils literal"><span class="pre">A⋅b</s
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; A file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – A file name.</td>
 </tr>
 </tbody>
 </table>
@@ -233,7 +367,7 @@ canonical basis</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em>) &#8211; Vector to which the affine transformations are applied</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – Vector to which the affine transformations are applied</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -251,7 +385,7 @@ canonical basis</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) &#8211; 3-tuple of int</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>3-tuple</em>) – 3-tuple of int</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The result of the affine applied to the index.</td>
 </tr>
@@ -272,7 +406,7 @@ transformation with x.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) &#8211; An affine transformation.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) – An affine transformation.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -354,7 +488,7 @@ transformations</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; A file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – A file name.</td>
 </tr>
 </tbody>
 </table>
@@ -371,8 +505,8 @@ transformations</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>a</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>n</em><em>)</em><em></em>) &#8211; an darray</li>
-<li><strong>**kwargs</strong> &#8211; parameters passed on to <cite>np.close</cite>.</li>
+<li><strong>a</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>n</em><em>)</em>) – an darray</li>
+<li><strong>**kwargs</strong> – parameters passed on to <cite>np.close</cite>.</li>
 </ul>
 </td>
 </tr>
@@ -397,9 +531,9 @@ transformations</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) &#8211; an affine transformation.</li>
-<li><strong>y</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) &#8211; an affine transformation.</li>
-<li><strong>**kwargs</strong> &#8211; parameters passed on to <cite>np.close</cite>.</li>
+<li><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) – an affine transformation.</li>
+<li><strong>y</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) – an affine transformation.</li>
+<li><strong>**kwargs</strong> – parameters passed on to <cite>np.close</cite>.</li>
 </ul>
 </td>
 </tr>
@@ -422,9 +556,9 @@ transformations</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) &#8211; an affine transformation.</li>
-<li><strong>y</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) &#8211; an affine transformation.</li>
-<li><strong>**kwargs</strong> &#8211; parameters passed on to <cite>np.close</cite>.</li>
+<li><strong>x</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) – an affine transformation.</li>
+<li><strong>y</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a>) – an affine transformation.</li>
+<li><strong>**kwargs</strong> – parameters passed on to <cite>np.close</cite>.</li>
 </ul>
 </td>
 </tr>
@@ -456,13 +590,13 @@ blocks or events of the paradigm, the observed FMRI signals.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>Identifier</em>) &#8211; The name or of the FMRI experiment</li>
-<li><strong>data</strong> (<em>array</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>,</em><em>N</em><em>,</em><em>O</em><em>,</em><em>P</em><em>)</em><em></em>) &#8211; The data of observations, where M is the number of scan
+<li><strong>name</strong> (<em>Identifier</em>) – The name or of the FMRI experiment</li>
+<li><strong>data</strong> (<em>array</em><em>, </em><em>shape</em><em> (</em><em>t</em><em>,</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>)</em>) – The data of observations, where t is the number of scan
 cycles</li>
-<li><strong>epi_code</strong> (<em>int</em>) &#8211; Coded EPI sequence, either one of -3, -2, -1, 1, 2, 3</li>
-<li><strong>spacial_resolution</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; Spacial resolution of the image</li>
-<li><strong>temporal_resolution</strong> (<em>float</em>) &#8211; Temporal resolution of the image</li>
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The scanner reference</li>
+<li><strong>epi_code</strong> (<em>int</em>) – Coded EPI sequence, either one of -3, -2, -1, 1, 2, 3</li>
+<li><strong>spacial_resolution</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – Spacial resolution of the image</li>
+<li><strong>temporal_resolution</strong> (<em>float</em>) – Temporal resolution of the image</li>
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em>, </em><em>dtype: float</em>) – The scanner reference</li>
 </ul>
 </td>
 </tr>
@@ -491,7 +625,7 @@ MR-signal on scan level.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -511,7 +645,7 @@ MR-signal on scan level.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slice_time</strong> (<em>ndarray of float</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em></em><em>) or </em><em></em><em>(</em><em>n</em><em>,</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>)</em><em></em>) &#8211; The time vector indicating the point in time at which a
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>slice_time</strong> (<em>ndarray of float</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>) or </em><em>(</em><em>n</em><em>,</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>)</em>) – The time vector indicating the point in time at which a
 given slice of the acquisition grid has been measured.  If
 slice_time has shape (n,), all slices of a scan cycle are
 assumed to have been measured during the same time.</td>
@@ -533,7 +667,11 @@ irritation design (a.k.a paradigm).</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reset_reference_space</strong> (<em>bool</em><em>, </em><em>default True</em>) &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – </li>
+<li><strong>irritation</strong> (<em>Irritation</em>) – </li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -543,19 +681,19 @@ irritation design (a.k.a paradigm).</p>
 <div class="section" id="module-fmristats.reference">
 <span id="the-reference-maps"></span><h2>The Reference Maps<a class="headerlink" href="#module-fmristats.reference" title="Permalink to this headline">¶</a></h2>
 <p>The reference maps which map from a subject specific reference space to
-the location and orientation of the subject&#8217;s brain in the scanner
+the location and orientation of the subject’s brain in the scanner
 during the course of a FMRI session at a given time.</p>
 <dl class="class">
 <dt id="fmristats.reference.ReferenceMaps">
 <em class="property">class </em><code class="descclassname">fmristats.reference.</code><code class="descname">ReferenceMaps</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.reference.ReferenceMaps" title="Permalink to this definition">¶</a></dt>
 <dd><p>The reference maps which map from a subject specific reference space
-to the location and orientation of the subject&#8217;s brain in the
+to the location and orientation of the subject’s brain in the
 scanner during the course of a FMRI session at a given time.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>Identifier</em>) &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<em>Identifier</em>) – </td>
 </tr>
 </tbody>
 </table>
@@ -579,7 +717,7 @@ scanner during the course of a FMRI session at a given time.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sgnf</strong> (<em>float</em>) &#8211; Significance level at which a test for the existence of a
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>sgnf</strong> (<em>float</em>) – Significance level at which a test for the existence of a
 outlier is tested.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">True if the particular full scan cycle is considered an outlier.</td>
@@ -595,7 +733,7 @@ outlier is tested.</td>
 significantly from all other volumes, as these likely are the
 result of severe head movement during this particular
 measurement period.</p>
-<p>Grubbs&#8217; test is used recursively for the outlier detection. The
+<p>Grubbs’ test is used recursively for the outlier detection. The
 norm of all three semi axis length and each single semi axis
 length is tested for outlier separately.</p>
 <p>It should simply give you an idea on how severe head movements
@@ -614,8 +752,8 @@ position and bearing of the head.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) &#8211; </li>
-<li><strong>use_raw</strong> (<em>bool</em>) &#8211; </li>
+<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – </li>
+<li><strong>use_raw</strong> (<em>bool</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -628,32 +766,37 @@ tracking.</p>
 
 <dl class="method">
 <dt id="fmristats.reference.ReferenceMaps.reset_reference_space">
-<code class="descname">reset_reference_space</code><span class="sig-paren">(</span><em>x=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.reference.ReferenceMaps.reset_reference_space" title="Permalink to this definition">¶</a></dt>
-<dd><p>This will reset the reference space</p>
+<code class="descname">reset_reference_space</code><span class="sig-paren">(</span><em>x=None</em>, <em>cycle=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.reference.ReferenceMaps.reset_reference_space" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will reset the coordinates system of the reference space</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>None</em><em> or </em><a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; an affine transformation or None (default)</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>None</em><em> or </em><a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em>, </em><em>dtype: float</em>) – an affine transformation or None (default)</li>
+<li><strong>cycle</strong> (<em>int</em>) – index of a scan cycle or None</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>This will reset the reference space by moving origin and base
-vectors to the new position specified by the affine
-transformation x.  The affine transformation goes <strong>from this</strong>
-reference space <strong>to the new</strong> reference. If the affine
-transformation has the form Ax+b, then b is the new origin and A
-defines the new orienation.</p>
+<p>This will reset the coordinates system of the reference space by
+moving origin and base vectors to the new position specified by
+the affine transformation x.  The affine transformation goes
+<strong>from this</strong> reference space <strong>to the new</strong> reference. If the
+affine transformation has the form Ax+b, then b is the new
+origin and A defines the new orientation.</p>
 <p>If x=None, then x will be set to the mean of the scan
 references.</p>
-<p>As scan references <span class="math">\(ρ_t\)</span> go from scanner space to
-reference space, the new scan reference are</p>
-<div class="math">
-\[ρ_t ∘ x^{-1}\]</div>
-<p>A warning: this makes all population maps which have been
-defined for this session obsolete. You should run this
-function before setting any population maps!</p>
+<p>Scan references are the maps <span class="math notranslate nohighlight">\(ρ_t\)</span> which go from scanner
+space to reference space. If the new reference space is
+<span class="math notranslate nohighlight">\(R':=x[R]\)</span>, then the new scan references are</p>
+<div class="math notranslate nohighlight">
+\[ρ'_t = x ∘ ρ_t\]</div>
+<p><strong>Warning</strong>: this makes all population maps which have been
+defined for this reference space obsolete. You should thus
+perform this operation prior to fitting any population maps.</p>
 </dd></dl>
 
 <dl class="method">
@@ -665,7 +808,7 @@ function before setting any population maps!</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -681,7 +824,7 @@ calculates the corresponding observation grid of to this space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scan_references</strong> (<a class="reference internal" href="#fmristats.affines.Affines" title="fmristats.affines.Affines"><em>Affines</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The rigid body transformations.  Affine transformations that
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>scan_references</strong> (<a class="reference internal" href="#fmristats.affines.Affines" title="fmristats.affines.Affines"><em>Affines</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>4</em><em>,</em><em>4</em><em>)</em><em>, </em><em>dtype: float</em>) – The rigid body transformations.  Affine transformations that
 map coordinates, given with respect to the rigid body, to
 the coordinates of these points in (physical) scanner space
 at the time of the respected scan.</td>
@@ -693,14 +836,15 @@ at the time of the respected scan.</td>
 their respected inverses.  In fact, the reference space is
 solely defined through these affine transformations.  A scan
 reference is a rigid body transformation that maps a point in
-the reference space <cite>R</cite> of a rigid body to the position of this
-point in the scanner <cite>V</cite> during the respected scan, in signs:</p>
-<p>:math:` R       o V`</p>
-<p>Note that the map goes from <em>reference</em> to <em>specific</em>, or from
-<em>the</em> scan to <em>some</em> scan, or from <em>fixed</em> to <em>moving</em>.</p>
+the reference space <span class="math notranslate nohighlight">\(R\)</span> to the coordinates of this point
+in in scanner space <span class="math notranslate nohighlight">\(V\)</span> during the respected scan, in
+signs:</p>
+<p><span class="math notranslate nohighlight">\(ρ_t: R   o V\)</span></p>
+<p>Note that the map goes from <em>reference</em> to <em>specific</em> (from
+<em>the</em> scan to <em>some</em> scan or from <em>fixed</em> to <em>moving</em>).</p>
 <p>The reference space is typically set by a function that fits
 head movements to observed intensities at a fixed (say, scanner
-specific) grid, e.g., <cite>fit_head_movements</cite>.</p>
+specific) grid, e.g., <cite>fit</cite>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -712,7 +856,7 @@ specific) grid, e.g., <cite>fit_head_movements</cite>.</p>
 subject reference space of a FMRI session.</p>
 <dl class="class">
 <dt id="fmristats.pmap.PopulationMap">
-<em class="property">class </em><code class="descclassname">fmristats.pmap.</code><code class="descname">PopulationMap</code><span class="sig-paren">(</span><em>diffeomorphism</em>, <em>template=None</em>, <em>template_mask=None</em>, <em>target=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.pmap.</code><code class="descname">PopulationMap</code><span class="sig-paren">(</span><em>diffeomorphism</em>, <em>vb=None</em>, <em>nb=None</em>, <em>vb_background=None</em>, <em>nb_background=None</em>, <em>vb_estimate=None</em>, <em>nb_estimate=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>A population map is a diffeomorphism from a population space to the
 reference space of a FMRI session.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -720,29 +864,39 @@ reference space of a FMRI session.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>diffeomorphism</strong> (<em>subclass of Diffeomorphism</em>) &#8211; The diffeomorphism ψ that maps from each point in the data field
-of the template brain to the subject reference space of an FMRI
-session.</li>
-<li><strong>template</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) &#8211; A template image in population space.</li>
-<li><strong>template_mask</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) &#8211; A template mask image in population space. By default the
-template mask image will be used in many operations. The idea:
-You provide a detailed image, say also containing skull, in
-template but only the brain as in the template mask image.</li>
-<li><strong>target</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) &#8211; A target image in population space.</li>
+<li><strong>diffeomorphism</strong> (<em>subclass of Diffeomorphism</em>) – The diffeomorphism ψ that maps from vb (the population space) to
+nb (the subject space).</li>
+<li><strong>vb</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in population space.</li>
+<li><strong>nb</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
+<li><strong>vb_background</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in population space.</li>
+<li><strong>nb_background</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
+<li><strong>vb_estimate</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in population space.</li>
+<li><strong>nb_estimate</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>If template is an Image, it will be checked whether its reference
-agrees with the reference of the diffeomorphism.  If template is an
-ndarray, it must be equal to the shape stored with the
-diffeomorphism, as it will then be assumed that they share the same
-reference: the template&#8217;s reference will be set identical to the
-reference of the diffeomorphism.</p>
+<p>If vb (or any of the other arguments) is an Image, it will be
+checked whether its <em>reference affine</em> agrees with the reference
+affine of the diffeomorphism ψ.  If vb is an ndarray, its shape must
+be equal to the shape of the diffeomorphism, as it will then be
+assumed that they share the same reference affine: the vb’s
+reference will be set identical to the reference of the
+diffeomorphism.</p>
 <p>If the software which has been used to fit the diffeomorphism
-creates a warped image of its input, it may be stored in <cite>target</cite>.</p>
+creates a warped images of its inputs, they can be stored in
+<cite>vb_estimate</cite> and <cite>nb_estimate</cite> respectively.</p>
+<p>Naming convetions for images in <cite>vb</cite> and <cite>nb</cite> seem to be
+non-existant, ranging from <cite>input</cite>, <cite>target</cite>, <cite>template</cite>,
+<cite>reference</cite>, <cite>moving</cite>, <cite>fixed</cite>, and more: Although the induitive
+meaning of what these images shall represent is typically clear from
+teh context, the question which of these images live in <cite>vb</cite> or <cite>nb</cite>
+is not clear and ambigious at best. When fitting a diffeomorphism
+providing the algorithm with the arguments <cite>reference</cite> and <cite>input</cite>
+(FNIRT) or <cite>fixed</cite> and <cite>moving</cite> (ANTS): does the diffeomorphism go
+from <cite>reference</cite> to <cite>input</cite> or vice versa?</p>
 <dl class="method">
 <dt id="fmristats.pmap.PopulationMap.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>file</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.save" title="Permalink to this definition">¶</a></dt>
@@ -751,73 +905,115 @@ creates a warped image of its input, it may be stored in <cite>target</cite>.</p
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; A file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – A file name.</td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
 <dl class="method">
-<dt id="fmristats.pmap.PopulationMap.set_target">
-<code class="descname">set_target</code><span class="sig-paren">(</span><em>target</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_target" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set or reset target image</p>
+<dt id="fmristats.pmap.PopulationMap.set_nb">
+<code class="descname">set_nb</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_nb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the image in nb</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>target</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>)</em><em></em>) &#8211; The data array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>If target is an Image, it will be checked whether its
-reference agrees with the reference of the diffeomorphism.  If
-target is an ndarray, it must be equal to the shape stored
-with the diffeomorphism, as it will then be assumed that they
-share the same reference: the target&#8217;s reference will be set
-identical to the reference of the diffeomorphism.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="fmristats.pmap.PopulationMap.set_template">
-<code class="descname">set_template</code><span class="sig-paren">(</span><em>template</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_template" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set or reset template image</p>
+<dt id="fmristats.pmap.PopulationMap.set_nb_background">
+<code class="descname">set_nb_background</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_nb_background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the background image in nb</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>template</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) &#8211; The data array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>If template is an Image, it will be checked whether its
-reference agrees with the reference of the diffeomorphism.  If
-template is an ndarray, it must be equal to the shape stored
-with the diffeomorphism, as it will then be assumed that they
-share the same reference: the template&#8217;s reference will be set
-identical to the reference of the diffeomorphism.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="fmristats.pmap.PopulationMap.set_template_mask">
-<code class="descname">set_template_mask</code><span class="sig-paren">(</span><em>template_mask</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_template_mask" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set or reset template mask image</p>
+<dt id="fmristats.pmap.PopulationMap.set_nb_estimate">
+<code class="descname">set_nb_estimate</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_nb_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the estimate of the image in nb</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>template_mask</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) &#8211; The data array.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_vb">
+<code class="descname">set_vb</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the image in vb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>If template_mask is an Image, it will be checked whether its
-reference agrees with the reference of the diffeomorphism.  If
-template_mask is an ndarray, it must be equal to the shape
-stored with the diffeomorphism, as it will then be assumed that
-they share the same reference: the template_mask&#8217;s reference
-will be set identical to the reference of the diffeomorphism.</p>
+<p>If image is an Image, it will be checked whether its reference
+agrees with the reference of the diffeomorphism.  If image is an
+ndarray, it must be equal to the shape stored with the
+diffeomorphism, as it will then be assumed that they share the
+same reference: the image’s reference will be set identical to
+the reference of the diffeomorphism.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_vb_background">
+<code class="descname">set_vb_background</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb_background" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the background image in vb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If image is an Image, it will be checked whether its reference
+agrees with the reference of the diffeomorphism.  If image is an
+ndarray, it must be equal to the shape stored with the
+diffeomorphism, as it will then be assumed that they share the
+same reference: the image’s reference will be set identical to
+the reference of the diffeomorphism.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_vb_estimate">
+<code class="descname">set_vb_estimate</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the estimate for the image in vb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If image is an Image, it will be checked whether its reference
+agrees with the reference of the diffeomorphism.  If image is an
+ndarray, it must be equal to the shape stored with the
+diffeomorphism, as it will then be assumed that they share the
+same reference: the image’s reference will be set identical to
+the reference of the diffeomorphism.</p>
 </dd></dl>
 
 </dd></dl>
@@ -834,8 +1030,8 @@ template grid to given resolution.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) &#8211; A FMRI session</li>
-<li><strong>resolution</strong> (<em>float</em>) &#8211; Resolution in milli meter, default 2.</li>
+<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – A FMRI session</li>
+<li><strong>resolution</strong> (<em>float</em>) – Resolution in milli meter, default 2.</li>
 </ul>
 </td>
 </tr>
@@ -844,34 +1040,37 @@ template grid to given resolution.</p>
 <p class="rubric">Notes</p>
 <p>When only studying a single subject, it makes perfect sense to
 set the population space equal to an isometric image of the
-subject&#8217;s head, i.e. to a population space which preserves distances
+subject’s head, i.e. to a population space which preserves distances
 with respect to the subject.</p>
 <p>In other words, for a single subject, the population space can be
-set equal to the subject reference space <span class="math">\(R\)</span> or to
-<span class="math">\(ρ_s[R]\)</span> for some scan reference <span class="math">\(ρ_s\)</span>. This function
+set equal to the subject reference space <span class="math notranslate nohighlight">\(R\)</span> or to
+<span class="math notranslate nohighlight">\(ρ_s[R]\)</span> for some scan reference <span class="math notranslate nohighlight">\(ρ_s\)</span>. This function
 will do the former and sets the resolution to the given value.</p>
 <p>It only makes sense, though, to set the population space equal to
-the coordinate system of the FMRI session, if this space is indeed
-<em>close</em> to the subject reference space of the FMRI session This may
-be archived by calling the <code class="xref py py-func docutils literal"><span class="pre">reset_reference_space()</span></code> attribute
-of the session first. .</p>
+the coordinate system of the FMRI session, if this space is <em>close</em>
+to the subject reference space of the FMRI session. This may be
+archived by calling <code class="xref py py-func docutils literal notranslate"><span class="pre">reset_reference_space()</span></code> of
+the reference maps. This will have the effect that the population
+space is then equal to the mean location of the subject in the
+scanner.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#fmristats.pmap.pmap_scanner" title="fmristats.pmap.pmap_scanner"><code class="xref py py-func docutils literal"><span class="pre">pmap_scanner()</span></code></a>, <a class="reference internal" href="#fmristats.pmap.pmap_scan" title="fmristats.pmap.pmap_scan"><code class="xref py py-func docutils literal"><span class="pre">pmap_scan()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#fmristats.pmap.pmap_scanner" title="fmristats.pmap.pmap_scanner"><code class="xref py py-func docutils literal notranslate"><span class="pre">pmap_scanner()</span></code></a>, <a class="reference internal" href="#fmristats.pmap.pmap_scan" title="fmristats.pmap.pmap_scan"><code class="xref py py-func docutils literal notranslate"><span class="pre">pmap_scan()</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="function">
 <dt id="fmristats.pmap.pmap_scan">
-<code class="descclassname">fmristats.pmap.</code><code class="descname">pmap_scan</code><span class="sig-paren">(</span><em>session</em>, <em>scan_cycle</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.pmap_scan" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">fmristats.pmap.</code><code class="descname">pmap_scan</code><span class="sig-paren">(</span><em>session</em>, <em>reference_maps</em>, <em>scan_cycle</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.pmap_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Pick a scan reference as the population map</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) &#8211; Session instance</li>
-<li><strong>scan_cycle</strong> (<em>int</em>) &#8211; Reference scan cycle.</li>
+<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – Session instance</li>
+<li><strong>reference_maps</strong> (<a class="reference internal" href="#fmristats.reference.ReferenceMaps" title="fmristats.reference.ReferenceMaps"><em>ReferenceMaps</em></a>) – Reference Maps</li>
+<li><strong>scan_cycle</strong> (<em>int</em>) – Reference scan cycle.</li>
 </ul>
 </td>
 </tr>
@@ -880,18 +1079,18 @@ of the session first. .</p>
 <p class="rubric">Notes</p>
 <p>When only studying a single subject, it makes perfect sense to
 set the population space equal to an isometric image of the
-subject&#8217;s head, i.e. to a population space which preserves distances
+subject’s head, i.e. to a population space which preserves distances
 with respect to the subject.</p>
 <p>In other words, for a single subject, the population space can be
-set equal to the subject reference space <span class="math">\(R\)</span> or to
-<span class="math">\(ρ_s[R]\)</span> for some scan reference <span class="math">\(ρ_s\)</span>. This function
+set equal to the subject reference space <span class="math notranslate nohighlight">\(R\)</span> or to
+<span class="math notranslate nohighlight">\(ρ_s[R]\)</span> for some scan reference <span class="math notranslate nohighlight">\(ρ_s\)</span>. This function
 will do the latter for the given scan, and sets the resolution of
 the template equal to the resolution of the acquisition grid. (When
 fitting on this grid, the signal model is estimated in <em>native</em>
 resolution).</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#fmristats.pmap.pmap_reference" title="fmristats.pmap.pmap_reference"><code class="xref py py-func docutils literal"><span class="pre">pmap_reference()</span></code></a>, <a class="reference internal" href="#fmristats.pmap.pmap_scanner" title="fmristats.pmap.pmap_scanner"><code class="xref py py-func docutils literal"><span class="pre">pmap_scanner()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#fmristats.pmap.pmap_reference" title="fmristats.pmap.pmap_reference"><code class="xref py py-func docutils literal notranslate"><span class="pre">pmap_reference()</span></code></a>, <a class="reference internal" href="#fmristats.pmap.pmap_scanner" title="fmristats.pmap.pmap_scanner"><code class="xref py py-func docutils literal notranslate"><span class="pre">pmap_scanner()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -906,26 +1105,28 @@ template grid to native resolution.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) &#8211; A FMRI session</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – A FMRI session</td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
 <p>When only studying a single subject, it makes perfect sense to
 set the population space equal to an isometric image of the
-subject&#8217;s head, i.e. to a population space which preserves distances
+subject’s head, i.e. to a population space which preserves distances
 with respect to the subject.</p>
 <p>In other words, for a single subject, the population space can be
-set equal to the subject reference space <span class="math">\(R\)</span> or to
-<span class="math">\(ρ_s[R]\)</span> for some scan reference <span class="math">\(ρ_s\)</span>. This function
+set equal to the subject reference space <span class="math notranslate nohighlight">\(R\)</span> or to
+<span class="math notranslate nohighlight">\(ρ_s[R]\)</span> for some scan reference <span class="math notranslate nohighlight">\(ρ_s\)</span>. This function
 will do the former and sets the resolution of the template equal to
 the resolution of the acquisition grid. (When fitting on this grid,
 the signal model is estimated in <em>native</em> resolution).</p>
 <p>It only makes sense, though, to set the population space equal to
-the coordinate system of the FMRI session, if this space is indeed
-<em>close</em> to the subject reference space of the FMRI session This may
-be archived by calling the <code class="xref py py-func docutils literal"><span class="pre">reset_reference_space()</span></code> attribute
-of the session first. .</p>
+the coordinate system of the FMRI session, if this space is <em>close</em>
+to the subject reference space of the FMRI session. This may be
+archived by calling <code class="xref py py-func docutils literal notranslate"><span class="pre">reset_reference_space()</span></code> of
+the reference_maps: This will have the effect that the population
+space is then equal to the mean location of the subject in the
+scanner.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
 <p class="last"><cite>pmap_reference</cite>
@@ -940,15 +1141,15 @@ of the session first. .</p>
 transformations.</p>
 <dl class="class">
 <dt id="fmristats.diffeomorphisms.AffineTransformation">
-<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">AffineTransformation</code><span class="sig-paren">(</span><em>reference</em>, <em>affine</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.AffineTransformation" title="Permalink to this definition">¶</a></dt>
-<dd><p>An affine transformation ψ mapping from a population space <span class="math">\(M\)</span>
-to a subject space <span class="math">\(R\)</span>. It is</p>
-<div class="math">
+<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">AffineTransformation</code><span class="sig-paren">(</span><em>reference</em>, <em>affine</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.AffineTransformation" title="Permalink to this definition">¶</a></dt>
+<dd><p>An affine transformation ψ mapping from a population space <span class="math notranslate nohighlight">\(M\)</span>
+to a subject space <span class="math notranslate nohighlight">\(R\)</span>. It is</p>
+<div class="math notranslate nohighlight">
 \[ψ (x) = A⋅x.\]</div>
-<p>for <span class="math">\(x∈M\)</span> and <span class="math">\(A\)</span> an affine transformation.</p>
-<p>A point [i,j,k] in the index space of the template of <span class="math">\(M\)</span> maps
+<p>for <span class="math notranslate nohighlight">\(x∈M\)</span> and <span class="math notranslate nohighlight">\(A\)</span> an affine transformation.</p>
+<p>A point [i,j,k] in the index space of the template of <span class="math notranslate nohighlight">\(M\)</span> maps
 to the coordinates</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ψ(reference[i,j,k]) = A ⋅ reference[i,j,k]\]</div>
 <p>in the subject space.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -956,8 +1157,8 @@ to the coordinates</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation</li>
-<li><strong>affine</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation</li>
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation</li>
+<li><strong>affine</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation</li>
 </ul>
 </td>
 </tr>
@@ -971,7 +1172,43 @@ to the coordinates</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.AffineTransformation.apply_to_index">
+<code class="descname">apply_to_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.AffineTransformation.apply_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the point with given index</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.AffineTransformation.apply_to_indices">
+<code class="descname">apply_to_indices</code><span class="sig-paren">(</span><em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.AffineTransformation.apply_to_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the points with given indices</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of slices or ellipses</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -985,22 +1222,22 @@ to the coordinates</p>
 
 <dl class="class">
 <dt id="fmristats.diffeomorphisms.Diffeomorphism">
-<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Diffeomorphism</code><span class="sig-paren">(</span><em>reference</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Diffeomorphism" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Diffeomorphism</code><span class="sig-paren">(</span><em>reference</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em>, <em>name=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Diffeomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>A diffeomorphism ψ from standard space to subject space</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation</li>
-<li><strong>shape</strong> (<em>tuple</em>) &#8211; Shape of template data in standard space.</li>
-<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the domain (vb) of this
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation</li>
+<li><strong>shape</strong> (<em>tuple</em>) – Shape of template data in standard space.</li>
+<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the domain (vb) of this
 diffeomorphism.</li>
-<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the image (nb) of this
+<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the image (nb) of this
 diffeomorphism.</li>
-<li><strong>metadata</strong> (<em>dict</em>) &#8211; If meta data is provided which give information on which data
+<li><strong>metadata</strong> (<em>dict</em>) – If meta data is provided which give information on which data
 had been used for the fit: which had provided, should be a dict
-with at least the following fields: <code class="docutils literal"><span class="pre">{'vb_file':</span>
+with at least the following fields: <code class="docutils literal notranslate"><span class="pre">{'vb_file':</span>
 <span class="pre">path/which/defined/the/domain,</span> <span class="pre">'nb_file':</span>
 <span class="pre">path/which/defined/the/image,}</span></code>.</li>
 </ul>
@@ -1010,7 +1247,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 </table>
 <p class="rubric">Notes</p>
 <p>A reasonable subclass of Diffeomorphism must define the attributes
-<a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply_to_index" title="fmristats.diffeomorphisms.Diffeomorphism.apply_to_index"><code class="xref py py-func docutils literal"><span class="pre">apply_to_index()</span></code></a>, <a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply_to_indices" title="fmristats.diffeomorphisms.Diffeomorphism.apply_to_indices"><code class="xref py py-func docutils literal"><span class="pre">apply_to_indices()</span></code></a>, and <a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply" title="fmristats.diffeomorphisms.Diffeomorphism.apply"><code class="xref py py-func docutils literal"><span class="pre">apply()</span></code></a>.</p>
+<a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply_to_index" title="fmristats.diffeomorphisms.Diffeomorphism.apply_to_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_to_index()</span></code></a>, <a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply_to_indices" title="fmristats.diffeomorphisms.Diffeomorphism.apply_to_indices"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_to_indices()</span></code></a>, and <a class="reference internal" href="#fmristats.diffeomorphisms.Diffeomorphism.apply" title="fmristats.diffeomorphisms.Diffeomorphism.apply"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply()</span></code></a>.</p>
 <dl class="method">
 <dt id="fmristats.diffeomorphisms.Diffeomorphism.apply">
 <code class="descname">apply</code><span class="sig-paren">(</span><em>coordinates</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Diffeomorphism.apply" title="Permalink to this definition">¶</a></dt>
@@ -1020,7 +1257,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1038,7 +1275,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1056,7 +1293,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of slices or ellipses</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of slices or ellipses</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1106,7 +1343,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; A file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – A file name.</td>
 </tr>
 </tbody>
 </table>
@@ -1116,30 +1353,30 @@ with at least the following fields: <code class="docutils literal"><span class="
 
 <dl class="class">
 <dt id="fmristats.diffeomorphisms.Displacement">
-<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Displacement</code><span class="sig-paren">(</span><em>reference</em>, <em>displacement</em>, <em>vb=None</em>, <em>nb=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Displacement" title="Permalink to this definition">¶</a></dt>
-<dd><p>A diffeomorphism ψ mapping from a population space <span class="math">\(M\)</span> to a
+<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Displacement</code><span class="sig-paren">(</span><em>reference</em>, <em>displacement</em>, <em>vb=None</em>, <em>nb=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Displacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>A diffeomorphism ψ mapping from a population space <span class="math notranslate nohighlight">\(M\)</span> to a
 subject space $R$. Here, it is</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ψ (x) = x + δ(x).\]</div>
-<p>for a displacement field <span class="math">\(δ\)</span>.</p>
-<p>A point [i,j,k] in the index space of the template of <span class="math">\(M\)</span> maps
+<p>for a displacement field <span class="math notranslate nohighlight">\(δ\)</span>.</p>
+<p>A point [i,j,k] in the index space of the template of <span class="math notranslate nohighlight">\(M\)</span> maps
 to the coordinates</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ψ(reference[i,j,k]) = reference[i,j,k] + displacement[i,j,k]\]</div>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation.</li>
-<li><strong>displacement</strong> (<em>ndarray</em><em> (</em><em>?</em><em>,</em><em>?</em><em>,</em><em>?</em><em>,</em><em>3</em><em>)</em><em></em>) &#8211; A displacement field</li>
-<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the domain (vb) of this
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation.</li>
+<li><strong>displacement</strong> (<em>ndarray</em><em> (</em><em>?</em><em>,</em><em>?</em><em>,</em><em>?</em><em>,</em><em>3</em><em>)</em>) – A displacement field</li>
+<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the domain (vb) of this
 diffeomorphism.</li>
-<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the image (nb) of this
+<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the image (nb) of this
 diffeomorphism.</li>
-<li><strong>metadata</strong> (<em>dict</em>) &#8211; If meta data is provided which give information on which data
+<li><strong>metadata</strong> (<em>dict</em>) – If meta data is provided which give information on which data
 had been used for the fit: which had provided, should be a dict
-with at least the following fields: <code class="docutils literal"><span class="pre">{'vb_file':</span>
+with at least the following fields: <code class="docutils literal notranslate"><span class="pre">{'vb_file':</span>
 <span class="pre">path/which/defined/the/domain,</span> <span class="pre">'nb_file':</span>
 <span class="pre">path/which/defined/the/image,}</span></code>.</li>
 </ul>
@@ -1155,7 +1392,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1168,11 +1405,47 @@ with at least the following fields: <code class="docutils literal"><span class="
 potentially slow for large queries.</p>
 </dd></dl>
 
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Displacement.apply_to_index">
+<code class="descname">apply_to_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Displacement.apply_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the point with given index</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Displacement.apply_to_indices">
+<code class="descname">apply_to_indices</code><span class="sig-paren">(</span><em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Displacement.apply_to_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the points with given indices</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of slices or ellipses</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 </dd></dl>
 
 <dl class="class">
 <dt id="fmristats.diffeomorphisms.Identity">
-<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Identity</code><span class="sig-paren">(</span><em>reference</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Identity" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Identity</code><span class="sig-paren">(</span><em>reference</em>, <em>shape</em>, <em>vb=None</em>, <em>nb=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Identity" title="Permalink to this definition">¶</a></dt>
 <dd><p>The identity diffeomorphism ψ.</p>
 <dl class="method">
 <dt id="fmristats.diffeomorphisms.Identity.apply">
@@ -1183,7 +1456,7 @@ potentially slow for large queries.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1201,7 +1474,7 @@ potentially slow for large queries.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1219,7 +1492,7 @@ potentially slow for large queries.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of slices or ellipses.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of slices or ellipses.</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1240,10 +1513,10 @@ potentially slow for large queries.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation that maps indices in the data
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation that maps indices in the data
 array to coordinates in Euclidean space.</li>
-<li><strong>data</strong> (<em>np.ndarray</em>) &#8211; The data array.</li>
-<li><strong>name</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An identifier or name for this image.</li>
+<li><strong>data</strong> (<em>np.ndarray</em>) – The data array.</li>
+<li><strong>name</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An identifier or name for this image.</li>
 </ul>
 </td>
 </tr>
@@ -1273,7 +1546,7 @@ array to coordinates in Euclidean space.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epi_code</strong> (<em>int</em>) &#8211; </td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>epi_code</strong> (<em>int</em>) – </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1305,13 +1578,13 @@ EPI code, and stack the slices into a xpic x ypic matrix</p>
 
 <dl class="method">
 <dt id="fmristats.diffeomorphisms.Image.mask">
-<code class="descname">mask</code><span class="sig-paren">(</span><em>mask</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.mask" title="Permalink to this definition">¶</a></dt>
+<code class="descname">mask</code><span class="sig-paren">(</span><em>mask=None</em>, <em>inplace=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mask the data array by mask</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mask</strong> (<em>ndarray</em><em>, </em><em>dtype</em><em>(</em><em>bool</em><em>)</em><em></em>) &#8211; An array of bool indicating the foreground</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>mask</strong> (<em>ndarray</em><em>, </em><em>dtype</em><em>(</em><em>bool</em><em>)</em>) – An array of bool indicating the foreground</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The same image but with data set to nan outside the mask</td>
 </tr>
@@ -1327,8 +1600,8 @@ EPI code, and stack the slices into a xpic x ypic matrix</p>
 <dd><p>Calculates the mean signal in the image</p>
 <p class="rubric">Notes</p>
 <p>Values of 0 or nan will not contribute to the mean signal.  If
-your image <code class="docutils literal"><span class="pre">img</span></code> contains 0 values, then <code class="docutils literal"><span class="pre">im.data.mean()</span></code>
-and <code class="docutils literal"><span class="pre">im.mean()</span></code> will differ and this is intended.</p>
+your image <code class="docutils literal notranslate"><span class="pre">img</span></code> contains 0 values, then <code class="docutils literal notranslate"><span class="pre">im.data.mean()</span></code>
+and <code class="docutils literal notranslate"><span class="pre">im.mean()</span></code> will differ and this is intended.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1365,7 +1638,7 @@ and <code class="docutils literal"><span class="pre">im.mean()</span></code> wil
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; A file name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – A file name.</td>
 </tr>
 </tbody>
 </table>
@@ -1391,15 +1664,15 @@ and <code class="docutils literal"><span class="pre">im.mean()</span></code> wil
 
 <dl class="class">
 <dt id="fmristats.diffeomorphisms.Warp">
-<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Warp</code><span class="sig-paren">(</span><em>reference</em>, <em>warp</em>, <em>vb=None</em>, <em>nb=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Warp" title="Permalink to this definition">¶</a></dt>
-<dd><p>A diffeomorphism ψ mapping from a population space <span class="math">\(M\)</span> to a
+<em class="property">class </em><code class="descclassname">fmristats.diffeomorphisms.</code><code class="descname">Warp</code><span class="sig-paren">(</span><em>reference</em>, <em>warp</em>, <em>vb=None</em>, <em>nb=None</em>, <em>name=None</em>, <em>metadata=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Warp" title="Permalink to this definition">¶</a></dt>
+<dd><p>A diffeomorphism ψ mapping from a population space <span class="math notranslate nohighlight">\(M\)</span> to a
 subject space $R$. Here, it is</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ψ (x) = δ(x).\]</div>
-<p>for a warp field <span class="math">\(δ\)</span>.</p>
-<p>A point [i,j,k] in the index space of the template of <span class="math">\(M\)</span> maps
+<p>for a warp field <span class="math notranslate nohighlight">\(δ\)</span>.</p>
+<p>A point [i,j,k] in the index space of the template of <span class="math notranslate nohighlight">\(M\)</span> maps
 to the coordinates</p>
-<div class="math">
+<div class="math notranslate nohighlight">
 \[ψ(reference[i,j,k]) = warp[i,j,k]\]</div>
 <p>An example: The FSL FNIRT warp coefficients file is saved as a Warp
 instance.</p>
@@ -1408,15 +1681,15 @@ instance.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em><em></em>) &#8211; An affine transformation</li>
-<li><strong>warp</strong> (<em>ndarray</em><em> (</em><em>..</em><em>,</em><em>3</em><em>)</em><em></em>) &#8211; A warp field</li>
-<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the domain (vb) of this
+<li><strong>reference</strong> (<a class="reference internal" href="#fmristats.affines.Affine" title="fmristats.affines.Affine"><em>Affine</em></a><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>4</em><em>,</em><em>4</em><em>)</em>) – An affine transformation</li>
+<li><strong>warp</strong> (<em>ndarray</em><em> (</em><em>..</em><em>,</em><em>3</em><em>)</em>) – A warp field</li>
+<li><strong>vb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the domain (vb) of this
 diffeomorphism.</li>
-<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) &#8211; An object that will be used to identify the image (nb) of this
+<li><strong>nb</strong> (<em>str</em><em> or </em><em>Identifier</em>) – An object that will be used to identify the image (nb) of this
 diffeomorphism.</li>
-<li><strong>metadata</strong> (<em>dict</em>) &#8211; If meta data is provided which give information on which data
+<li><strong>metadata</strong> (<em>dict</em>) – If meta data is provided which give information on which data
 had been used for the fit: which had provided, should be a dict
-with at least the following fields: <code class="docutils literal"><span class="pre">{'vb_file':</span>
+with at least the following fields: <code class="docutils literal notranslate"><span class="pre">{'vb_file':</span>
 <span class="pre">path/which/defined/the/domain,</span> <span class="pre">'nb_file':</span>
 <span class="pre">path/which/defined/the/image,}</span></code>.</li>
 </ul>
@@ -1432,7 +1705,7 @@ with at least the following fields: <code class="docutils literal"><span class="
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; Should be a tuple of integers</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
 </tr>
@@ -1443,6 +1716,42 @@ with at least the following fields: <code class="docutils literal"><span class="
 <p class="rubric">Notes</p>
 <p>There are interpolations at place here, which makes this
 potentially slow for large queries.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Warp.apply_to_index">
+<code class="descname">apply_to_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Warp.apply_to_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the point with given index</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of integers</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Warp.apply_to_indices">
+<code class="descname">apply_to_indices</code><span class="sig-paren">(</span><em>indices</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Warp.apply_to_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply diffeomorphism to the points with given indices</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – Should be a tuple of slices or ellipses</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">ndarray</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -1463,12 +1772,12 @@ class.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>name</strong> (<em>Identifier</em>) &#8211; An identifier</li>
-<li><strong>population_map</strong> (<a class="reference internal" href="#fmristats.pmap.PopulationMap" title="fmristats.pmap.PopulationMap"><em>PopulationMap</em></a>) &#8211; </li>
-<li><strong>field</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The effect field, i.e., result of fitting the RSM model.</li>
-<li><strong>coordinates</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; </li>
-<li><strong>hyperparameters</strong> (<em>dict</em>) &#8211; </li>
-<li><strong>parameters</strong> (<em>dict {str: int}</em>) &#8211; The names of the parameters which have been fitted by the
+<li><strong>name</strong> (<em>Identifier</em>) – An identifier</li>
+<li><strong>population_map</strong> (<a class="reference internal" href="#fmristats.pmap.PopulationMap" title="fmristats.pmap.PopulationMap"><em>PopulationMap</em></a>) – </li>
+<li><strong>field</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – The effect field, i.e., result of fitting the DOM model.</li>
+<li><strong>coordinates</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – </li>
+<li><strong>hyperparameters</strong> (<em>dict</em>) – </li>
+<li><strong>parameters</strong> (<em>dict {str: int}</em>) – The names of the parameters which have been fitted by the
 signal model in the order of appearance in the model.</li>
 </ul>
 </td>
@@ -1477,17 +1786,17 @@ signal model in the order of appearance in the model.</li>
 </table>
 <dl class="method">
 <dt id="fmristats.smodel.Result.get_field">
-<code class="descname">get_field</code><span class="sig-paren">(</span><em>param</em>, <em>value='other'</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.Result.get_field" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_field</code><span class="sig-paren">(</span><em>param</em>, <em>value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.Result.get_field" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extract scalar field</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>param</strong> (<em>str</em>) &#8211; Check the attribute parameter_dict for possible values of
+<li><strong>param</strong> (<em>str</em>) – Check the attribute parameter_dict for possible values of
 <cite>param</cite>.</li>
-<li><strong>value</strong> (<em>str</em>) &#8211; Check the attribute value_dict for possible values of
-<cite>value</cite>. Note that &#8216;tstatistic&#8217; is also valid and will be
+<li><strong>value</strong> (<em>str</em>) – Check the attribute value_dict for possible values of
+<cite>value</cite>. Note that ‘tstatistic’ is also valid and will be
 calculated from the key point and stderr.</li>
 </ul>
 </td>
@@ -1522,7 +1831,7 @@ combine other with mse (an estimate of sigma-squared) or df
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -1539,9 +1848,9 @@ combine other with mse (an estimate of sigma-squared) or df
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) &#8211; A session (with fitted foreground).</li>
-<li><strong>reference_maps</strong> (<a class="reference internal" href="#fmristats.reference.ReferenceMaps" title="fmristats.reference.ReferenceMaps"><em>ReferenceMaps</em></a>) &#8211; The estimated reference maps.</li>
-<li><strong>population_map</strong> (<a class="reference internal" href="#fmristats.pmap.PopulationMap" title="fmristats.pmap.PopulationMap"><em>PopulationMap</em></a>) &#8211; A population map</li>
+<li><strong>session</strong> (<a class="reference internal" href="#fmristats.session.Session" title="fmristats.session.Session"><em>Session</em></a>) – A session (with fitted foreground).</li>
+<li><strong>reference_maps</strong> (<a class="reference internal" href="#fmristats.reference.ReferenceMaps" title="fmristats.reference.ReferenceMaps"><em>ReferenceMaps</em></a>) – The estimated reference maps.</li>
+<li><strong>population_map</strong> (<a class="reference internal" href="#fmristats.pmap.PopulationMap" title="fmristats.pmap.PopulationMap"><em>PopulationMap</em></a>) – A population map</li>
 </ul>
 </td>
 </tr>
@@ -1567,7 +1876,7 @@ which MR signals have been aquired.</p>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.create_data_matrix">
-<code class="descname">create_data_matrix</code><span class="sig-paren">(</span><em>burn_in=None</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.create_data_matrix" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_data_matrix</code><span class="sig-paren">(</span><em>burn_in=None</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.create_data_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the data matrix</p>
 <p>This is the essentially the same matrix as returned by
 .observations(). However, scan cycles with no subject
@@ -1577,11 +1886,11 @@ to its mean.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ndarray, shape (n&#8217;,x,y,z,6), dtype</strong> &#8211; [...,:3] = coordinates of observation
-[..., 3] = MR signal response
-[..., 4] = time of observation
-[..., 5] = task during time of observation
-[..., 6] = block number during time of observation</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ndarray, shape (n’,x,y,z,6), dtype</strong> – […,:3] = coordinates of observation
+[…, 3] = MR signal response
+[…, 4] = time of observation
+[…, 5] = task during time of observation
+[…, 6] = block number during time of observation</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
@@ -1613,8 +1922,11 @@ to its mean.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) &#8211; string can be one of &#8216;template&#8217;, &#8216;template_mask&#8217;, or &#8216;target&#8217;</li>
-<li><strong>verbose</strong> (<em>bool</em>) &#8211; increase output verbosity</li>
+<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) – string can be one of ‘vb’, ‘vb_background’,
+‘foreground’, or ‘vb_estimate’. None defaults to ‘data’. True will
+take precedence: ‘vb’&gt; ‘vb_background’&gt; ‘vb_estimate’ &gt;
+‘foreground’.</li>
+<li><strong>verbose</strong> (<em>bool</em>) – increase output verbosity</li>
 </ul>
 </td>
 </tr>
@@ -1638,7 +1950,7 @@ space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The coordinates at which to fit the model</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
 </tr>
 </tbody>
 </table>
@@ -1654,7 +1966,7 @@ space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The coordinates at which to fit the model</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
 </tr>
 </tbody>
 </table>
@@ -1669,8 +1981,8 @@ space.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) &#8211; string can be one of &#8216;template&#8217;, &#8216;template_mask&#8217;, or &#8216;target&#8217;</li>
-<li><strong>verbose</strong> (<em>bool</em>) &#8211; increase output verbosity</li>
+<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) – string can be one of ‘template’, ‘template_mask’, or ‘target’</li>
+<li><strong>verbose</strong> (<em>bool</em>) – increase output verbosity</li>
 </ul>
 </td>
 </tr>
@@ -1693,8 +2005,8 @@ space.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>coordinates</strong> (<em>None</em><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The coordinates at which to fit the model</li>
-<li><strong>verbose</strong> (<em>bool</em>) &#8211; increase output verbosity</li>
+<li><strong>coordinates</strong> (<em>None</em><em> or </em><em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</li>
+<li><strong>verbose</strong> (<em>bool</em>) – increase output verbosity</li>
 </ul>
 </td>
 </tr>
@@ -1737,7 +2049,7 @@ with respect to the coordinate system of the population space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The coordinates at which to fit the model</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
 </tr>
 </tbody>
 </table>
@@ -1751,7 +2063,7 @@ with respect to the coordinate system of the population space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) &#8211; The index at which to fit the model</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – The index at which to fit the model</td>
 </tr>
 </tbody>
 </table>
@@ -1767,7 +2079,7 @@ space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em></em><em>)</em><em></em><em>, </em><em>dtype: float</em>) &#8211; The coordinates at which to fit the model</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
 </tr>
 </tbody>
 </table>
@@ -1775,19 +2087,19 @@ space.</p>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.observations">
-<code class="descname">observations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.observations" title="Permalink to this definition">¶</a></dt>
+<code class="descname">observations</code><span class="sig-paren">(</span><em>include_background=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.observations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create observation matrix</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ndarray, shape (n,x,y,z,6), dtype</strong> &#8211; [...,:3] = coordinates of observation
-[..., 3] = MR signal response
-[..., 4] = time of observation
-[..., 5] = task during time of observation
-[..., 6] = block number during time of observation
-[..., 7] = scan cycle
-[..., 8] = slice number</td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ndarray, shape (n,x,y,z,6), dtype</strong> – […,:3] = coordinates of observation
+[…, 3] = MR signal response
+[…, 4] = time of observation
+[…, 5] = task during time of observation
+[…, 6] = block number during time of observation
+[…, 7] = scan cycle
+[…, 8] = slice number</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
 </tr>
@@ -1804,7 +2116,7 @@ space.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -1822,10 +2134,10 @@ Hyperparameters.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>scale_type</strong> (<em>str</em>) &#8211; One of min, max (default), diagonal</li>
-<li><strong>scale</strong> (<em>float</em>) &#8211; Standard deviation of the Gaussian used to weight
+<li><strong>scale_type</strong> (<em>str</em>) – One of min, max (default), diagonal</li>
+<li><strong>scale</strong> (<em>float</em>) – Standard deviation of the Gaussian used to weight
 observations with respect to distance to point.</li>
-<li><strong>mass</strong> (<em>float</em><em> (</em><em>optional</em><em>)</em><em></em>) &#8211; </li>
+<li><strong>mass</strong> (<em>float</em><em> (</em><em>optional</em><em>)</em>) – </li>
 </ul>
 </td>
 </tr>
@@ -1846,7 +2158,7 @@ setting the mass, you know what you are doing.</p>
 <p>Sample</p>
 <dl class="class">
 <dt id="fmristats.sample.Sample">
-<em class="property">class </em><code class="descclassname">fmristats.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>population_space</em>, <em>covariates</em>, <em>statistics</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.sample.Sample" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.sample.</code><code class="descname">Sample</code><span class="sig-paren">(</span><em>vb</em>, <em>vb_background</em>, <em>vb_ati</em>, <em>covariates</em>, <em>statistics</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.sample.Sample" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sampled activation fields of a FMRI study</p>
 <dl class="method">
 <dt id="fmristats.sample.Sample.filter">
@@ -1866,7 +2178,7 @@ indices instead.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -1887,17 +2199,17 @@ indices instead.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>sample</strong> (<a class="reference internal" href="#fmristats.sample.Sample" title="fmristats.sample.Sample"><em>Sample</em></a>) &#8211; </li>
-<li><strong>formula_like</strong> (<em>str</em>) &#8211; A formula like object that is understood by patsy.</li>
-<li><strong>exog</strong> (<em>ndarray</em>) &#8211; If None, will be created from formula_like
+<li><strong>sample</strong> (<a class="reference internal" href="#fmristats.sample.Sample" title="fmristats.sample.Sample"><em>Sample</em></a>) – </li>
+<li><strong>formula_like</strong> (<em>str</em>) – A formula like object that is understood by patsy.</li>
+<li><strong>exog</strong> (<em>ndarray</em>) – If None, will be created from formula_like
 Directly specifying a design matrix, i.e., providing exog
-will take presendence from the formula interface.</li>
-<li><strong>mask</strong> (<em>None</em><em>, </em><em>bool</em><em>, </em><em>ndarray</em><em>, or </em><em>str</em>) &#8211; If False or None, the population model will be fitted only
+will take precedence from the formula interface.</li>
+<li><strong>mask</strong> (<em>None</em><em>, </em><em>bool</em><em>, </em><em>ndarray</em><em>, or </em><em>str</em>) – If False or None, the population model will be fitted only
 at points, at which the population model is identifiable.
-If True or &#8216;template&#8217;, the population model will,
+If True or ‘template’, the population model will,
 additionally, only be fitted at points, at which the
 template in the population has valid intensities (i.e. &gt; 0
-and not NAN). If &#8216;sample&#8217;, the population model will be
+and not NAN). If ‘sample’, the population model will be
 fitted only at points at which the sample provides valid
 summary statistics for <em>all</em> fields in the sample.</li>
 </ul>
@@ -1920,7 +2232,7 @@ summary statistics for <em>all</em> fields in the sample.</li>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) &#8211; File name.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
 </tr>
 </tbody>
 </table>
@@ -1932,68 +2244,67 @@ summary statistics for <em>all</em> fields in the sample.</li>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="cli.html" class="btn btn-neutral" title="Estimating the signal model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Modules</a><ul>
-<li><a class="reference internal" href="#module-fmristats.affines">Affine transformations</a></li>
-<li><a class="reference internal" href="#module-fmristats.session">The FMRI Session</a></li>
-<li><a class="reference internal" href="#module-fmristats.reference">The Reference Maps</a></li>
-<li><a class="reference internal" href="#module-fmristats.pmap">The Population Space</a></li>
-<li><a class="reference internal" href="#module-fmristats.diffeomorphisms">The Population Map</a></li>
-<li><a class="reference internal" href="#module-fmristats.smodel">The FMRI Signal Model</a></li>
-<li><a class="reference internal" href="#module-fmristats.sample">The Sample</a></li>
-<li><a class="reference internal" href="#module-fmristats.pmodel">The FMRI Population Model</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="cli.html" title="previous chapter">Estimating the signal model</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/modules.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Thomas W. D. Möbius.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/modules.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.3',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

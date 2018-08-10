@@ -1,106 +1,274 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Complete, transparent, and data-oriented fitting of FMRI models &mdash; fmristats 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>Rigorous statistical estimation of FMRI models &#8212; fmristats 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Very quick start" href="tutorials/very-quick-start.html" />
+    <link rel="next" title="Getting to know fmristats" href="tutorials/very-quick-start.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="#" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="rigorous-statistical-estimation-of-fmri-models">
-<h1>Rigorous statistical estimation of FMRI models<a class="headerlink" href="#rigorous-statistical-estimation-of-fmri-models" title="Permalink to this headline">¶</a></h1>
-<p>Most current approaches to the statistical analysis of functional
-magnetic resonance imaging (FMRI) data involve varieties of
-preprocessing steps which alter the signal to noise ratio of the
-original data.</p>
-<p>Enhancing the SNR prior to a formal analysis, though, shakes at primary
-principles of statistical decision making and it will generally inflate
-the type I error of the analysis.</p>
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/very-quick-start.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference (set-up)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference (explorative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Estimating the signal model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#estimating-the-population-model">Estimating the population model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#the-protocol-interface">The protocol interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="#">Docs</a> &raquo;</li>
+        
+      <li>Complete, transparent, and data-oriented fitting of FMRI models</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="complete-transparent-and-data-oriented-fitting-of-fmri-models">
+<h1>Complete, transparent, and data-oriented fitting of FMRI models<a class="headerlink" href="#complete-transparent-and-data-oriented-fitting-of-fmri-models" title="Permalink to this headline">¶</a></h1>
+<p>All current approaches to the statistical analysis of functional
+magnetic resonance imaging (FMRI) data involve the application of
+various preprocessing steps which alter the signal to noise ratio (SNR)
+of the original data. Enhancing the SNR prior to a formal analysis,
+though, shakes at primary principles of statistical decision making and
+it will generally inflate the type I error of the analysis.</p>
 <p>This is the first statistical software tool which implements the
-<em>rigorous statistical (RS)</em> estimator for FMRI data models, a new and
-original method for the statistical analysis of FMRI data of brain
-scans. The method fits a weighted least squares model to points of a
-random vector field. Without prior spacial smoothings, i.e. without
-altering the original 4D-image, the method nevertheless results in
-smooth fits of the underlying activation parameter fields. More
-importantly, though, the method yields a trustworthy estimate of the
-uncertainty of the estimated activation field for each subject in a
-study. The availability of these uncertainty fields allows to model FMRI
-studies using random effects meta regression techniques acknowledging
-the fact that (i) individual subjects are random entities, and that (ii)
-the variability in the estimated individual activation patterns vary
-across the brain and between subjects.</p>
+<em>data-oriented method (DOM)</em> estimator for FMRI, a new and original
+method for the statistical analysis of FMRI data of brain scans. The
+method fits a weighted least squares model to points of a random vector
+field. Without prior spacial smoothings, i.e. without altering the
+original 4D-image, the method nevertheless results in smooth fits of the
+underlying activation parameter fields. More importantly, though, the
+method yields a trustworthy estimate of the uncertainty of the estimated
+activation field for each subject in a study. The availability of these
+uncertainty fields allows to model FMRI studies using random effects
+meta regression techniques acknowledging the fact that (i) individual
+subjects are random entities, and that (ii) the variability in the
+estimated individual activation patterns varies across the brain and
+between subjects.</p>
+<div class="section" id="how-to-cite-this-software">
+<h2>How to cite this software<a class="headerlink" href="#how-to-cite-this-software" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference external" href="http://lrweb.beds.ac.uk/guides/a-guide-to-referencing/cite_computer_program">Harvard UoB format</a> suggests to cite this software in this form:</p>
+<blockquote>
+<div>Thomas W. D. Möbius (2018) fmristats: Data oriented method for
+fitting of FMRI models (Version 0.0.3) [Computer program]. Available
+at <a class="reference external" href="http://fmristats.github.io/">http://fmristats.github.io/</a></div></blockquote>
+<p>Thank you for using and citing this software.</p>
+</div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>An easy way to install fmristats is to install <a class="reference external" href="https://docs.anaconda.com/anaconda/install/">Anaconda3</a>, a cross
-platform distribution for data analysis and scientific computing, and
-then using <a class="reference external" href="https://pypi.python.org/pypi/pip/">pip</a>, the &#8220;PyPA recommended tool for installing Python
-packages&#8221;, to install fmristats itself.</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">fmristats</span>
+<p>An easy way to install fmristats is to install <a class="reference external" href="https://docs.anaconda.com/anaconda/install/">Anaconda3</a>, a cross platform
+distribution for data analysis and scientific computing, and then using <a class="reference external" href="https://pypi.python.org/pypi/pip/">pip</a>,
+the “PyPA recommended tool for installing Python packages”, to install
+fmristats itself.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">%</span> <span class="n">pip</span> <span class="n">install</span> <span class="n">fmristats</span>
 </pre></div>
 </div>
-<p>Now, you should be good to go.</p>
+<p>That’s it. You should be good to go.</p>
 </div>
 <div class="section" id="tutorials">
 <h2>Tutorials<a class="headerlink" href="#tutorials" title="Permalink to this headline">¶</a></h2>
-<p>Tutorials discussing various parts of fmristats; expect this list to
-grow.</p>
+<p>Tutorials discussing various parts of fmristats; expect this list to grow.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/very-quick-start.html">Very quick start</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/very-quick-start.html">Getting to know fmristats</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#irritation-files">Irritation files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#session-files">Session files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#reference-maps">Reference maps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#fitting-the-signal-model">Fitting the signal model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#prune-non-brain-areas-from-fit">Prune non-brain areas from fit</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#defining-non-trivial-population-spaces">Defining non-trivial population spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#population-maps">Population maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#how-to-fit-the-signal-model">How to fit the signal model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#prune-non-brain-areas">Prune non-brain areas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/very-quick-start.html#standard-spaces">Standard spaces</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/quick-start.html">Quick start</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/quick-start.html">Semi-Automated Analysis of Multiple Subjects</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#protocol-interface-for-large-studies">Protocol interface for large studies</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#default-file-layout">Default file layout</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#fit-the-signal-model-to-all-members-of-a-sample">Fit the signal model to all members of a sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#plot-parameter-fits">Plot parameter fits</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#population-inference">Population inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="tutorials/quick-start.html#fitting-the-population-model">Fitting the population model</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference (set-up)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#preliminaries">Preliminaries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#fit-the-population-maps">Fit the Population Maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#fit-the-signal-models-to-the-fmris-fist-level">Fit the Signal Models to the FMRIs (fist level)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#create-an-ati-reference-field">Create an ATI reference field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#create-the-sample-for-the-meta-analysis">Create the sample for the meta analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-preliminaries.html#example">Example</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference (explorative)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-explorative.html#load-population-data-fit-the-model">Load population data, fit the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-explorative.html#extract-data-at-index">Extract data at index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-explorative.html#make-some-nice-visualisations">Make some nice visualisations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-explorative.html#formal">Formal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-confirmative.html#load-subject-data">Load subject data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-confirmative.html#load-population-data-fit-the-model">Load population data, fit the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-confirmative.html#extract-data-at-index">Extract data at index</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-confirmative.html#make-some-nice-visualisations">Make some nice visualisations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/population-inference-confirmative.html#formal">Formal</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#create-the-model">Create the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#query-information">Query information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#fit-the-model">Fit the model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#remove-non-brain-areas-from-the-parameter-fields-prune">Remove non-brain areas from the parameter fields (prune)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#find-the-highest-peak-of-neuronal-activity">Find the highest peak of neuronal activity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#scatter-plot-of-fmri-data">Scatter plot of FMRI data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#fit-different-models-to-the-data-at-these-coordinates">Fit different models to the data at these coordinates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#plot-the-fitted-regression-surfaces">Plot the fitted regression surfaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#durbin-watson">Durbin-Watson</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html#formal-testing">Formal testing</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
 </ul>
 </div>
@@ -123,16 +291,20 @@ grow.</p>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#fmrisample">fmrisample</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-ants">Wrappers to ANTS</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="cli.html#ants4pop">ants4pop</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html#wrappers-to-fsl">Wrappers to FSL</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#fsl4prune">fsl4prune</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#fsl4pop">fsl4pop</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-the-nifti1image-format">Export to the Nifti1Image format</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-the-nifti1">Export to the Nifti1</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#fit2nii">fit2nii</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-pdf-png-jpg-and-other">Export to pdf, png, jpg and other</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#ref2plot">ref2plot</a></li>
 <li class="toctree-l2"><a class="reference internal" href="cli.html#fit2plot">fit2plot</a></li>
 </ul>
@@ -152,8 +324,8 @@ grow.</p>
 </ul>
 </div>
 </div>
-<div class="section" id="modules">
-<h2>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="python-interface">
+<h2>Python interface<a class="headerlink" href="#python-interface" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
@@ -181,65 +353,67 @@ grow.</p>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="tutorials/very-quick-start.html" class="btn btn-neutral float-right" title="Getting to know fmristats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Rigorous statistical estimation of FMRI models</a><ul>
-<li><a class="reference internal" href="#installation">Installation</a></li>
-<li><a class="reference internal" href="#tutorials">Tutorials</a></li>
-<li><a class="reference internal" href="#command-line-interface">Command line interface</a></li>
-<li><a class="reference internal" href="#modules">Modules</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="tutorials/very-quick-start.html" title="next chapter">Very quick start</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Thomas W. D. Möbius.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="_sources/index.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.3',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

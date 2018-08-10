@@ -1,72 +1,222 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Getting to know fmristats &mdash; fmristats 0.0.3 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
     
-    <title>Very quick start &#8212; fmristats 0.2.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
-        VERSION:     '0.2.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Quick start" href="quick-start.html" />
-    <link rel="prev" title="Rigorous statistical estimation of FMRI models" href="../index.html" />
+    <link rel="next" title="Semi-Automated Analysis of Multiple Subjects" href="quick-start.html" />
+    <link rel="prev" title="Complete, transparent, and data-oriented fitting of FMRI models" href="../index.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+  <div class="wy-grid-for-nav">
 
-  </head>
-  <body role="document">
-  
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-    <div class="document">
-      <div class="documentwrapper">
-        <div class="bodywrapper">
-          <div class="body" role="main">
+          
+            <a href="../index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
             
-  <div class="section" id="very-quick-start">
-<h1>Very quick start<a class="headerlink" href="#very-quick-start" title="Permalink to this headline">¶</a></h1>
-<p>fmristats provides command line tools which allow to access most of
-its functionality, in particular when it comes to fitting the signal
-model to individual subject data.</p>
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting to know fmristats</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#irritation-files">Irritation files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#session-files">Session files</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reference-maps">Reference maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#population-maps">Population maps</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-fit-the-signal-model">How to fit the signal model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#prune-non-brain-areas">Prune non-brain areas</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#prune-by-thresholds">Prune by thresholds</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#prune-by-using-a-wrapper-to-bet">Prune by using a wrapper to BET</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#standard-spaces">Standard spaces</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ants">ANTS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fnirt">FNIRT</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Getting to know fmristats</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/very-quick-start.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getting-to-know-fmristats">
+<h1>Getting to know fmristats<a class="headerlink" href="#getting-to-know-fmristats" title="Permalink to this headline">¶</a></h1>
+<p>fmristats provides a variety of command line tools which allow access to
+most of its functionality. In particular when it comes to fitting a
+particular signal model to subject data.</p>
+<p>Before you start, a small but important warning: more »traditional«
+approaches to FMRI data analysis recommend or encourage user to first
+spatially smooth data prior to the statistical data analysis and to
+apply motion or slice timing corrections. In fmristats, spatial
+smoothing is an integral part of the model fitting process itself.
+Therefore, when using fmristats, you should <strong>NOT alter your images. DO
+NOT DO motion corrections. DO NOT DO correct for slice timing
+differences. DO NOT smooth your data.</strong> Your statistical analysis
+benefit from more power this way and you will be rewarded with valid
+test statistics.</p>
 <p>In order to fit a signal model to the FMRI session data of a subject,
 you need to first (i) define the <em>irritation</em>, <em>conditioning</em>, or
 <em>paradigm</em> of the session, i.e. provide the on- and offsets of the task
 blocks as well as their durations, you will need to (ii) separate the
 foreground from the background in the 4D FMRI image, and you need to
 (iii) estimate (or provide) the location, position and tilt of the
-subject&#8217;s head in the scanner during acquisition. After that, you are
+subject’s head in the scanner during acquisition. After that, you are
 (iv) ready to fit a signal model to your data.</p>
-<p><strong>Do NOT alter your images. Do NOT do motion correction, do NOT correct
-for slice timing differences, and do NOT smooth your data.</strong></p>
 <div class="section" id="irritation-files">
 <h2>Irritation files<a class="headerlink" href="#irritation-files" title="Permalink to this headline">¶</a></h2>
-<p>The following will define a two block task design labelled <em>FOO</em> for
-subject <em>42</em> in the study called <em>MyStudy</em> measured on the 1st of
-November, 2015 at 12:54, and saves the design in a file <code class="docutils literal"><span class="pre">subject.irr</span></code>.
+<p>Subject in a FMRI study are confronted with various stimuli. The
+following will define a two-block task design labelled <em>FOO</em> for subject
+<em>42</em> in the study called <em>MyStudy</em> measured on the 1st of November, 2015
+at 12:54, and it will save the design to a file named <code class="docutils literal notranslate"><span class="pre">subject.irr</span></code>.
 The control block as been labelled <em>shapes</em>, the stimulus block has been
 labelled <em>faces</em>.</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriirritation</span> <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> \
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriirritation</span> <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> \
     <span class="o">--</span><span class="n">cohort</span> <span class="n">MyStudy</span> \
     <span class="o">--</span><span class="nb">id</span> <span class="mi">42</span> \
     <span class="o">--</span><span class="n">datetime</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">1254</span> \
@@ -80,7 +230,7 @@ labelled <em>faces</em>.</p>
     <span class="o">--</span><span class="n">verbose</span>
 </pre></div>
 </div>
-<p>Use <code class="docutils literal"><span class="pre">-v/--verbose</span></code> to increase verbosity of any fmristats command
+<p>Use <code class="docutils literal notranslate"><span class="pre">-v/--verbose</span></code> to increase verbosity of any fmristats command
 line tools.</p>
 </div>
 <div class="section" id="session-files">
@@ -92,15 +242,15 @@ the popular Nifti1 format.</p>
 DICOM to Nifti1 format using the <a class="reference external" href="http://people.cas.sc.edu/rorden/mricron/dcm2nii.html">dcm2nii</a> tool with (essentially) all
 the default settings:</p>
 <ul class="simple">
-<li>4D=1: &#8220;will generate 4D files (FSL style)&#8221;,</li>
-<li>SingleNIIFile=1: &#8220;will create .nii files (FSL style)&#8221;,</li>
-<li>Gzip=1: &#8220;will create compressed .nii.gz files (FSL style)&#8221;,</li>
-<li>SPM2=0: &#8220;headers will be in NIfTI (SPM5/FSL).&#8221;</li>
+<li>4D=1: “will generate 4D files (FSL style)”,</li>
+<li>SingleNIIFile=1: “will create .nii files (FSL style)”,</li>
+<li>Gzip=1: “will create compressed .nii.gz files (FSL style)”,</li>
+<li>SPM2=0: “headers will be in NIfTI (SPM5/FSL).”</li>
 </ul>
-<p>And say, the data have been saved to <code class="docutils literal"><span class="pre">subject.nii.gz</span></code>.</p>
+<p>And say, the data have been saved to <code class="docutils literal notranslate"><span class="pre">subject.nii.gz</span></code>.</p>
 <p>Then the FMRI data can be converted to a fmristats session file by
-providing <code class="docutils literal"><span class="pre">nii2ses</span></code> with <code class="docutils literal"><span class="pre">subject.nii.gz</span></code> and <code class="docutils literal"><span class="pre">subject.irr</span></code>:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">nii2ses</span> <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
+providing <code class="docutils literal notranslate"><span class="pre">nii2ses</span></code> with <code class="docutils literal notranslate"><span class="pre">subject.nii.gz</span></code> and <code class="docutils literal notranslate"><span class="pre">subject.irr</span></code>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nii2session</span> <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">nii</span> <span class="n">subject</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> \
     <span class="o">--</span><span class="n">epi</span><span class="o">-</span><span class="n">code</span> <span class="mi">3</span> \
@@ -108,8 +258,8 @@ providing <code class="docutils literal"><span class="pre">nii2ses</span></code>
 </pre></div>
 </div>
 <p>The above call also runs a foreground detection algorithm. The session
-file  will be saved to <code class="docutils literal"><span class="pre">subject.ses</span></code>.</p>
-<p>The argument <code class="docutils literal"><span class="pre">--epi-code</span> <span class="pre">3</span></code> codes the direction in which the EPI have
+file  will be saved to <code class="docutils literal notranslate"><span class="pre">subject.ses</span></code>.</p>
+<p>The argument <code class="docutils literal notranslate"><span class="pre">--epi-code</span> <span class="pre">3</span></code> codes the direction in which the EPI have
 been measured during the session. The directions are coded as follows:</p>
 <table border="1" class="docutils">
 <colgroup>
@@ -143,10 +293,10 @@ been measured during the session. The directions are coded as follows:</p>
 </tbody>
 </table>
 <p>You may also provide more meta data to the call. If you do so,
-<code class="docutils literal"><span class="pre">nii2ses</span></code> will check if they match the meta data in the provided
-irritation file <code class="docutils literal"><span class="pre">subject.irr</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">nii2ses</span></code> will check if they match the meta data in the provided
+irritation file <code class="docutils literal notranslate"><span class="pre">subject.irr</span></code>.</p>
 <p>Alternative call:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">nii2ses</span> <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nii2session</span> <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">cohort</span> <span class="n">MyStudy</span> \
     <span class="o">--</span><span class="nb">id</span> <span class="mi">42</span> \
     <span class="o">--</span><span class="n">datetime</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">1254</span> \
@@ -159,14 +309,14 @@ irritation file <code class="docutils literal"><span class="pre">subject.irr</sp
 </div>
 <p>By default, <em>valid</em> files will not be overwritten: if something does not
 match, though, fmristats will delete the file and try to fix things.
-Use <code class="docutils literal"><span class="pre">-f/--force</span></code> to force the recreation of any files (valid or not).</p>
+Use <code class="docutils literal notranslate"><span class="pre">-f/--force</span></code> to force the recreation of any files (valid or not).</p>
 <p>You may query information about any file that is created by
-fmristats by calling <code class="docutils literal"><span class="pre">fmriinfo</span></code> on the same.</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span>
+fmristats by calling <code class="docutils literal notranslate"><span class="pre">fmriinfo</span></code> on the same.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span>
 </pre></div>
 </div>
 <p>Output:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="o">.</span><span class="n">ses</span><span class="p">:</span> <span class="n">session</span> <span class="n">file</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subject</span><span class="o">.</span><span class="n">ses</span><span class="p">:</span> <span class="n">session</span> <span class="n">file</span>
 
     <span class="n">Cohort</span><span class="p">:</span>   <span class="n">MyStudy</span>
     <span class="n">Subject</span><span class="p">:</span>  <span class="mi">42</span>
@@ -195,121 +345,142 @@ fmristats by calling <code class="docutils literal"><span class="pre">fmriinfo</
 </pre></div>
 </div>
 <p>You may also provide more than one file to the call:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="reference-maps">
 <h2>Reference maps<a class="headerlink" href="#reference-maps" title="Permalink to this headline">¶</a></h2>
 <p>Fit head movements by, e.g, a PCA model, and save the fitted reference
-maps to <code class="docutils literal"><span class="pre">subject.ref</span></code>:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmririgid</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">ref</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> <span class="o">-</span><span class="n">v</span>
+maps to <code class="docutils literal notranslate"><span class="pre">subject.ref</span></code>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmririgid</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">ref</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 <p>Here, you have seen another feature of fmristats: you may shorten
 any argument as long it is still uniquely identifiable. The above call is
 indeed identical to:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmririgid</span> <span class="o">-</span><span class="n">v</span> \
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmririgid</span> <span class="o">-</span><span class="n">v</span> \
     <span class="o">--</span><span class="n">session</span>        <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span>
 </pre></div>
 </div>
 <p>Create some informative plots which evaluate the ability of the PCM
 method to track the head of your subject:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">ref2plot</span> <span class="o">--</span><span class="n">ref</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> <span class="o">-</span><span class="n">v</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ref2plot</span> <span class="o">--</span><span class="n">ref</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
-<p>You will see that an outlier detection has been applied to the estimated
-head movements. Scan circles which are marked as outlying will not be
-used in the fitting.</p>
+<p>This will save various figures to: <cite>figures/FOO/assessments</cite>. But you
+may change this default location. If you look at the figures, you will
+notice that an outlier detection has been applied to the estimated head
+movements. Scan circles which are marked as outlying will not be used in
+the fitting.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span>
+</pre></div>
 </div>
-<div class="section" id="fitting-the-signal-model">
-<h2>Fitting the signal model<a class="headerlink" href="#fitting-the-signal-model" title="Permalink to this headline">¶</a></h2>
-<p>If you aim for inference, you need to relate all the brains <span class="math">\(R_j\)</span>
-of subjects <span class="math">\(j\)</span> in your study with one another, i.e. you need to
-chose a reference brain <span class="math">\(M\)</span> and define diffeomorphisms <span class="math">\(ψ_j\)</span>
-which map <span class="math">\(M\)</span> to each respective <span class="math">\(R_j\)</span>.</p>
-<div class="math">
+</div>
+<div class="section" id="population-maps">
+<h2>Population maps<a class="headerlink" href="#population-maps" title="Permalink to this headline">¶</a></h2>
+<p>If you aim for inference, you need to relate all the brains <span class="math notranslate nohighlight">\(R_j\)</span>
+of subjects <span class="math notranslate nohighlight">\(j\)</span> in your study with one another, i.e. you need to
+chose a reference brain <span class="math notranslate nohighlight">\(M\)</span> and define diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span>
+which map <span class="math notranslate nohighlight">\(M\)</span> to each respective <span class="math notranslate nohighlight">\(R_j\)</span>.</p>
+<div class="math notranslate nohighlight">
 \[ψ_j: M \to R_j.\]</div>
-<p>But if you are only interested in subject <span class="math">\(j\)</span>, you may simply set
-<span class="math">\(M\)</span> identical to <span class="math">\(R_j\)</span> and <span class="math">\(ψ_j\)</span> equal to the
+<p>But if you are only interested in subject <span class="math notranslate nohighlight">\(j\)</span>, you may simply set
+<span class="math notranslate nohighlight">\(M\)</span> identical to <span class="math notranslate nohighlight">\(R_j\)</span> and <span class="math notranslate nohighlight">\(ψ_j\)</span> equal to the
 identity.</p>
-<p>The <em>identity population map</em> is created as follows:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span>
+<p>fmristats offers two possibilities for defining a <em>native</em> standard or
+population space for a subject. The <em>identity population map in native
+resolution</em> is created via:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">scanner</span>
 </pre></div>
 </div>
-<p>and saved to <code class="docutils literal"><span class="pre">subject.pop</span></code>. The above is equivalent to</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span>
-    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
-    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
-    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">reference</span> \
-    <span class="o">--</span><span class="n">resolution</span> <span class="mf">2.0</span>
+<p>This will set the coordinate system of the standard space equal to the
+scanner and the image grid equal to the native resolution of the
+acquisition sequence, and saves the map to <cite>subject.pop</cite>.</p>
+<p>Alternatively,</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">reference</span> <span class="o">--</span><span class="n">resolution</span> <span class="mf">2.0</span>
 </pre></div>
 </div>
-<p>The space <span class="math">\(R_j\)</span> is called the <em>reference space</em> in fmristats
-speech. The option <code class="docutils literal"><span class="pre">--population-space</span> <span class="pre">reference</span></code> tells <code class="docutils literal"><span class="pre">fmripop</span></code> to
-set <span class="math">\(M\)</span> equal to <span class="math">\(R_j\)</span>. As the option <code class="docutils literal"><span class="pre">--resolution</span> <span class="pre">2.0</span></code>
-suggests, <code class="docutils literal"><span class="pre">fmripop</span></code> will also define and save a grid <span class="math">\(V_M ⊆_f M\)</span>
-to <code class="docutils literal"><span class="pre">subject.pop</span></code>.  The grid <span class="math">\(V_M\)</span> defines where to evaluate and
-fit the models in fmristats and with respect to which grid masks shall
-be applied if they shall be applied.</p>
-<p>Providing <code class="docutils literal"><span class="pre">subject.pop</span></code> to <code class="docutils literal"><span class="pre">fmrifit</span></code> together with the session file
-<code class="docutils literal"><span class="pre">subject.ses</span></code> and the head movements <code class="docutils literal"><span class="pre">subject.ref</span></code> will fit the
-(default) signal model to the data.</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> \
+<p>will set the coordinate system of the standard space equal to the
+scanner and the image grid to a resolution of: <span class="math notranslate nohighlight">\(2x2x2 mm^3\)</span>. This
+is in fact the default setting of <cite>fmripmap</cite>, thus the above call is
+equivalent to:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>We shall often refer to <span class="math notranslate nohighlight">\(R_j\)</span> as the subject or <em>reference space</em>
+of the subject, and to <span class="math notranslate nohighlight">\(M\)</span> as the standard or <em>population space</em>.</p>
+</div>
+<div class="section" id="how-to-fit-the-signal-model">
+<h2>How to fit the signal model<a class="headerlink" href="#how-to-fit-the-signal-model" title="Permalink to this headline">¶</a></h2>
+<p>The command line tool <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> will fit a signal model to FMRI data.
+You will need to provide <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> with a FMRI session file (the
+data), a population map (a mapping from standard space to the subject),
+and reference maps (the head movements), say <code class="docutils literal notranslate"><span class="pre">subject.ses</span></code>,
+<code class="docutils literal notranslate"><span class="pre">subject.pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">subject.ref</span></code>.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> \
     <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
     <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> \
     <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
-<p>The above call saves the fit to <code class="docutils literal"><span class="pre">subject.fit</span></code>.</p>
+<p>The above call saves the fit to <code class="docutils literal notranslate"><span class="pre">subject.fit</span></code>.</p>
 </div>
-<div class="section" id="prune-non-brain-areas-from-fit">
-<h2>Prune non-brain areas from fit<a class="headerlink" href="#prune-non-brain-areas-from-fit" title="Permalink to this headline">¶</a></h2>
-<p>As RS estimation uses a WLS estimator in its fitting procedure which
+<div class="section" id="prune-non-brain-areas">
+<h2>Prune non-brain areas<a class="headerlink" href="#prune-non-brain-areas" title="Permalink to this headline">¶</a></h2>
+<p>As DOM estimation uses a WLS estimator in its fitting procedure which
 uses a weighting scheme with non-null spacial extent, evaluating (i.e.
 fitting) a FMRI model close but outside of the actual brain of a subject
-will nevertheless result in &#8220;valid&#8221; parameter estimates. In the case
-that <code class="docutils literal"><span class="pre">fmrifit</span></code> is not supplied with a brain mask, these &#8220;outside fits&#8221;
+will nevertheless result in “valid” parameter estimates. In the case
+that <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> is not supplied with a brain mask, these “outside fits”
 can be detected post-hoc as they are naturally accompanied by a drastic
 drop in available sample size.</p>
-<p>By default, <code class="docutils literal"><span class="pre">fmrifit</span></code> will estimate a default <em>data mask</em> on <span class="math">\(M\)</span>
-from the foreground/background difference saved in <code class="docutils literal"><span class="pre">subject.ses</span></code>. If
+<p>By default, <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> will estimate a default <em>data mask</em> on <span class="math notranslate nohighlight">\(M\)</span>
+from the foreground/background difference saved in <code class="docutils literal notranslate"><span class="pre">subject.ses</span></code>. If
 this mask still contains non-brain areas, you may want to further prune
 the parameter fields from these areas.</p>
-<p>The command line programs <code class="docutils literal"><span class="pre">fmriprune</span></code> or <code class="docutils literal"><span class="pre">fsl4prune</span></code> can be used to
+<div class="section" id="prune-by-thresholds">
+<h3>Prune by thresholds<a class="headerlink" href="#prune-by-thresholds" title="Permalink to this headline">¶</a></h3>
+<p>The command line programs <code class="docutils literal notranslate"><span class="pre">fmriprune</span></code> or <code class="docutils literal notranslate"><span class="pre">fsl4prune</span></code> can be used to
 generate brain masks. Both commands will force a minimum number of
-observations to be available around each grid point in <span class="math">\(V_M\)</span> by
+observations to be available around each grid point in <span class="math notranslate nohighlight">\(V_M\)</span> by
 either setting a user defined hard lower bound for the minimum:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">t</span> <span class="mi">1800</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">t</span> <span class="mi">1800</span>
 </pre></div>
 </div>
 <p>Or by setting the lower bound to a given fraction of the maximum
 available MR measures at a point:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span><span class="n">f</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span><span class="n">f</span>
 </pre></div>
 </div>
-<p>The generated brain mask is directly saved into the file <code class="docutils literal"><span class="pre">subject.fit</span></code>.</p>
-<p>The difference between <code class="docutils literal"><span class="pre">fmriprune</span></code> and <code class="docutils literal"><span class="pre">fsl4prune</span></code> is that the
+<p>The generated brain mask is directly saved into the file
+<code class="docutils literal notranslate"><span class="pre">subject.fit</span></code>.</p>
+</div>
+<div class="section" id="prune-by-using-a-wrapper-to-bet">
+<h3>Prune by using a wrapper to BET<a class="headerlink" href="#prune-by-using-a-wrapper-to-bet" title="Permalink to this headline">¶</a></h3>
+<p>The difference between <code class="docutils literal notranslate"><span class="pre">fmriprune</span></code> and <code class="docutils literal notranslate"><span class="pre">fsl4prune</span></code> is that the
 latter also contains a wrapper to <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET">BET</a>. The following</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">f</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">f</span>
 </pre></div>
 </div>
 <p>is equivalent to:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span>
 
 <span class="n">fit2nii</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">--</span><span class="n">nii</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">parameter</span> <span class="n">intercept</span> <span class="o">--</span><span class="n">value</span> <span class="n">point</span> \
     <span class="o">--</span><span class="nb">round</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">integer</span>
 
-<span class="n">bet</span> <span class="o">-</span><span class="n">R</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<span class="n">bet</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">R</span>
 
 <span class="n">nii2image</span> <span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="n">mask</span><span class="o">.</span><span class="n">image</span>
 </pre></div>
 </div>
 <p>Followed by the python script:</p>
-<div class="code python highlight-default"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
 
 <span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;mask.image&#39;</span><span class="p">)</span>
@@ -319,32 +490,100 @@ latter also contains a wrapper to <a class="reference external" href="https://fs
 </pre></div>
 </div>
 </div>
-<div class="section" id="defining-non-trivial-population-spaces">
-<h2>Defining non-trivial population spaces<a class="headerlink" href="#defining-non-trivial-population-spaces" title="Permalink to this headline">¶</a></h2>
-<p>If you aim for population inference, you need to relate the brains
-<span class="math">\(R_j\)</span> of all subjects <span class="math">\(j\)</span> in your study to each another,
-i.e. you need to chose a representative, say a template brain <span class="math">\(M\)</span>
-in MNI Standard Space, and fit diffeomorphisms <span class="math">\(ψ_j\)</span> which map
-<span class="math">\(M\)</span> to each <span class="math">\(R_j\)</span>.</p>
-<div class="math">
+</div>
+<div class="section" id="standard-spaces">
+<h2>Standard spaces<a class="headerlink" href="#standard-spaces" title="Permalink to this headline">¶</a></h2>
+<p>If you aim for population inference, you need to relate the brains of
+all subjects in your study to a common brain <span class="math notranslate nohighlight">\(M\)</span>. If <span class="math notranslate nohighlight">\(R_j\)</span>
+is the brain of subject <span class="math notranslate nohighlight">\(j\)</span>, you need to chose a representative,
+say a template brain <span class="math notranslate nohighlight">\(M\)</span> in MNI standard space, and fit
+diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span> which map <span class="math notranslate nohighlight">\(M\)</span> to each <span class="math notranslate nohighlight">\(R_j\)</span>.</p>
+<div class="math notranslate nohighlight">
 \[ψ_j: M \to R_j.\]</div>
-<p>A good candidate for <span class="math">\(R_j\)</span> is the intercept field of a fit of the
-signal model in an isometric coordinate system with respect to the
-subject, namely the created <code class="docutils literal"><span class="pre">subject.fit</span></code> above.</p>
-<p>This field can then be exported to Nifti1 using <code class="docutils literal"><span class="pre">fit2nii</span></code> and fed to
-a tool of your choice.</p>
-<p>Extract the intercept from a fit and save the result to
-intercept.nii.gz:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fit2nii</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">--</span><span class="n">nii</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+<p>Before you can fit these diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span>, though, you will
+need to define this template brain <span class="math notranslate nohighlight">\(M\)</span> in standard space.
+In case you have FSL installed on your system, you may find many
+templates in</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span>
+</pre></div>
+</div>
+<p>The tool <cite>nii2image</cite> can be used to convert various imaging formats to
+fmristats’ own file format.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">template</span> \
+    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm_brain</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>
+
+<span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">background</span> \
+    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>
+</pre></div>
+</div>
+<div class="section" id="ants">
+<h3>ANTS<a class="headerlink" href="#ants" title="Permalink to this headline">¶</a></h3>
+<p>Next, a representative <span class="math notranslate nohighlight">\(R_j\)</span> for the subject brain needs to be
+selected.</p>
+<p><em>Posibility 1:</em> A candidate for <span class="math notranslate nohighlight">\(R_j\)</span> is the intercept of a fit of
+the signal model with respect to the reference space of the subject,
+namely the just created <code class="docutils literal notranslate"><span class="pre">subject.fit</span></code> from above.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ants4pop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
+    <span class="o">--</span><span class="n">vb</span> <span class="n">MNI</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<p>This is a wrapper to ANTS.</p>
+<p><em>Posibility 2:</em> The above has the disadvantage that you will need to
+first fit the signal model to the FMRI data in the reference space and
+that this fit may take quite some time.</p>
+<p>Alternatively, you can define the reference space of the subject to be
+equal to the position of the subject’s head during a specific scan
+cycle, say</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmririgid</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">session</span>        <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
+    <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
+</pre></div>
+</div>
+<p>And then use the 3D image of the subject during this scan circle as
+reference.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ants4pop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
+    <span class="o">--</span><span class="n">vb</span> <span class="n">MNI</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
+</pre></div>
+</div>
+<p>You can query information about the created files:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span>
+</pre></div>
+</div>
+<p>Then fit the signal model in standard space at all points at which the
+template has valid entries, i.e. grey scale intensities <span class="math notranslate nohighlight">\(&gt;0\)</span>. .</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
+    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
+    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
+    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>This will save the fit to <code class="docutils literal notranslate"><span class="pre">subject-MNI.fit</span></code>.</p>
+</div>
+<div class="section" id="fnirt">
+<h3>FNIRT<a class="headerlink" href="#fnirt" title="Permalink to this headline">¶</a></h3>
+<p>If you are using the software <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT">FNIRT</a> to fit the respective <span class="math notranslate nohighlight">\(ψ_j\)</span>,
+then you may use the command line tool <code class="docutils literal notranslate"><span class="pre">fsl4pop</span></code> (which is distributed
+together with fmristats) to parse the <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide#A--cout">warp coefficient file</a> which is
+created by <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT">FNIRT</a>.</p>
+<p>As before, a candidate for <span class="math notranslate nohighlight">\(R_j\)</span> is the intercept of a fit of the
+signal model with respect to the reference space of the subject, namely
+the just created <code class="docutils literal notranslate"><span class="pre">subject.fit</span></code> from above. The field can then be
+exported to Nifti1 using <code class="docutils literal notranslate"><span class="pre">fit2nii</span></code> and then fed to the tool of your
+choice.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit2nii</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">--</span><span class="n">nii</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">parameter</span> <span class="n">intercept</span> <span class="o">--</span><span class="n">value</span> <span class="n">point</span> \
     <span class="o">--</span><span class="nb">round</span><span class="o">-</span><span class="n">to</span><span class="o">-</span><span class="n">integer</span>
 </pre></div>
 </div>
-<p>If you are using the software <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT">FNIRT</a> to fit the respective <span class="math">\(ψ_j\)</span>,
-then you may use the command line tool <code class="docutils literal"><span class="pre">fsl4pop</span></code> (which is distributed
-together with fmristats) to parse the <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide#A--cout">warp coefficient file</a> which is
-created by <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT">FNIRT</a>.</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="c1"># you may have done something along the line…</span>
+<p>This will extract the intercept from a fit, round the field to the
+closest integer, and save the result to <cite>intercept.nii.gz</cite>.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># then, you may have done something along the line…</span>
 
 <span class="n">fsl5</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">fnirt</span> <span class="o">--</span><span class="ow">in</span><span class="o">=</span><span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="o">--</span><span class="n">config</span><span class="o">=</span><span class="n">T1_2_MNI152_2mm</span> \
     <span class="o">--</span><span class="n">cout</span><span class="o">=</span><span class="n">intercept_warpcoef</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
@@ -358,101 +597,100 @@ created by <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fs
     <span class="o">--</span><span class="n">warpcoef</span> <span class="n">intercept_warpcoef</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
-<p>This will save <span class="math">\(ψ_j\)</span> to <code class="docutils literal"><span class="pre">subject-MNI.pop</span></code> and <span class="math">\(M\)</span> to
-<code class="docutils literal"><span class="pre">MNI.image</span></code>.</p>
-<p>By default (but you may change the defaults), <code class="docutils literal"><span class="pre">fsl4pop</span></code> will assume
-that the template <code class="docutils literal"><span class="pre">MNI152_T1_2mm</span></code> has been used to define the domain
-of each <span class="math">\(ψ_j\)</span>, and that FNIRT has been provided with a reference
-mask that is a dichotomised version of <code class="docutils literal"><span class="pre">MNI152_T1_2mm_brain</span></code>, and both
+<p>This will save <span class="math notranslate nohighlight">\(ψ_j\)</span> to <code class="docutils literal notranslate"><span class="pre">subject-MNI.pop</span></code> and <span class="math notranslate nohighlight">\(M\)</span> to
+<code class="docutils literal notranslate"><span class="pre">MNI.image</span></code>.</p>
+<p>By default (but you may change the defaults), <code class="docutils literal notranslate"><span class="pre">fsl4pop</span></code> will assume
+that the template <code class="docutils literal notranslate"><span class="pre">MNI152_T1_2mm</span></code> has been used to define the domain
+of each <span class="math notranslate nohighlight">\(ψ_j\)</span>, and that FNIRT has been provided with a reference
+mask that is a dichotomised version of <code class="docutils literal notranslate"><span class="pre">MNI152_T1_2mm_brain</span></code>, and both
 these files reside in</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
 <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm_brain</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
 </pre></div>
 </div>
 <p>which is the default location of these files when you installed FSL.</p>
-<p>To fit the signal model at all points at which the template mask
-<code class="docutils literal"><span class="pre">MNI152_T1_2mm_brain</span></code> has valid entries, i.e. grey scale intensities
-<span class="math">\(&gt;0\)</span>, provide <code class="docutils literal"><span class="pre">fmrifit</span></code> with <code class="docutils literal"><span class="pre">subject-MNI.pop</span></code> instead of
-<code class="docutils literal"><span class="pre">subject.pop</span></code>:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
+<p>You can query information about the created files:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span>
+</pre></div>
+</div>
+<p>Then fit the signal model in standard space at all points at which the
+template has valid entries, i.e. grey scale intensities <span class="math notranslate nohighlight">\(&gt;0\)</span>. .</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
     <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
     <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
     <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
-<p>This will save the fit to <code class="docutils literal"><span class="pre">subject-MNI.fit</span></code>. Have a look at some of
-the meta data:</p>
-<div class="code shell highlight-default"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span>
-
-<span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span>
-</pre></div>
+<p>This will save the fit to <code class="docutils literal notranslate"><span class="pre">subject-MNI.fit</span></code>.</p>
 </div>
 </div>
 </div>
 
 
+           </div>
+           
           </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="quick-start.html" class="btn btn-neutral float-right" title="Semi-Automated Analysis of Multiple Subjects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="Complete, transparent, and data-oriented fitting of FMRI models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
         </div>
       </div>
-      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
-        <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Very quick start</a><ul>
-<li><a class="reference internal" href="#irritation-files">Irritation files</a></li>
-<li><a class="reference internal" href="#session-files">Session files</a></li>
-<li><a class="reference internal" href="#reference-maps">Reference maps</a></li>
-<li><a class="reference internal" href="#fitting-the-signal-model">Fitting the signal model</a></li>
-<li><a class="reference internal" href="#prune-non-brain-areas-from-fit">Prune non-brain areas from fit</a></li>
-<li><a class="reference internal" href="#defining-non-trivial-population-spaces">Defining non-trivial population spaces</a></li>
-</ul>
-</li>
-</ul>
-<div class="relations">
-<h3>Related Topics</h3>
-<ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../index.html" title="previous chapter">Rigorous statistical estimation of FMRI models</a></li>
-      <li>Next: <a href="quick-start.html" title="next chapter">Quick start</a></li>
-  </ul></li>
-</ul>
-</div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/tutorials/very-quick-start.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
-<div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
-    <form class="search" action="../search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
-    </form>
-</div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
-        </div>
-      </div>
-      <div class="clearer"></div>
-    </div>
-    <div class="footer">
-      &copy;2017, Thomas W. D. Möbius.
-      
-      |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
-      
-      |
-      <a href="../_sources/tutorials/very-quick-start.rst.txt"
-          rel="nofollow">Page source</a>
-    </div>
 
-    
+    </section>
 
-    
-  </body>
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.3',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
 </html>

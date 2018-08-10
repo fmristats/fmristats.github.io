@@ -1,0 +1,188 @@
+Population inference (set-up)
+-----------------------------
+
+Preliminaries
+.............
+
+If you aim for population inference, you need to relate the brains
+:math:`R_j` of all subjects :math:`j` in your study to each other, i.e.
+you need to chose a representative, say a template brain :math:`M` in
+MNI Standard Space, and fit diffeomorphisms :math:`ψ_j` which map
+:math:`M` to each :math:`R_j`.
+
+.. math::
+
+    ψ_j: M \to R_j.
+
+
+You have created the irritation designs, the FMRI session data for each
+subject, and you have fitted the head movements:
+
+.. code:: shell
+
+    # Create Irritation Designs
+    mat2irr --protocol sample.pkl -v
+
+    # Create Session Designs
+    nii2ses --protocol sample.pkl -v --detect-foreground
+
+    # Fit head movements
+    fmririgid --protocol sample.pkl -v --cycle 42
+
+And you have checked whether the fitted head movement look ok:
+
+.. code:: shell
+
+    # Assessment of head tracking ability
+    ref2plot --protocol sample.pkl -v
+
+    for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
+
+Fit the Population Maps
+.......................
+
+Use ANTS to fit the :math:`ψ_j`:
+
+.. code:: shell
+
+    ants4pop --protocol sample.pkl -v  --cycle 42
+
+Use FNIRT to fit the :math:`ψ_j`:
+
+.. code:: shell
+
+    fsl4pop --protocol sample.pkl -v  --cycle 42
+
+I had the feeling that -- out of the box -- ANTS provided better fits
+for the :math:`ψ_j` than FNIRT. If you are using the wrapper `fsl4pop`,
+you probably need to manually help FNIRT to find the correct fit. See
+the help of `fsl4pop` for how to use custom warp coefficient files.
+
+Fit the Signal Models to the FMRIs (fist level)
+...............................................
+
+Fitting the signal model to the FMRI of each subject.
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -v \
+        --stimulus-block letter \
+        --vb mni152 --diffeomorphism ants
+
+*Alternative 1*: fit only one subject:
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -v --strftime short \
+        --stimulus-block letter \
+        --cohort AGB300 --id 2 \
+        --vb mni152 --diffeomorphism ants
+
+*Alternative 2*: fit nothing, do a dry run instead (s=skip):
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -vs --strftime short \
+        --stimulus-block letter \
+        --cohort AGB300 --id 2 \
+        --vb mni152 --diffeomorphism ants
+
+*Alternative 3*: remove orphan log-files (i=ignore-locks, s=skip):
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -vis --strftime short \
+        --stimulus-block letter \
+        --vb mni152 --diffeomorphism ants
+
+Create an ATI reference field
+.............................
+
+In case you have FSL installed on your system, you may find various
+templates in
+
+.. code:: shell
+
+    /usr/share/data/fsl-mni152-templates/
+
+The tool `nii2image` can be used to convert various imaging formats to
+fmristats' own file format.
+
+.. code:: shell
+
+    nii2image --name mni152 \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz \
+        ../data/vbs/vb-template.image
+
+    nii2image --name mni152background \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz \
+        ../data/vbs/vb-background.image
+
+.. code:: shell
+
+    fmriati 2.09 ../data/vbs/vb-template.image ../data/vbs/vb-ati.image -v
+
+Create the sample for the meta analysis
+.......................................
+
+To see the correct order of the positional arguments for ``fmrisample``:
+
+.. code:: shell
+
+    fmrisample -h
+
+Create the sample for population inference:
+
+.. code:: shell
+
+    fmrisample -vf --strftime short --diffeomorphism ants \
+        population-inference.sample \
+        ../data/vbs/vb-template.image  \
+        ../data/vbs/vb-background.image  \
+        ../data/vbs/vb-ati.image \
+        sample.pkl
+
+Example
+.......
+
+An example may look as follows:
+
+.. code:: shell
+
+    # Create Irritation Designs
+    mat2irr --protocol sample.pkl -v --strftime short -f
+
+    # Create Session Designs
+    nii2ses --protocol sample.pkl -v --detect-foreground --strftime short
+
+    # Fit head movements
+    fmririgid --protocol sample.pkl -v --strftime short --cycle 42
+
+    # Assessment of head tracking ability
+    ref2plot --protocol sample.pkl -v --strftime short
+
+    for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
+
+    for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
+
+    # Something is wrong for 0004. Choose a different scan cycle as
+    # reference.
+
+    fmririgid --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
+
+    ref2plot --protocol sample.pkl -v --strftime short --cohort AGB300 --id 4
+
+    for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
+
+    # Fit population map
+    ants4pop --protocol sample.pkl -v --strftime short --cycle 42
+
+    # Fit population map
+    ants4pop --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
+
+    # Fit signal models in standard space
+
+    fmrifit --protocol sample.pkl -v --strftime short \
+        --stimulus-block letter \
+        --vb mni152 --diffeomorphism ants
+

@@ -1,12 +1,18 @@
-Quick start
------------
+Semi-Automated Analysis of Multiple Subjects
+--------------------------------------------
 
-fmristats provides command line tools which allow to access most of its
-functionality, in particular when it comes to fitting the signal model
-to subject data.
+fmristats provides a variety of command line tools which allow access to most
+of its functionality. In particular when it comes to fitting a particular
+signal model to subject data.
 
-**Do NOT alter your images. Do NOT do motion correction, do NOT correct
-for slice timing differences, and do NOT smooth your data.**
+Before you start, a small but important warning: more »traditional« approaches
+to FMRI data analysis recommend or encourage user to first spatially smooth
+data prior to the statistical data analysis and to apply motion or slice timing
+corrections. In fmristats, spatial smoothing is an integral part of the model
+fitting process itself. Therefore, when using fmristats, you should **NOT alter
+your images. DO NOT DO motion corrections. DO NOT DO correct for slice timing
+differences. DO NOT smooth your data.** Your statistical analysis benefit from
+more power this way and you will be rewarded with valid test statistics.
 
 Protocol interface for large studies
 ....................................
@@ -208,9 +214,11 @@ any population inference, you update your sample:
 
 .. code:: shell
 
+    csv2covariate masterfile.csv masterfile.pkl
+
     fmriprotocol protocol.pkl \
         --update masterfile.pkl \
-        --output sample-for-population-inference.pkl
+        --output ../results/sample.pkl
 
 Assuming that each subject in a study is not only measured once and not
 only with respect to one single paradigm, fmristats recommends to work
@@ -339,19 +347,19 @@ marked as valid:
     ref2plot --protocol sample.pkl -v
 
     # Create the *identity population map* for each subject
-    fmripop --protocol sample.pkl -v
+    fmripmap --protocol sample.pkl -v
 
     # Fit in subject reference space (resolution: (2 mm)^3)
     fmrifit --protocol sample.pkl --stimulus-block letter -v
 
-To be conform with the above example, we would need to add ``--strftime
-short`` to each call, as *time* is not part of the naming scheme in the
-example.
+Or, to be conform with the above example, we would need to add
+``--strftime short`` to each call, as *time* is not part of the naming
+scheme in the example.
 
 .. code:: shell
 
     # Create Irritation Designs
-    mat2irr --protocol sample.pkl -v --strftime short -f
+    mat2irr --protocol sample.pkl -v --strftime short
 
     # Create Session Designs
     nii2ses --protocol sample.pkl -v --detect-foreground --strftime short
@@ -362,10 +370,11 @@ example.
     # Assessment of head tracking ability
     ref2plot --protocol sample.pkl -v --strftime short
 
-    # Create the *identity population map* for each subject
-    fmripop --protocol sample.pkl -v --strftime short
+    # Create the *identity population map* for each subject,
+    # say in resolution: (2 mm)^3
+    fmripmap --protocol sample.pkl -v --strftime short
 
-    # Fit in subject reference space (resolution: (2 mm)^3)
+    # Fit in subject reference space
     fmrifit --protocol sample.pkl --stimulus-block letter -v --strftime short
 
 Then either
@@ -373,184 +382,21 @@ Then either
 .. code:: shell
 
     # Prune parameter fields from none-brain areas
-    fmriprune --protocol sample.pkl -v -p .5
+    fmriprune --protocol sample.pkl -v -p .6 --strftime short
 
 or
 
 .. code:: shell
 
     # Prune parameter fields from none-brain areas
-    fsl4prune --protocol sample.pkl -v -p .5
-
-.. _BET: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET
+    fsl4prune --protocol sample.pkl -v -p .6 --strftime short
 
 Plot parameter fits
 ...................
 
-fmristats has some plotting capabilities
+fmristats has some very basic plotting capabilities:
 
 .. code:: shell
 
     fit2plot --protocol sample.pkl -v
-
-Population inference
-....................
-
-If you aim for population inference, you need to relate the brains
-:math:`R_j` of all subjects :math:`j` in your study to each other, i.e.
-you need to chose a representative, say a template brain :math:`M` in
-MNI Standard Space, and fit diffeomorphisms :math:`ψ_j` which map
-:math:`M` to each :math:`R_j`.
-
-.. math::
-
-    ψ_j: M \to R_j.
-
-Good candidates for :math:`R_j` may be the intercept fields of fits of
-the signal models in an isometric coordinate system with respect to each
-subject, namely the created fits above.
-
-Extract the intercepts from fits:
-
-.. code:: shell
-
-    fit2nii --protocol sample.pkl -v \
-        --parameter intercept --value point \
-        --round-to-integer
-
-Or:
-
-.. code:: shell
-
-    fit2nii --protocol sample.pkl -v \
-        --parameter intercept --value point \
-        --round-to-integer --strftime short
-
-if *time* is not part of the naming scheme of your files.
-
-If you are using the software FNIRT_ to fit the respective :math:`ψ_j`,
-then you may use the command line tool ``fsl4pop`` (which is distributed
-together with fmristats) to parse the `warp coefficient files`_ which
-were created by FNIRT_.
-
-.. _FNIRT: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT
-
-.. _`warp coefficient files`: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide#A--cout
-
-.. code:: shell
-
-    # you may have done something along the line…
-    fsl5.0-fnirt --in=intercept.nii.gz --config=T1_2_MNI152_2mm \
-        --cout=warping/FOOBAR-0002-WGT-2015-01-01-reference-max-intercept_warpcoef.nii.gz
-
-If you have followed the suggested naming scheme:
-
-    ``warping/{study}-{id}-{paradigm}-{datetime}-intercept_warpcoef.nii.gz``
-
-(but you can change the defaults), you can convert the warp coefficient
-files to PopulationMaps via
-
-.. code:: shell
-
-    fsl4pop --protocol sample.pkl -v
-
-Or:
-
-.. code:: shell
-
-    fsl4pop --protocol sample.pkl -v --strftime short
-
-if *time* is not part of the naming scheme of your files.
-
-By default (but you may change the defaults), ``fsl4pop`` will assume
-that the template ``MNI152_T1_2mm`` has been used to define the domains
-of each :math:`ψ_j`, and that FNIRT has been provided with a reference
-mask that is a dichotomised version of ``MNI152_T1_2mm_brain``, and both
-these files reside in
-
-.. code:: shell
-
-    /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz
-    /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz
-
-which is the default location of these files when you installed FSL.
-
-To fit the signal model at all points at which the template mask
-``MNI152_T1_2mm_brain`` has valid entries, i.e. grey scale intensities
-:math:`>0`:
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl --stimulus-block letter -v \
-        --population-space MNI152_T1_2mm
-
-Or:
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl --stimulus-block letter -v \
-        --population-space MNI152_T1_2mm --strftime short
-
-if *time* is not part of the naming scheme of your files.
-
-By default, the population space :math:`M` is saved to
-``../data/vbs/MNI152_T1_2mm-mask.image`` and the brain mask to
-``../data/vbs/MNI152_T1_2mm-mask.image``.
-
-Fitting the population model
-............................
-
-Create an ATI reference field:
-
-.. code:: shell
-
-    fmriati 2.09 ../data/vbs/MNI152_T1_2mm-mask.image ati-reference.image -v
-
-To see the correct order of the positional arguments for ``fmrisample``:
-
-.. code:: shell
-
-    fmrisample -h
-
-Create the samle for population inference:
-
-.. code:: shell
-
-    fmrisample sample.sample \
-        ../data/vbs/MNI152_T1_2mm.image  \
-        ati-reference.image \
-        -v --strftime short \
-        sample.pkl
-
-Now, fit the population model to your sample.
-
-.. code:: python
-
-    from fmristats import *
-
-    smp = load('sample.sample')
-
-    pop = PopulationModel(smp)
-    result = pop.fit()
-
-    result.save('sample.meta')
-
-To get the Knapp-Hartung adjusted tstatistics field testing for non-zero
-task activation in the population:
-
-.. code:: python
-
-    # t-test statistics field (Knapp-Hartung adjusted)
-    tpattern = result.get_tvalues()
-    # as an image
-    timage = Image(data=tpattern[0], reference=result.population_space.reference)
-
-If you need to adjust for covariates:
-
-.. code:: python
-
-    from fmristats import *
-
-    pop = PopulationModel(smp, 'status + smoking + sex + cohort')
-    result = pop.fit()
 

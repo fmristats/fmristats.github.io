@@ -1,0 +1,859 @@
+Subject inference (at one coordinate)
+-------------------------------------
+
+A signal model has been fitted to FMRI session data:
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -v \
+        --cohort AGB300 \
+        --id 2 \
+        --paradigm WGT \
+        --strftime short \
+        --stimulus-block letter -s
+
+Or, say in MNI standard space:
+
+.. code:: shell
+
+    fmrifit --protocol sample.pkl -v \
+        --cohort AGB300 \
+        --id 2 \
+        --paradigm WGT \
+        --strftime short \
+        --vb mni152 --diffeomorphism ants \
+        --stimulus-block letter
+
+This is indeed the command line equivalent to the following python code:
+
+Create the model
+................
+
+
+
+
+Load the data.
+
+
+.. code:: python
+
+    
+    from fmristats import *
+    from fmristats.pmap import pmap_reference
+    
+    # the FMRI data
+    session = load(path_to_session)
+    
+    # the fitted head movements (reference maps)
+    reference_maps = load(path_to_reference_maps)
+    
+    # set the standard space equal to the mean position of the subject in
+    # the scanner and the diffeomorphism to the identity.
+    population_map = pmap_reference(session=session, resolution=2.)
+    
+    # alternatively load a diffeomorphism from disk
+    population_map = load(path_to_population_map)
+
+
+
+
+Create a signal model instance
+
+
+.. code:: python
+
+    
+    model = SignalModel(
+        session=session,
+        reference_maps=reference_maps,
+        population_map=population_map)
+    
+    # create the design matrix of subject conditioning
+    model.create_irritation_design(
+            s='letter',
+            c='control',
+            offset=5.242,
+            preset=1.42)
+    
+    # create the data matrix, setting a burn in of 4 scan cycles
+    model.create_data_matrix(burn_in=4)
+    
+    # set the FWHM of the weighting scheme to the default value
+    model.set_hyperparameters('max')
+    
+    # save the model to disk (if you like)
+    model.save('subject.model')
+
+
+
+
+
+
+
+Query information
+.................
+
+Get some information about the FMRI data:
+
+
+.. code:: python
+
+    print(session.reference.describe())
+    print(reference_maps.describe())
+    print(session.describe())
+
+
+.. code::
+
+    
+            Resolution (left to right):         3.00 mm
+            Resolution (posterior to anterior): 3.00 mm
+            Resolution (inferior to superior):  4.60 mm
+            Diagonal of one voxel:              6.26 mm
+            Volume of one voxel:                41.40 mm^3
+            Aspect 0 on 1:                      1.00
+            Aspect 0 on 2:                      0.65
+            Aspect 1 on 2:                      0.65
+            Rigid transformation: False
+    
+            Scans:        6900
+            Valid:        6900
+            Outlying:        0 (0.00%)
+            Scan cycles:   230
+            Valid:         230
+            Outlying:        0 (0.00%)
+    
+    
+            EPI code: 3
+    
+
+
+
+Get some information about the model:
+
+
+.. code:: python
+
+    print(model.describe())
+
+
+.. code::
+
+    
+            Hyperparameters
+            ---------------
+            Scale type:   max
+            Scale:        2.30 mm
+            Factor:       3.00
+    
+            Resulting in:
+                Mass:         0.99730
+                FWHM:         5.42 mm
+                Radius:       6.90 mm
+                Diagonal:     13.80 mm
+    
+
+
+
+Fit the model
+.............
+
+
+.. code:: python
+
+    result = model.fit()
+    
+    # save the result to disk (if you like)
+    result.save('subject.fit')
+
+
+
+
+
+
+
+Plot the fields.
+
+
+.. code:: python
+
+    import matplotlib.pylab as pt
+    import matplotlib.cm as cm
+    from fmristats.plot import picture, contour
+    
+    a0 = result.get_field('intercept','point')
+    b0 = result.get_field('task','point')
+    t0 = result.get_field('task', 'tstatistic')
+
+
+
+
+The intercept:
+
+
+.. code:: python
+
+    
+    picture(a0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure10_1.png
+   :width: 15 cm
+
+
+
+The effect field:
+
+
+.. code:: python
+
+    
+    picture(b0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure11_1.png
+   :width: 15 cm
+
+
+
+The pattern of neuronal activity:
+
+
+.. code:: python
+
+    
+    picture(t0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure12_1.png
+   :width: 15 cm
+
+
+
+Remove non-brain areas from the parameter fields (prune)
+........................................................
+
+Set a threshold for the minimum number of observations that should be
+available for fitting. E.g. set this number to a proportion of the
+maximum available sample size.
+
+
+.. code:: python
+
+    
+    gf = result.get_field('df')
+    proportion_df = .6
+    threshold_df = int(proportion_df * np.nanmax(gf.data))
+    
+    print('Lower threshold for the degrees of freedom: {:d}'.format(threshold_df))
+
+
+
+
+Apply the threshold:
+
+
+.. code:: python
+
+    
+    result.mask(gf.data >= threshold_df)
+    
+    a0 = result.get_field('intercept','point')
+    b0 = result.get_field('task','point')
+    t0 = result.get_field('task', 'tstatistic')
+
+
+
+
+The intercept:
+
+
+.. code:: python
+
+    
+    picture(a0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure15_1.png
+   :width: 15 cm
+
+
+
+The effect field:
+
+
+.. code:: python
+
+    
+    picture(b0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure16_1.png
+   :width: 15 cm
+
+
+
+The pattern of neuronal activity:
+
+
+.. code:: python
+
+    
+    picture(t0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure17_1.png
+   :width: 15 cm
+
+
+
+If you like, also apply BET on the intercept of the fitted parameter
+field.
+
+
+.. code:: python
+
+    
+    intercept = result.get_field('intercept', 'point')
+    
+    from fmristats.fsl import bet
+    
+    template = bet(
+            intercept = intercept,
+            intercept_file = 'intercept.nii.gz',
+            mask_file = 'intercept-mask.nii.gz',
+            cmd='fsl5.0-bet',
+            verbose = 2)
+
+
+.. code::
+
+    
+    fsl5.0-bet
+      intercept.nii.gz
+      intercept-mask.nii.gz
+      -R
+    
+
+
+
+Apply the mask:
+
+
+.. code:: python
+
+    
+    result.mask(template.get_mask())
+    
+    a0 = result.get_field('intercept','point')
+    b0 = result.get_field('task','point')
+    t0 = result.get_field('task', 'tstatistic')
+
+
+
+
+The intercept:
+
+
+.. code:: python
+
+    
+    picture(a0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure20_1.png
+   :width: 15 cm
+
+
+
+The effect field: Most notably, the corona around the brain is gone!
+
+
+.. code:: python
+
+    
+    picture(b0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure21_1.png
+   :width: 15 cm
+
+
+
+The pattern of neuronal activity:
+
+
+.. code:: python
+
+    
+    picture(t0,3,6,3,interpolation='bilinear')
+
+
+.. image:: figures/subject-inference-at-one-point_figure22_1.png
+   :width: 15 cm
+
+
+
+Find the highest peak of neuronal activity
+..........................................
+
+Select the highest peak in the t-statistics field:
+
+
+.. code:: python
+
+    
+    peak = np.nanargmax(t0.data)
+    index = np.unravel_index(peak, t0.data.shape)
+    
+    print(index)
+
+
+.. code::
+
+    (39, 23, 40)
+    
+
+
+
+Plot the respective slice:
+
+
+.. code:: python
+
+    
+    pt.close()
+    picture(t0,3,1,1,[index[-1]], interpolation='bilinear')
+    pt.colorbar()
+    contour(t0,3,1,1,[index[-1]], interpolation='bilinear')
+    pt.plot([index[0]], [index[1]], 'ko')
+    pt.plot([index[0]], [index[1]], 'w+')
+    
+    print(t0.data[index])
+
+
+.. code::
+
+    7.9078320395958235
+    
+
+.. image:: figures/subject-inference-at-one-point_figure24_1.png
+   :width: 15 cm
+
+
+
+Find the coordinates of the peak in standard space:
+
+
+.. code:: python
+
+    
+    print(population_map.describe())
+    
+    coordinate = t0.apply_to_index(index)
+    print(coordinate)
+
+
+.. code::
+
+    
+            Population map
+            --------------
+            name:          ants
+            vb:            MNI152_T1_2mm_brain
+            nb:            AGB300-0002-WGT
+            vb_background: MNI152_T1_2mm
+            nb_background: --
+            vb_estimate:   vb_estimate
+            nb_estimate:   nb_estimate
+    [ 12. -80.   8.]
+    
+
+
+
+Use the ``atlasquery`` tool from the FSL project to see to which
+structure these coordinates belong:
+
+.. code:: shell
+
+    atlasquery -a "MNI Structural Atlas" -c 12,-80,8
+    MNI Structural Atlas
+    40% Occipital Lobe
+
+Scatter plot of FMRI data
+.........................
+
+Extract the data at the index.
+
+
+.. code:: python
+
+    
+    data = model.data_at_index(index)
+    data.head()
+    data.shape
+    
+    # Block labels and number of blocks
+    data.block.unique()
+    data.block.unique().size
+    print('Number of blocks: {}'.format(len(data.block.unique())))
+    
+    # Cycles which are within task blocks and their total number
+    data.cycle.unique()
+    data.cycle.unique().size
+    print('Number of slices: {}'.format(len(data.cycle.unique())))
+
+
+.. code::
+
+    Number of blocks: 8
+    Number of slices: 94
+    
+
+
+
+Define a scale :math:`w` for the weights for visualisation and order
+the observations by time.
+
+
+.. code:: python
+
+    
+    data.time = data.time - data.time.min()
+    elem, idx, count = np.unique(data.time,return_index=True,return_counts=True)
+    
+    w = data.weight
+    w = (w-w.min())/(w.max()-w.min())
+    w = .87*np.log(w+1.069)
+
+
+
+
+Define plotting parameters.
+
+
+.. code:: python
+
+    
+    import seaborn as sb
+    sb.set_style('whitegrid')
+    pt.style.use(['seaborn-whitegrid', 'seaborn-colorblind'])
+
+
+
+
+Time series plot.
+
+
+.. code:: python
+
+    
+    fig, ax = pt.subplots()
+    ax.scatter(data.time,data.y,s=w,marker='o')
+    ax.set_ylabel('MR Signal')
+    ax.set_xlabel('Time (s)')
+    sb.despine()
+    pt.tight_layout()
+
+
+.. image:: figures/subject-inference-at-one-point_figure29_1.png
+   :width: 15 cm
+
+
+
+(Click image to enlarge.)
+
+Fit different models to the data at these coordinates
+.....................................................
+
+Model 1: task/block
+###################
+
+
+.. code:: python
+
+    
+    model1 = model.model_at_index(index)
+    fit1 = model1.fit()
+    data['y1'] = fit1.predict()
+    data['w1'] = fit1.wresid
+    predict1 = fit1.predict()[idx]
+
+
+
+
+Model 2: time+task
+##################
+
+
+.. code:: python
+
+    
+    model2 = model.model_at_index(index,formula='y~time+C(task)')
+    fit2 = model2.fit()
+    data['y2'] = fit2.predict()
+    data['w2'] = fit2.wresid
+    predict2 = fit2.predict()[idx]
+    
+    t = model2.exog[:,2]
+    t = t - t.min()
+    
+    (data.time == t).all()
+
+
+.. code::
+
+    True
+    
+
+
+
+Model 3: bs(time, df=12)
+########################
+
+
+.. code:: python
+
+    
+    model3 = model.model_at_index(index,formula='y~bs(time,df=12)+C(task)')
+    fit3 = model3.fit()
+    data['y3'] = fit3.predict()
+    data['w3'] = fit3.wresid
+    predict3 = fit3.predict()[idx]
+
+
+
+
+Plot the fitted regression surfaces
+...................................
+
+Create a plot of the fitted regression surfaces.
+
+
+.. code:: python
+
+    
+    current_palette = sb.color_palette()
+    #sb.palplot(current_palette)
+    c1 = current_palette[0]
+    c2 = current_palette[1]
+    c3 = current_palette[2]
+    
+    pt.close()
+    fig, ax = pt.subplots()
+    ax.plot(elem,predict1,'-',c=c1,lw=.9,label='task/block')
+    ax.plot(elem,predict2,'--',c=c2,lw=.9,label='task+time')
+    ax.plot(elem,predict3,':',c=c3,lw=.9,label='task+bs(time,df=12)')
+    ax.legend()
+    ax.set_ylabel('Expected Signal as Predicted by Model')
+    ax.set_xlabel('Time (s)')
+    sb.despine()
+    pt.tight_layout()
+
+
+.. image:: figures/subject-inference-at-one-point_figure33_1.png
+   :width: 15 cm
+
+
+
+(Click image to enlarge.)
+
+Add block labels.
+
+
+.. code:: python
+
+    
+    positions = data.groupby(['task', 'block']).mean()
+    positions = positions[['time','y1','y2','y3']]
+    positions.reset_index(inplace=True)
+    positions.set_index(['task', 'block', 'time'], inplace=True)
+    positions = positions.stack()
+    positions.index.names = ['task', 'block', 'time', 'model']
+    positions = positions.reset_index()
+    positions.set_index(['task', 'block', 'model'], inplace=True)
+    positions.rename(columns={0:'value'}, inplace=True)
+    positions.head(10)
+    
+    positions = positions.reset_index()
+    positions = positions.groupby(['task','block','time']).max()
+    positions.reset_index(inplace=True)
+    positions.head(10)
+    
+    a = fit1.params[0]
+    b = fit1.params[1] + a
+    
+    pt.close()
+    fig, ax = pt.subplots()
+    ax.axhline(a, c='grey', alpha=.3, lw=10)#, label='mean signal in A')
+    ax.axhline(b, c='lightgrey', alpha=.3, lw=10)#, label='mean signal in B')
+    ax.plot(elem,predict1,'-',c=c1,lw=.9,label='task/block')
+    ax.plot(elem,predict2,'--',c=c2,lw=.9,label='task+time')
+    ax.plot(elem,predict3,':',c=c3,lw=.9,label='task+bs(time,df=12)')
+    ax.legend()
+    ax.set_ylabel('Expected Signal as Predicted by Model')
+    ax.set_xlabel('Time (s)')
+    sb.despine()
+    pt.tight_layout()
+    for r in positions.itertuples():
+        if np.isclose(r.task,0):
+            label = r'$B_{}$'.format(int(r.block)+1)
+        else:
+            label = r'$A_{}$'.format(int(r.block)+1)
+        ax.annotate(label, xy=(r.time-1, r.value+.5))
+
+
+.. image:: figures/subject-inference-at-one-point_figure34_1.png
+   :width: 15 cm
+
+
+
+(Click image to enlarge.)
+
+
+
+
+Durbin-Watson
+.............
+
+
+.. code:: python
+
+    
+    dw = result.get_field('durbin_watson')
+
+
+
+
+Durbin-Watson at the coordinates of the peak:
+
+
+.. code:: python
+
+    
+    dw.data[index]
+
+
+.. code::
+
+    1.9064023355229434
+    
+
+
+
+Plot.
+
+
+.. code:: python
+
+    
+    sb.set_style('white')
+    pt.style.use(['seaborn-white', 'seaborn-colorblind'])
+    
+    dw.data = dw.data - 2
+    
+    picture(dw,3,6,3,interpolation='bilinear')
+    pt.colorbar()
+
+
+.. image:: figures/subject-inference-at-one-point_figure38_1.png
+   :width: 15 cm
+
+
+
+Distribution looks very symmetric with no clear systematic.
+
+Formal testing
+..............
+
+Test for non-zero task related effects.
+
+Effect strength
+###############
+
+
+.. code:: python
+
+    
+    print(fit1.params[1])
+    print(fit2.params[1])
+    print(fit3.params[1])
+
+
+.. code::
+
+    15.031309466476994
+    15.045584340232338
+    14.813080718251996
+    
+
+
+
+Test statistic
+##############
+
+
+.. code:: python
+
+    
+    print(fit1.tvalues[1])
+    print(fit2.tvalues[1])
+    print(fit3.tvalues[1])
+
+
+.. code::
+
+    7.682368014451706
+    7.570981561542083
+    4.898837402953443
+    
+
+
+
+P-Values
+########
+
+
+.. code:: python
+
+    
+    print(fit1.pvalues[1])
+    print(fit2.pvalues[1])
+    print(fit3.pvalues[1])
+
+
+.. code::
+
+    2.0436364772462996e-14
+    4.770567259102657e-14
+    1.0102904574329112e-06
+    
+
+
+
+Test whether time is an influential factor at this coordinate.
+
+
+.. code:: python
+
+    
+    print(fit2.pvalues[2])
+    
+    R = np.identity(len(fit3.params))
+    R = R[2:,:]
+    print(fit3.f_test(R))
+
+
+.. code::
+
+    0.7833649721827338
+    <F test: F=array([[1.96084842]]), p=0.023899320282703664,
+    df_denom=3310, df_num=12>
+    
+
+
+
+Note that all p-values need to be adjusted for multiple testing. It can
+safely be argued that time has no significant influence. Data suggest no
+temporal signal fluctuation. Note that if there were, the non-parametric
+time dimension of model 1 would be able to handle it.
