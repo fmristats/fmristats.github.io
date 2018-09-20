@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Population inference (set-up) &mdash; fmristats 0.0.3 documentation</title>
+  <title>Population inference (set-up) &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -96,6 +96,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
@@ -108,7 +109,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -228,13 +229,24 @@ the help of <cite>fsl4pop</cite> for how to use custom warp coefficient files.</
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> \
     <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
     <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
+
+<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span> <span class="o">-</span><span class="n">j</span> <span class="mi">1</span>
 </pre></div>
 </div>
-<p><em>Alternative 1</em>: fit only one subject:</p>
+<p><em>Alternative 1</em>: fit three subjects only:</p>
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
     <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
     <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
+
+<span class="n">fmriprune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
+    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
+
+<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
 </pre></div>
 </div>
 <p><em>Alternative 2</em>: fit nothing, do a dry run instead (s=skip):</p>
@@ -280,12 +292,13 @@ fmristats’ own file format.</p>
 </pre></div>
 </div>
 <p>Create the sample for population inference:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">vf</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span> \
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">vf</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
     <span class="n">population</span><span class="o">-</span><span class="n">inference</span><span class="o">.</span><span class="n">sample</span> \
     <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>  \
     <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>  \
     <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> \
-    <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span>
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
 </pre></div>
 </div>
 </div>
@@ -308,14 +321,17 @@ for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
 
 for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
 
-# Something is wrong for 0004. Choose a different scan cycle as
-# reference.
+# In this example, subject 0004 appears to show severe head movments
+# in cycle 42. We therefore choose a different scan cycle as the
+# subject&#39;s reference space.
 
 fmririgid --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
 
 ref2plot --protocol sample.pkl -v --strftime short --cohort AGB300 --id 4
 
 for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
+
+# The quality control plot looks a loot better now.
 
 # Fit population map
 ants4pop --protocol sample.pkl -v --strftime short --cycle 42
@@ -375,7 +391,7 @@ fmrifit --protocol sample.pkl -v --strftime short \
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.3',
+            VERSION:'0.0.4',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

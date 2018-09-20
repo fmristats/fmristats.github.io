@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subject inference (at one coordinate) &mdash; fmristats 0.0.3 documentation</title>
+  <title>Subject inference (at one coordinate) &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Run analysis on a server" href="run-on-server.html" />
-    <link rel="prev" title="Population inference (confirmative)" href="population-inference-confirmative.html" /> 
+    <link rel="prev" title="Population inference (adjust for covariates)" href="population-inference-covariates.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Subject inference (at one coordinate)</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create-the-model">Create the model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#query-information">Query information</a></li>
@@ -122,7 +123,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -459,6 +460,8 @@ field.</p>
         <span class="n">nb_background</span><span class="p">:</span> <span class="o">--</span>
         <span class="n">vb_estimate</span><span class="p">:</span>   <span class="n">vb_estimate</span>
         <span class="n">nb_estimate</span><span class="p">:</span>   <span class="n">nb_estimate</span>
+        <span class="n">vb_mask</span><span class="p">:</span>       <span class="o">--</span>
+        <span class="n">nb_mask</span><span class="p">:</span>       <span class="o">--</span>
 <span class="p">[</span> <span class="mf">12.</span> <span class="o">-</span><span class="mf">80.</span>   <span class="mf">8.</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -725,7 +728,7 @@ time dimension of model 1 would be able to handle it.</p>
         <a href="run-on-server.html" class="btn btn-neutral float-right" title="Run analysis on a server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="population-inference-confirmative.html" class="btn btn-neutral" title="Population inference (confirmative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="population-inference-covariates.html" class="btn btn-neutral" title="Population inference (adjust for covariates)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -756,7 +759,7 @@ time dimension of model 1 would be able to handle it.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.3',
+            VERSION:'0.0.4',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

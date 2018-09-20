@@ -11,29 +11,30 @@ spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
 Therefore, when using fmristats, you should **NOT alter your images. DO
-NOT DO motion corrections. DO NOT DO correct for slice timing
-differences. DO NOT smooth your data.** Your statistical analysis
-benefit from more power this way and you will be rewarded with valid
-test statistics.
+NOT DO motion corrections. DO NOT correct for slice timing differences.
+DO NOT smooth your data.** Your statistical analysis will benefit, you
+will gain power, and you will be rewarded with valid test statistics.
 
 In order to fit a signal model to the FMRI session data of a subject,
 you need to first (i) define the *irritation*, *conditioning*, or
 *paradigm* of the session, i.e. provide the on- and offsets of the task
 blocks as well as their durations, you will need to (ii) separate the
 foreground from the background in the 4D FMRI image, and you need to
-(iii) estimate (or provide) the location, position and tilt of the
-subject's head in the scanner during acquisition. After that, you are
-(iv) ready to fit a signal model to your data.
+(iii) estimate (or provide) the locations, positions and tilts of the
+subject's head in the scanner during acquisition. Then you (iv) fit a
+signal model to your data.
+
+This tutorial will lead you through each of these steps.
 
 Irritation files
 ................
 
-Subject in a FMRI study are confronted with various stimuli. The
+The subjects in an FMRI study are confronted with various stimuli. The
 following will define a two-block task design labelled *FOO* for subject
-*42* in the study called *MyStudy* measured on the 1st of November, 2015
+*42* in a study called *MyStudy* measured on the 1st of November, 2015
 at 12:54, and it will save the design to a file named ``subject.irr``.
-The control block as been labelled *shapes*, the stimulus block has been
-labelled *faces*.
+The control block has been labelled *shapes*, the stimulus block has
+been labelled *faces*.
 
 .. code:: shell
 
@@ -199,7 +200,7 @@ method to track the head of your subject:
 This will save various figures to: `figures/FOO/assessments`. But you
 may change this default location. If you look at the figures, you will
 notice that an outlier detection has been applied to the estimated head
-movements. Scan circles which are marked as outlying will not be used in
+movements. Scan cycles which are marked as outlying will not be used in
 the fitting.
 
 .. code:: shell
@@ -228,28 +229,40 @@ resolution* is created via:
 
 .. code:: shell
 
-    fmripmap --ses subject.ses --population-map subject.pop -v \
-        --vb-name scanner
+    fmripop --ses subject.ses --population-map subject.pop -v \
+        --vb-type scanner
 
 This will set the coordinate system of the standard space equal to the
 scanner and the image grid equal to the native resolution of the
 acquisition sequence, and saves the map to `subject.pop`.
 
-Alternatively,
+*Alternatively 1 (recommended)*:
 
 .. code:: shell
 
-    fmripmap --ses subject.ses --population-map subject.pop -v \
-        --vb-name reference --resolution 2.0
+    fmripop --ses subject.ses --population-map subject.pop -v \
+        --vb-type reference --resolution 2.0
 
 will set the coordinate system of the standard space equal to the
 scanner and the image grid to a resolution of: :math:`2x2x2 mm^3`. This
-is in fact the default setting of `fmripmap`, thus the above call is
+is in fact the default setting of `fmripop`, thus the above call is
 equivalent to:
 
 .. code:: shell
 
-    fmripmap --ses subject.ses --population-map subject.pop -v
+    fmripop --ses subject.ses --population-map subject.pop -v
+
+*Alternatively 2 (also recommended)*:
+
+.. code:: shell
+
+    fmripop --ses subject.ses --ref subject.ref \
+        --population-map subject.pop -v \
+        --vb-type scan --cycle 42 --resolution 2.0
+
+will set the coordinate system of the standard space equal to the
+position of the subject during the 42nd scan cycle and the image grid to
+a resolution of: :math:`2x2x2 mm^3`.
 
 We shall often refer to :math:`R_j` as the subject or *reference space*
 of the subject, and to :math:`M` as the standard or *population space*.
@@ -258,7 +271,7 @@ How to fit the signal model
 ...........................
 
 The command line tool ``fmrifit`` will fit a signal model to FMRI data.
-You will need to provide ``fmrifit`` with a FMRI session file (the
+You will need to provide ``fmrifit`` with an FMRI session file (the
 data), a population map (a mapping from standard space to the subject),
 and reference maps (the head movements), say ``subject.ses``,
 ``subject.pop``, and ``subject.ref``.
@@ -276,13 +289,13 @@ The above call saves the fit to ``subject.fit``.
 Prune non-brain areas
 .....................
 
-As DOM estimation uses a WLS estimator in its fitting procedure which
-uses a weighting scheme with non-null spacial extent, evaluating (i.e.
-fitting) a FMRI model close but outside of the actual brain of a subject
-will nevertheless result in "valid" parameter estimates. In the case
-that ``fmrifit`` is not supplied with a brain mask, these "outside fits"
-can be detected post-hoc as they are naturally accompanied by a drastic
-drop in available sample size.
+The WLS optimisation in the fitting procedure uses a weighting scheme
+with non-null spatial extent. Thus, evaluating (i.e. fitting) an FMRI
+model close but outside of the actual brain of a subject will
+nevertheless result in "valid" parameter estimates. In the case that
+``fmrifit`` is not supplied with a brain mask, these "outside fits" can
+be detected post-hoc as they are naturally accompanied by a drastic drop
+in available sample size.
 
 By default, ``fmrifit`` will estimate a default *data mask* on :math:`M`
 from the foreground/background difference saved in ``subject.ses``. If
@@ -417,7 +430,7 @@ cycle, say
         --reference-maps subject.ref \
         --cycle 42
 
-And then use the 3D image of the subject during this scan circle as
+And then use the 3D image of the subject during this scan cycles as
 reference.
 
 .. code:: shell

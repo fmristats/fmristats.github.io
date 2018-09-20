@@ -4,7 +4,7 @@ Population inference (confirmative)
 
 
 
-Load subject data
+Subject reference
 .................
 
 
@@ -100,10 +100,10 @@ structure these coordinates belong:
     atlasquery -a "MNI Structural Atlas" -c 12,-80,8
     MNI Structural Atlas % Occipital Lobe
 
-Load population data, fit the model
-...................................
+Load data, fit model, and extract statistics
+............................................
 
-Load data
+Load data:
 
 
 .. code:: python
@@ -124,7 +124,7 @@ Number of subjects in the sample:
 
 .. code::
 
-    32
+    64
     
 
 
@@ -160,7 +160,8 @@ Remove the initial subject from the sample.
 Have a look at the sample size per template voxel. It appears that there
 are some voxels close to the surface areas of the template where one or
 more population diffeomorphisms :math:`ψ_j` did not fully map the
-template brain onto the subject brain. This is probably to be expected.
+template brain onto the subject brain. But this is probably to be
+expected.
 
 
 .. code:: python
@@ -187,7 +188,7 @@ template brain onto the subject brain. This is probably to be expected.
 
 
 
-Fit the population model to the sample of (estimated) neural activities.
+Fit the population model to the sample of neural activities.
 
 
 .. code:: python
@@ -208,8 +209,8 @@ Fit the population model to the sample of (estimated) neural activities.
 
 
 
-Get the Knapp-Hartung adjusted t-statistics field that tests for task
-related neural activity in the population:
+Extract the Knapp-Hartung adjusted t-statistics field that tests for
+task related neural activity in the population:
 
 
 .. code:: python
@@ -252,7 +253,7 @@ Plot the respective slice in population space:
 
 .. code::
 
-    2.1369966712391775
+    2.705125720068511
     
 
 .. image:: figures/population-inference-confirmative_figure15_1.png
@@ -302,7 +303,7 @@ Define the critical values for the plots:
 
 .. code::
 
-    1.6448536269514722 1.6972608943617378
+    1.6448536269514722 1.669804162296528
     
 
 
@@ -323,18 +324,32 @@ right handed on the top):
     x = dm.loc['intercept', 'point']
     s = dm.loc['intercept', 'stderr']
     
-    fig, ax = pt.subplots()
+    import seaborn as sb
+    sb.set_style('whitegrid')
+    
+    palette = sb.palettes.SEABORN_PALETTES['deep']
+    
+    figw = 5.842
+    figh = 8.442
+    
+    fig = pt.figure(figsize=(figw,figh))
+    ax = pt.subplot(111)
     ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task[df.id!=2], df.yvec[df.id!=2], xerr=crt_subject*df.stderr[df.id!=2], fmt='o', label='Sample')
-    ax.errorbar(df.task[df.id==2], df.yvec[df.id==2], xerr=crt_subject*df.stderr[df.id==2], fmt='o', label='Initial Subject')
-    pt.box(False)
-    ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
-    ax.set_ylabel('Waterloo')
-    ax.errorbar(x, -1, xerr=crt_population*s, fmt='o', label='Population')
+    ax.errorbar(df.task[df.id!=2], df.yvec[df.id!=2],
+        xerr=crt_subject*df.stderr[df.id!=2], fmt='o',
+        label='Sample', c=palette[0])
+    ax.errorbar(df.task[df.id==2], df.yvec[df.id==2],
+        xerr=crt_subject*df.stderr[df.id==2], fmt='o',
+        label='Initial Subject', c=palette[1])
+    ax.errorbar(x, -1, xerr=crt_population*s, fmt='o',
+        label='Population', c=palette[2])
     ax.axhline(-.5,c='k',lw=.9, ls='-')
-    pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
+    ax.set_xlabel(r'Task inferred signal change at $x_1 (ati)$')
+    ax.set_ylabel('Waterloo')
     ax.yaxis.set_ticks_position('none')
-    pt.legend()
+    pt.box(False)
+    pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
+    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=3)
     
     _=pt.tight_layout()
 
@@ -350,21 +365,25 @@ right handed on the top):
 There was one subject in the sample, who showed an even larger task
 related neural activity at the coordinates.
 
-Funnel Plot
+Funnel plot
 :::::::::::
 
 
 .. code:: python
 
     
-    pt.close()
-    fig, ax = pt.subplots()
+    fig = pt.figure(figsize=(figw,figh))
+    ax = pt.subplot(111)
     ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task[df.id!=2], df.reci[df.id!=2], xerr=crt_subject*df.stderr[df.id!=2], fmt='o', label='Sample')
-    ax.errorbar(df.task[df.id==2], df.reci[df.id==2], xerr=crt_subject*df.stderr[df.id==2], fmt='o', label='Initial Subject')
+    ax.errorbar(df.task[df.id!=2], df.reci[df.id!=2],
+        xerr=crt_subject*df.stderr[df.id!=2], fmt='o',
+        label='Sample', c=palette[0])
+    ax.errorbar(df.task[df.id==2], df.reci[df.id==2],
+        xerr=crt_subject*df.stderr[df.id==2], fmt='o',
+        label='Initial Subject', c=palette[1])
     ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
     ax.set_ylabel('Reciprocal of the Squared Standard Error')
-    pt.legend()
+    sb.despine()
     
     _=pt.tight_layout()
 
@@ -399,8 +418,8 @@ Effect
 
 .. code::
 
-    8.32452269187408
-    lower: 1.71, upper 14.94
+    5.97386597039026
+    lower: 2.29, upper 9.66
     
 
 
@@ -416,7 +435,7 @@ p-Value
 
 .. code::
 
-    0.020434503851498254
+    0.004402267614864508
     
 
 

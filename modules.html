@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Modules &mdash; fmristats 0.0.3 documentation</title>
+  <title>Modules &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -87,6 +87,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference (set-up)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
@@ -99,7 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html#query-information">Query information</a></li>
 </ul>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
@@ -856,7 +857,7 @@ specific) grid, e.g., <cite>fit</cite>.</p>
 subject reference space of a FMRI session.</p>
 <dl class="class">
 <dt id="fmristats.pmap.PopulationMap">
-<em class="property">class </em><code class="descclassname">fmristats.pmap.</code><code class="descname">PopulationMap</code><span class="sig-paren">(</span><em>diffeomorphism</em>, <em>vb=None</em>, <em>nb=None</em>, <em>vb_background=None</em>, <em>nb_background=None</em>, <em>vb_estimate=None</em>, <em>nb_estimate=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.pmap.</code><code class="descname">PopulationMap</code><span class="sig-paren">(</span><em>diffeomorphism</em>, <em>vb=None</em>, <em>nb=None</em>, <em>vb_background=None</em>, <em>nb_background=None</em>, <em>vb_estimate=None</em>, <em>nb_estimate=None</em>, <em>vb_mask=None</em>, <em>nb_mask=None</em>, <em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap" title="Permalink to this definition">¶</a></dt>
 <dd><p>A population map is a diffeomorphism from a population space to the
 reference space of a FMRI session.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -872,6 +873,8 @@ nb (the subject space).</li>
 <li><strong>nb_background</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
 <li><strong>vb_estimate</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in population space.</li>
 <li><strong>nb_estimate</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
+<li><strong>vb_mask</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>array</em>) – An image in population space.</li>
+<li><strong>nb_mask</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>array</em>) – An image in subject space.</li>
 </ul>
 </td>
 </tr>
@@ -954,6 +957,20 @@ from <cite>reference</cite> to <cite>input</cite> or vice versa?</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_nb_mask">
+<code class="descname">set_nb_mask</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_nb_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the estimate of the image in nb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.pmap.PopulationMap.set_vb">
 <code class="descname">set_vb</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set or reset the image in vb</p>
@@ -998,6 +1015,27 @@ the reference of the diffeomorphism.</p>
 <dl class="method">
 <dt id="fmristats.pmap.PopulationMap.set_vb_estimate">
 <code class="descname">set_vb_estimate</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb_estimate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the estimate for the image in vb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If image is an Image, it will be checked whether its reference
+agrees with the reference of the diffeomorphism.  If image is an
+ndarray, it must be equal to the shape stored with the
+diffeomorphism, as it will then be assumed that they share the
+same reference: the image’s reference will be set identical to
+the reference of the diffeomorphism.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_vb_mask">
+<code class="descname">set_vb_mask</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb_mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set or reset the estimate for the image in vb</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -1774,7 +1812,7 @@ class.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>name</strong> (<em>Identifier</em>) – An identifier</li>
 <li><strong>population_map</strong> (<a class="reference internal" href="#fmristats.pmap.PopulationMap" title="fmristats.pmap.PopulationMap"><em>PopulationMap</em></a>) – </li>
-<li><strong>field</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – The effect field, i.e., result of fitting the DOM model.</li>
+<li><strong>field</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – The effect or fitted model parameter field</li>
 <li><strong>coordinates</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>…</em><em>,</em><em>3</em><em>)</em><em>, </em><em>dtype: float</em>) – </li>
 <li><strong>hyperparameters</strong> (<em>dict</em>) – </li>
 <li><strong>parameters</strong> (<em>dict {str: int}</em>) – The names of the parameters which have been fitted by the
@@ -1981,7 +2019,10 @@ space.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) – string can be one of ‘template’, ‘template_mask’, or ‘target’</li>
+<li><strong>mask</strong> (<em>None</em><em> or </em><em>bool</em><em> or </em><em>str</em><em> or </em><em>ndarray</em><em>, </em><em>dtype: bool</em>) – string can be one of ‘vb’, ‘vb_background’,
+‘foreground’, or ‘vb_estimate’. None defaults to ‘data’. True will
+take precedence: ‘vb’&gt; ‘vb_background’&gt; ‘vb_estimate’ &gt;
+‘foreground’.</li>
 <li><strong>verbose</strong> (<em>bool</em>) – increase output verbosity</li>
 </ul>
 </td>
@@ -2283,7 +2324,7 @@ summary statistics for <em>all</em> fields in the sample.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.3',
+            VERSION:'0.0.4',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

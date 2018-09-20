@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting to know fmristats &mdash; fmristats 0.0.3 documentation</title>
+  <title>Getting to know fmristats &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -29,7 +29,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Semi-Automated Analysis of Multiple Subjects" href="quick-start.html" />
-    <link rel="prev" title="Complete, transparent, and data-oriented fitting of FMRI models" href="../index.html" /> 
+    <link rel="prev" title="Modelling the data and not the images in FMRI" href="../index.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -105,6 +105,7 @@
 <li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
@@ -117,7 +118,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#miscellaneous">Miscellaneous</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -196,26 +197,26 @@ spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
 Therefore, when using fmristats, you should <strong>NOT alter your images. DO
-NOT DO motion corrections. DO NOT DO correct for slice timing
-differences. DO NOT smooth your data.</strong> Your statistical analysis
-benefit from more power this way and you will be rewarded with valid
-test statistics.</p>
+NOT DO motion corrections. DO NOT correct for slice timing differences.
+DO NOT smooth your data.</strong> Your statistical analysis will benefit, you
+will gain power, and you will be rewarded with valid test statistics.</p>
 <p>In order to fit a signal model to the FMRI session data of a subject,
 you need to first (i) define the <em>irritation</em>, <em>conditioning</em>, or
 <em>paradigm</em> of the session, i.e. provide the on- and offsets of the task
 blocks as well as their durations, you will need to (ii) separate the
 foreground from the background in the 4D FMRI image, and you need to
-(iii) estimate (or provide) the location, position and tilt of the
-subject’s head in the scanner during acquisition. After that, you are
-(iv) ready to fit a signal model to your data.</p>
+(iii) estimate (or provide) the locations, positions and tilts of the
+subject’s head in the scanner during acquisition. Then you (iv) fit a
+signal model to your data.</p>
+<p>This tutorial will lead you through each of these steps.</p>
 <div class="section" id="irritation-files">
 <h2>Irritation files<a class="headerlink" href="#irritation-files" title="Permalink to this headline">¶</a></h2>
-<p>Subject in a FMRI study are confronted with various stimuli. The
+<p>The subjects in an FMRI study are confronted with various stimuli. The
 following will define a two-block task design labelled <em>FOO</em> for subject
-<em>42</em> in the study called <em>MyStudy</em> measured on the 1st of November, 2015
+<em>42</em> in a study called <em>MyStudy</em> measured on the 1st of November, 2015
 at 12:54, and it will save the design to a file named <code class="docutils literal notranslate"><span class="pre">subject.irr</span></code>.
-The control block as been labelled <em>shapes</em>, the stimulus block has been
-labelled <em>faces</em>.</p>
+The control block has been labelled <em>shapes</em>, the stimulus block has
+been labelled <em>faces</em>.</p>
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriirritation</span> <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">.</span><span class="n">irr</span> \
     <span class="o">--</span><span class="n">cohort</span> <span class="n">MyStudy</span> \
     <span class="o">--</span><span class="nb">id</span> <span class="mi">42</span> \
@@ -372,7 +373,7 @@ method to track the head of your subject:</p>
 <p>This will save various figures to: <cite>figures/FOO/assessments</cite>. But you
 may change this default location. If you look at the figures, you will
 notice that an outlier detection has been applied to the estimated head
-movements. Scan circles which are marked as outlying will not be used in
+movements. Scan cycles which are marked as outlying will not be used in
 the fitting.</p>
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span>
 </pre></div>
@@ -392,32 +393,41 @@ identity.</p>
 <p>fmristats offers two possibilities for defining a <em>native</em> standard or
 population space for a subject. The <em>identity population map in native
 resolution</em> is created via:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">scanner</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="nb">type</span> <span class="n">scanner</span>
 </pre></div>
 </div>
 <p>This will set the coordinate system of the standard space equal to the
 scanner and the image grid equal to the native resolution of the
 acquisition sequence, and saves the map to <cite>subject.pop</cite>.</p>
-<p>Alternatively,</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">reference</span> <span class="o">--</span><span class="n">resolution</span> <span class="mf">2.0</span>
+<p><em>Alternatively 1 (recommended)</em>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="nb">type</span> <span class="n">reference</span> <span class="o">--</span><span class="n">resolution</span> <span class="mf">2.0</span>
 </pre></div>
 </div>
 <p>will set the coordinate system of the standard space equal to the
 scanner and the image grid to a resolution of: <span class="math notranslate nohighlight">\(2x2x2 mm^3\)</span>. This
-is in fact the default setting of <cite>fmripmap</cite>, thus the above call is
+is in fact the default setting of <cite>fmripop</cite>, thus the above call is
 equivalent to:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripmap</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
+<p><em>Alternatively 2 (also recommended)</em>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmripop</span> <span class="o">--</span><span class="n">ses</span> <span class="n">subject</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">ref</span> <span class="n">subject</span><span class="o">.</span><span class="n">ref</span> \
+    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">.</span><span class="n">pop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="nb">type</span> <span class="n">scan</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span> <span class="o">--</span><span class="n">resolution</span> <span class="mf">2.0</span>
+</pre></div>
+</div>
+<p>will set the coordinate system of the standard space equal to the
+position of the subject during the 42nd scan cycle and the image grid to
+a resolution of: <span class="math notranslate nohighlight">\(2x2x2 mm^3\)</span>.</p>
 <p>We shall often refer to <span class="math notranslate nohighlight">\(R_j\)</span> as the subject or <em>reference space</em>
 of the subject, and to <span class="math notranslate nohighlight">\(M\)</span> as the standard or <em>population space</em>.</p>
 </div>
 <div class="section" id="how-to-fit-the-signal-model">
 <h2>How to fit the signal model<a class="headerlink" href="#how-to-fit-the-signal-model" title="Permalink to this headline">¶</a></h2>
 <p>The command line tool <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> will fit a signal model to FMRI data.
-You will need to provide <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> with a FMRI session file (the
+You will need to provide <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> with an FMRI session file (the
 data), a population map (a mapping from standard space to the subject),
 and reference maps (the head movements), say <code class="docutils literal notranslate"><span class="pre">subject.ses</span></code>,
 <code class="docutils literal notranslate"><span class="pre">subject.pop</span></code>, and <code class="docutils literal notranslate"><span class="pre">subject.ref</span></code>.</p>
@@ -432,13 +442,13 @@ and reference maps (the head movements), say <code class="docutils literal notra
 </div>
 <div class="section" id="prune-non-brain-areas">
 <h2>Prune non-brain areas<a class="headerlink" href="#prune-non-brain-areas" title="Permalink to this headline">¶</a></h2>
-<p>As DOM estimation uses a WLS estimator in its fitting procedure which
-uses a weighting scheme with non-null spacial extent, evaluating (i.e.
-fitting) a FMRI model close but outside of the actual brain of a subject
-will nevertheless result in “valid” parameter estimates. In the case
-that <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> is not supplied with a brain mask, these “outside fits”
-can be detected post-hoc as they are naturally accompanied by a drastic
-drop in available sample size.</p>
+<p>The WLS optimisation in the fitting procedure uses a weighting scheme
+with non-null spatial extent. Thus, evaluating (i.e. fitting) an FMRI
+model close but outside of the actual brain of a subject will
+nevertheless result in “valid” parameter estimates. In the case that
+<code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> is not supplied with a brain mask, these “outside fits” can
+be detected post-hoc as they are naturally accompanied by a drastic drop
+in available sample size.</p>
 <p>By default, <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> will estimate a default <em>data mask</em> on <span class="math notranslate nohighlight">\(M\)</span>
 from the foreground/background difference saved in <code class="docutils literal notranslate"><span class="pre">subject.ses</span></code>. If
 this mask still contains non-brain areas, you may want to further prune
@@ -543,7 +553,7 @@ cycle, say</p>
     <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
 </pre></div>
 </div>
-<p>And then use the 3D image of the subject during this scan circle as
+<p>And then use the 3D image of the subject during this scan cycles as
 reference.</p>
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ants4pop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
     <span class="o">--</span><span class="n">vb</span> <span class="n">MNI</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span> \
@@ -638,7 +648,7 @@ template has valid entries, i.e. grey scale intensities <span class="math notran
         <a href="quick-start.html" class="btn btn-neutral float-right" title="Semi-Automated Analysis of Multiple Subjects" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="../index.html" class="btn btn-neutral" title="Complete, transparent, and data-oriented fitting of FMRI models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral" title="Modelling the data and not the images in FMRI" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -669,7 +679,7 @@ template has valid entries, i.e. grey scale intensities <span class="math notran
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.3',
+            VERSION:'0.0.4',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

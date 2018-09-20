@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Run analysis on a server &mdash; fmristats 0.0.4 documentation</title>
+  <title>Population inference (adjust for covariates) &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Some notes on speed" href="notes.html" />
-    <link rel="prev" title="Subject inference (at one coordinate)" href="subject-inference-at-one-point.html" /> 
+    <link rel="next" title="Subject inference (at one coordinate)" href="subject-inference-at-one-point.html" />
+    <link rel="prev" title="Population inference (confirmative)" href="population-inference-confirmative.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -88,9 +88,9 @@
 <li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
 </ul>
 <ul>
@@ -150,13 +150,13 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Run analysis on a server</li>
+      <li>Population inference (adjust for covariates)</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../_sources/tutorials/run-on-server.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/tutorials/population-inference-covariates.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -169,56 +169,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="run-analysis-on-a-server">
-<h1>Run analysis on a server<a class="headerlink" href="#run-analysis-on-a-server" title="Permalink to this headline">¶</a></h1>
-<p>You have created the session files, estimated the head movements (aka.reference maps), and the diffeomorphisms mapping form standard space to
-the respective subject spaces (aka.population maps). What is missing,
-now: you would like to fit the subject model to the FMRI of each subject
-but you don’t have enough resources on your local hardware. Solution:
-move the stuff to a server.</p>
-<p>On your computer, your data tree will thus far look as follows:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>data
-├── irr
-├── pop
-├── ref
-├── ses
-└── vbs
-    ├── MNI152_T1_2mm_brain.image
-    └── MNI152_T1_2mm.image
-</pre></div>
-</div>
-<p>What you need at minimum on the host computer in order to run the
-analysis:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>data
-├── pop
-├── ref
-├── ses
-└── vbs
-    ├── MNI152_T1_2mm_brain.image
-    └── MNI152_T1_2mm.image
-</pre></div>
-</div>
-<p>Solution: copy the tree to the host server:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="n">data</span> <span class="n">username</span><span class="nd">@hostname</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span>
-</pre></div>
-</div>
-<p>Also copy the sample, you would like to analyse:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="n">results</span><span class="o">/</span><span class="n">mysample</span><span class="o">.</span><span class="n">pkl</span> <span class="n">username</span><span class="nd">@hostname</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">results</span>
-</pre></div>
-</div>
-<p>Then log in to the server and run the analysis:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">hostname</span>
+  <div class="section" id="population-inference-adjust-for-covariates">
+<h1>Population inference (adjust for covariates)<a class="headerlink" href="#population-inference-adjust-for-covariates" title="Permalink to this headline">¶</a></h1>
+<p>In case you need to adjust for covariates in the population model:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="n">cd</span> <span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">results</span>
-
-<span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">mysample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
+<span class="n">pop</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">smp</span><span class="p">,</span> <span class="s1">&#39;status + smoking + sex + cohort&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>The advantage is that none of the software that you have needed to
-create the population maps (such as ANTS, FSL, or SPM) is needed on the
-server side. Just fmristats.</p>
 </div>
 
 
@@ -229,10 +188,10 @@ server side. Just fmristats.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="notes.html" class="btn btn-neutral float-right" title="Some notes on speed" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="subject-inference-at-one-point.html" class="btn btn-neutral float-right" title="Subject inference (at one coordinate)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="subject-inference-at-one-point.html" class="btn btn-neutral" title="Subject inference (at one coordinate)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="population-inference-confirmative.html" class="btn btn-neutral" title="Population inference (confirmative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

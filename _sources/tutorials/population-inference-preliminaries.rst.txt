@@ -69,14 +69,25 @@ Fitting the signal model to the FMRI of each subject.
         --stimulus-block letter \
         --vb mni152 --diffeomorphism ants
 
-*Alternative 1*: fit only one subject:
+    fsl4prune --protocol sample.pkl -v --strftime short \
+        --vb-name mni152 --diffeomorphism ants -j 1
+
+*Alternative 1*: fit three subjects only:
 
 .. code:: shell
 
     fmrifit --protocol sample.pkl -v --strftime short \
         --stimulus-block letter \
-        --cohort AGB300 --id 2 \
+        --cohort AGB300 --id 2 42 84 \
         --vb mni152 --diffeomorphism ants
+
+    fmriprune --protocol sample.pkl -v --strftime short \
+        --cohort AGB300 --id 2 42 84 \
+        --vb mni152 --diffeomorphism ants
+
+    fsl4prune --protocol sample.pkl -v --strftime short \
+        --cohort AGB300 --id 2 42 84 \
+        --vb-name mni152 --diffeomorphism ants
 
 *Alternative 2*: fit nothing, do a dry run instead (s=skip):
 
@@ -135,12 +146,13 @@ Create the sample for population inference:
 
 .. code:: shell
 
-    fmrisample -vf --strftime short --diffeomorphism ants \
+    fmrisample -vf --strftime short \
         population-inference.sample \
         ../data/vbs/vb-template.image  \
         ../data/vbs/vb-background.image  \
         ../data/vbs/vb-ati.image \
-        sample.pkl
+        --protocol sample.pkl \
+        --vb mni152 --diffeomorphism ants
 
 Example
 .......
@@ -165,14 +177,17 @@ An example may look as follows:
 
     for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
 
-    # Something is wrong for 0004. Choose a different scan cycle as
-    # reference.
+    # In this example, subject 0004 appears to show severe head movments
+    # in cycle 42. We therefore choose a different scan cycle as the
+    # subject's reference space.
 
     fmririgid --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
 
     ref2plot --protocol sample.pkl -v --strftime short --cohort AGB300 --id 4
 
     for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
+
+    # The quality control plot looks a loot better now.
 
     # Fit population map
     ants4pop --protocol sample.pkl -v --strftime short --cycle 42

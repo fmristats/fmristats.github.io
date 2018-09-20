@@ -1,0 +1,16 @@
+Population inference (adjust for covariates)
+--------------------------------------------
+
+In case you need to adjust for covariates in the population model:
+
+
+.. code:: python
+
+    from fmristats import *
+    
+    pop = PopulationModel(smp, 'status + smoking + sex + cohort')
+    result = pop.fit()
+
+
+
+

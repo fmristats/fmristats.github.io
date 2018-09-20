@@ -166,8 +166,8 @@ csv2covariate
     :func: create_argument_parser
     :prog: csv2covariate
 
-Miscellaneous
--------------
+Query information
+-----------------
 
 fmriinfo
 ........

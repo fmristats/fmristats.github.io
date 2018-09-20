@@ -466,6 +466,8 @@ Find the coordinates of the peak in standard space:
             nb_background: --
             vb_estimate:   vb_estimate
             nb_estimate:   nb_estimate
+            vb_mask:       --
+            nb_mask:       --
     [ 12. -80.   8.]
     
 

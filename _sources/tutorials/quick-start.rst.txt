@@ -1,18 +1,19 @@
 Semi-Automated Analysis of Multiple Subjects
 --------------------------------------------
 
-fmristats provides a variety of command line tools which allow access to most
-of its functionality. In particular when it comes to fitting a particular
-signal model to subject data.
+fmristats provides a variety of command line tools which allow access to
+most of its functionality. In particular when it comes to fitting a
+particular signal model to subject data.
 
-Before you start, a small but important warning: more »traditional« approaches
-to FMRI data analysis recommend or encourage user to first spatially smooth
-data prior to the statistical data analysis and to apply motion or slice timing
-corrections. In fmristats, spatial smoothing is an integral part of the model
-fitting process itself. Therefore, when using fmristats, you should **NOT alter
-your images. DO NOT DO motion corrections. DO NOT DO correct for slice timing
-differences. DO NOT smooth your data.** Your statistical analysis benefit from
-more power this way and you will be rewarded with valid test statistics.
+Before you start, a small but important warning: more »traditional«
+approaches to FMRI data analysis recommend or encourage user to first
+spatially smooth data prior to the statistical data analysis and to
+apply motion or slice timing corrections. In fmristats, spatial
+smoothing is an integral part of the model fitting process itself.
+Therefore, when using fmristats, you should **NOT alter your images. DO
+NOT DO motion corrections. DO NOT correct for slice timing differences.
+DO NOT smooth your data.** Your statistical analysis benefit from more
+power this way and you will be rewarded with valid test statistics.
 
 Protocol interface for large studies
 ....................................
@@ -347,7 +348,7 @@ marked as valid:
     ref2plot --protocol sample.pkl -v
 
     # Create the *identity population map* for each subject
-    fmripmap --protocol sample.pkl -v
+    fmripop --protocol sample.pkl -v
 
     # Fit in subject reference space (resolution: (2 mm)^3)
     fmrifit --protocol sample.pkl --stimulus-block letter -v
@@ -372,7 +373,7 @@ scheme in the example.
 
     # Create the *identity population map* for each subject,
     # say in resolution: (2 mm)^3
-    fmripmap --protocol sample.pkl -v --strftime short
+    fmripop --protocol sample.pkl -v --strftime short
 
     # Fit in subject reference space
     fmrifit --protocol sample.pkl --stimulus-block letter -v --strftime short

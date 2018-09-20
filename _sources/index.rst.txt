@@ -1,36 +1,72 @@
-Complete, transparent, and data-oriented fitting of FMRI models
-===============================================================
+Modelling the data and not the images in FMRI
+=============================================
 
-All current approaches to the statistical analysis of functional
-magnetic resonance imaging (FMRI) data involve the application of
-various preprocessing steps which alter the signal to noise ratio (SNR)
-of the original data. Enhancing the SNR prior to a formal analysis,
-though, shakes at primary principles of statistical decision making and
-it will generally inflate the type I error of the analysis.
+Current approaches to the analysis of functional magnetic resonance
+imaging (FMRI) data apply various preprocessing steps to the original
+FMRI. These preprocessings lead to a general underestimation of residual
+variance in the downstream analysis. This negatively impacts the type I
+error of statistical tests and increases the risk for reporting false
+positive results.
 
-This is the first statistical software tool which implements the
-*data-oriented method (DOM)* estimator for FMRI, a new and original
-method for the statistical analysis of FMRI data of brain scans. The
-method fits a weighted least squares model to points of a random vector
-field. Without prior spacial smoothings, i.e. without altering the
-original 4D-image, the method nevertheless results in smooth fits of the
-underlying activation parameter fields. More importantly, though, the
-method yields a trustworthy estimate of the uncertainty of the estimated
-activation field for each subject in a study. The availability of these
-uncertainty fields allows to model FMRI studies using random effects
-meta regression techniques acknowledging the fact that (i) individual
-subjects are random entities, and that (ii) the variability in the
-estimated individual activation patterns varies across the brain and
-between subjects.
+This is the first statistical software tool which implements the *model
+based* (MB) estimator for FMRI data models. It is a new and original
+method for the statistical analysis of FMRI of brain scans. MB
+estimation combines all preprocessing steps of the standard approaches
+into one single modelling step. Without altering the original 4D-image,
+the method results in smooth fits of the underlying parameter fields.
+More importantly, the method yields a trustworthy estimate of the
+uncertainty in BOLD effect estimation.
+
+The availability of these uncertainty fields allows to model FMRI
+studies by random effects meta regression models, acknowledging that
+individual subjects are random entities, and that the certainty at which
+the actual BOLD effect in an individual can be estimated from an FMRI
+varies across the brain and between the subjects.
+
+MB estimation allows to process and report BOLD effects in ati units. In
+particular multicentre studies gain power by its use: if an effect is
+present in your data, you will be more likely to find it.
 
 How to cite this software
 -------------------------
 
-The `Harvard UoB format`_ suggests to cite this software in this form:
+Current `reference publication`_ for the MB estimator is:
 
-    Thomas W. D. Möbius (2018) fmristats: Data oriented method for
-    fitting of FMRI models (Version 0.0.3) [Computer program]. Available
-    at http://fmristats.github.io/
+    Thomas W. D. Möbius (2018) `Modelling the data and not the images in
+    FMRI`_, ArXiv e-prints, arXiv:1809.07232
+
+.. _`Modelling the data and not the images in FMRI`: https://arxiv.org/abs/1809.07232v1
+
+.. _`reference publication`: https://arxiv.org/abs/1809.07232v1
+
+The `Harvard UoB format`_ suggests to cite the software itself in this
+form:
+
+    Thomas W. D. Möbius (2018) fmristats: Modelling the data and not the
+    images in FMRI (Version 0.0.4) [Computer program]. Available at
+    http://fmristats.github.io/
+
+In case you are using BibTeX:
+
+.. code:: bibtex
+
+    @article{Moebius:2018,
+        title   = {Modelling the data and not the images in FMRI},
+        author  = {Thomas Wilhelm Dieter Möbius},
+        journal = {ArXiv e-prints, arXiv:1809.07232},
+        year    = 2018,
+        month   = 9,
+        url     = {https://arxiv.org/abs/1809.07232},
+    }
+
+    @misc{fmristats:0.0.4,
+        title   = {fmristats: Modelling the data and not the images in FMRI
+            (Version 0.0.4) [Computer program]},
+        author  = {Thomas Wilhelm Dieter Möbius},
+        year    = 2018,
+        month   = 9,
+        url     = {https://fmristats.github.io/},
+    }
 
 Thank you for using and citing this software.
 
@@ -67,8 +103,8 @@ Tutorials discussing various parts of fmristats; expect this list to grow.
    tutorials/population-inference-preliminaries
    tutorials/population-inference-explorative
    tutorials/population-inference-confirmative
+   tutorials/population-inference-covariates
    tutorials/subject-inference-at-one-point
-
    tutorials/run-on-server
    tutorials/notes
 

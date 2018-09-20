@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Estimating the signal model &mdash; fmristats 0.0.3 documentation</title>
+  <title>Estimating the signal model &mdash; fmristats 0.0.4 documentation</title>
   
 
   
@@ -88,6 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference (set-up)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference (explorative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
@@ -211,7 +212,7 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="#query-information">Query information</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#fmriinfo">fmriinfo</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Positional Arguments">Positional Arguments</a></li>
 </ul>
@@ -295,16 +296,20 @@
 <div class="section" id="fmriirritation">
 <h2>fmriirritation<a class="headerlink" href="#fmriirritation" title="Permalink to this headline">¶</a></h2>
 <p>Create a block irritation instances</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriirritation</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmriirritation</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">covariates</span> <span class="n">COVARIATES</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">POPULATION_MAP</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">VB_NAME</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">diffeomorphism</span><span class="o">-</span><span class="n">name</span> <span class="n">DIFFEOMORPHISM_NAME</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">OUT</span><span class="p">]</span>
                       <span class="p">[</span><span class="o">--</span><span class="n">onsetsx</span> <span class="n">ONSETSX</span> <span class="p">[</span><span class="n">ONSETSX</span> <span class="o">...</span><span class="p">]]</span>
                       <span class="p">[</span><span class="o">--</span><span class="n">onsetsy</span> <span class="n">ONSETSY</span> <span class="p">[</span><span class="n">ONSETSY</span> <span class="o">...</span><span class="p">]]</span>
                       <span class="p">[</span><span class="o">--</span><span class="n">durationsx</span> <span class="n">DURATIONSX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">durationsy</span> <span class="n">DURATIONSY</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">--</span><span class="n">namex</span> <span class="n">NAMEX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">namey</span> <span class="n">NAMEY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">epi</span> <span class="n">EPI</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">--</span><span class="n">remove</span><span class="o">-</span><span class="n">lock</span> <span class="o">|</span> <span class="o">--</span><span class="n">ignore</span><span class="o">-</span><span class="n">lock</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
-                      <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">--</span><span class="n">namex</span> <span class="n">NAMEX</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">namey</span> <span class="n">NAMEY</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">epi</span><span class="o">-</span><span class="n">code</span> <span class="n">EPI_CODE</span><span class="p">]</span>
+                      <span class="p">[</span><span class="o">-</span><span class="n">r</span> <span class="o">|</span> <span class="o">-</span><span class="n">i</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span> <span class="o">|</span> <span class="o">-</span><span class="n">s</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="section" id="Named Arguments">
@@ -314,20 +319,86 @@
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group">
+<kbd>--protocol</kbd></td>
+<td>A protocol file</td></tr>
+<tr><td class="option-group">
+<kbd>--covariates</kbd></td>
+<td>A covariate file</td></tr>
+<tr><td class="option-group">
 <kbd>--irritation</kbd></td>
-<td><p class="first">input file;irritation file.  File name containing the irritation
-instance for this session.  An irritation instance contains all
-information of the paradigm of this session, i.e., whether the paradigm
-follows a block design, the names of the respective blocks, their
-respective onsets and respective durations.</p>
-<p class="last">Default: “../data/irr/{2}/{0}-{1:04d}-{2}-{3}.irr”</p>
+<td><dl class="first last docutils">
+<dt>Path to a irritation file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--session</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a session file or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd>-o, --protocol-log</kbd></td>
+<kbd>--reference-maps</kbd></td>
 </tr>
-<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
-<p class="last">Default: “logs/{}-fmriirritation.pkl”</p>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a reference maps or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--population-map</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a population map file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--fit</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a result file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--strftime</kbd></td>
+<td>Format of date and time</td></tr>
+<tr><td class="option-group">
+<kbd>--cohort</kbd></td>
+<td>Cohort</td></tr>
+<tr><td class="option-group">
+<kbd>--id</kbd></td>
+<td>id</td></tr>
+<tr><td class="option-group">
+<kbd>--datetime</kbd></td>
+<td>Datetime</td></tr>
+<tr><td class="option-group">
+<kbd>--paradigm</kbd></td>
+<td>Paradigm</td></tr>
+<tr><td class="option-group">
+<kbd>--vb-name</kbd></td>
+<td><p class="first">Name of the population space</p>
+<p class="last">Default: “self”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--diffeomorphism-name</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>Name of the diffeomorphism between population space</dt>
+<dd>and subject space</dd>
+</dl>
+<p class="last">Default: “identity”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--scale-type</kbd></td>
+<td><p class="first">Possible choices: diagonal, max, min</p>
+<p>Scale type</p>
+<p class="last">Default: “max”</p>
+</td></tr>
+<tr><td class="option-group">
+<kbd>-o, --out</kbd></td>
+<td>Save (new) study instance to OUT</td></tr>
 <tr><td class="option-group">
 <kbd>--onsetsx</kbd></td>
 <td><p class="first">times of onsets of condition x, which will be interpreted
@@ -367,50 +438,23 @@ y.  Must be specified if –irritation is not.</td></tr>
 <p class="last">Default: “stimulus”</p>
 </td></tr>
 <tr><td class="option-group">
-<kbd>--epi</kbd></td>
+<kbd>--epi-code</kbd></td>
 <td>code for the direction of the normal vector of the EPIs assuming the
 data is in RAS+. For example, if the EPIs have been measured inferior to
 superior, then set EP to 2, if they have been measured superior to
 inferior, set EP to -2, if they have been measured posterior to
 anterior, i.e., they are parallel to the left–right-inferior–superior
 plain, then set EP to 1.  Values in a protocol file will take precedence</td></tr>
-<tr><td class="option-group">
-<kbd>--protocol</kbd></td>
-<td>protocol file.</td></tr>
-<tr><td class="option-group">
-<kbd>--cohort</kbd></td>
-<td>only use entries instances which belong to this cohort. If
-no protocol file is used, then this is the name of the cohort to which
-this subject belongs.</td></tr>
-<tr><td class="option-group">
-<kbd>--id</kbd></td>
-<td>only use entries which belong to this subject id. If no protocol
-file is used, then this is the id of the subject in its cohort.</td></tr>
-<tr><td class="option-group">
-<kbd>--datetime</kbd></td>
-<td>only use entries which are stamped with this date and
-time.</td></tr>
-<tr><td class="option-group">
-<kbd>--paradigm</kbd></td>
-<td>only use entries which belong to this irritation design.
-The name of the irritation will appear as part of the default file names
-produced by various fmristats command line tools.  Unless you are
-planing to provide custom file names to all of fmristats’ command line
-tools, it is recommend not to use any special characters in this
-name.</td></tr>
-<tr><td class="option-group">
-<kbd>--strftime</kbd></td>
-<td><p class="first">convert time to string according to this format specification.</p>
-<p class="last">Default: “%Y-%m-%d-%H%M”</p>
-</td></tr>
-<tr><td class="option-group">
-<kbd>--remove-lock</kbd></td>
-<td><p class="first">removes the lock.</p>
+<tr><td class="option-group" colspan="2">
+<kbd>-r, --remove-lock</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">removes the lock.</p>
 <p class="last">Default: False</p>
 </td></tr>
-<tr><td class="option-group">
-<kbd>--ignore-lock</kbd></td>
-<td><p class="first">ignore whether a file has been locked by a different
+<tr><td class="option-group" colspan="2">
+<kbd>-i, --ignore-lock</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><p class="first">ignore whether a file has been locked by a different
 program. Only use this if orphans exists, and you now for sure no other
 program is running that may have looked the respected files. Together
 with –skip this may be used to delete orphan lock files. Short -is</p>
@@ -418,7 +462,7 @@ with –skip this may be used to delete orphan lock files. Short -is</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>-f, --force</kbd></td>
-<td><p class="first">by default population space files will not be overwritten but parsed
+<td><p class="first">by default irritation files will not be overwritten but parsed
 instead.  This will force to recreate any files.</p>
 <p class="last">Default: False</p>
 </td></tr>
@@ -896,10 +940,7 @@ file.</p>
 </div>
 <div class="section" id="define the signal model">
 <h3>define the signal model<a class="headerlink" href="#define the signal model" title="Permalink to this headline">¶</a></h3>
-<dl class="docutils">
-<dt>Arguments which define the model that shall be fitted to</dt>
-<dd>the data by the DOM estimator.</dd>
-</dl>
+<p>Model specifications of the signal model</p>
 <table class="docutils option-list" frame="void" rules="none">
 <col class="option" />
 <col class="description" />
@@ -968,7 +1009,7 @@ of each irritation phase and not considered in the fitting.</p>
 <div class="section" id="control the weighting of observations">
 <h3>control the weighting of observations<a class="headerlink" href="#control the weighting of observations" title="Permalink to this headline">¶</a></h3>
 <dl class="docutils">
-<dt>Arguments which control the weighting scheme used in DOM</dt>
+<dt>Arguments which control the weighting scheme used in</dt>
 <dd>estimation.</dd>
 </dl>
 <table class="docutils option-list" frame="void" rules="none">
@@ -1369,12 +1410,16 @@ image to given curvature.</p>
 <div class="section" id="fmrisample">
 <h2>fmrisample<a class="headerlink" href="#fmrisample" title="Permalink to this headline">¶</a></h2>
 <p>Command line tool to create a sample of fits of the FMRI signal model</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmrisample</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">VB_NAME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
-                  <span class="p">[</span><span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">DIFFEOMORPHISM</span><span class="p">]</span>
-                  <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
-                  <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
-                  <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
-                  <span class="n">sample</span> <span class="n">vb</span> <span class="n">vb_background</span> <span class="n">vb_ati</span> <span class="n">protocol</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fmrisample</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">covariates</span> <span class="n">COVARIATES</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">POPULATION_MAP</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">VB_NAME</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">diffeomorphism</span><span class="o">-</span><span class="n">name</span> <span class="n">DIFFEOMORPHISM_NAME</span><span class="p">]</span>
+                  <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span>
+                  <span class="n">sample</span> <span class="n">vb</span> <span class="n">vb_background</span> <span class="n">vb_ati</span>
 </pre></div>
 </div>
 <div class="section" id="Positional Arguments">
@@ -1395,9 +1440,6 @@ image to given curvature.</p>
 <tr><td class="option-group">
 <kbd>vb_ati</kbd></td>
 <td>path to an ATI reference field in population space</td></tr>
-<tr><td class="option-group">
-<kbd>protocol</kbd></td>
-<td>protocol file.</td></tr>
 </tbody>
 </table>
 </div>
@@ -1408,58 +1450,82 @@ image to given curvature.</p>
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group">
-<kbd>--vb-name</kbd></td>
-<td>name if different to the name saved in vb</td></tr>
+<kbd>--protocol</kbd></td>
+<td>A protocol file</td></tr>
 <tr><td class="option-group">
-<kbd>--fit</kbd></td>
-<td><p class="first">path to a result file or a template which defines the path
-where to find or save the respected result files when using a protocol
-file.</p>
-<p class="last">Default: “../data/fit/{2}/{4}/{5}/{6}/{0}-{1:04d}-{2}-{3}-{4}.fit”</p>
+<kbd>--covariates</kbd></td>
+<td>A covariate file</td></tr>
+<tr><td class="option-group">
+<kbd>--irritation</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a irritation file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--session</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a session file or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd>--diffeomorphism</kbd></td>
+<kbd>--reference-maps</kbd></td>
 </tr>
-<tr><td>&#160;</td><td><p class="first">Name of the fitted diffeomorphisms.</p>
-<p class="last">Default: “ants”</p>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a reference maps or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--population-map</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a population map file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--fit</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a result file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group">
+<kbd>--strftime</kbd></td>
+<td>Format of date and time</td></tr>
+<tr><td class="option-group">
+<kbd>--cohort</kbd></td>
+<td>Cohort</td></tr>
+<tr><td class="option-group">
+<kbd>--id</kbd></td>
+<td>id</td></tr>
+<tr><td class="option-group">
+<kbd>--datetime</kbd></td>
+<td>Datetime</td></tr>
+<tr><td class="option-group">
+<kbd>--paradigm</kbd></td>
+<td>Paradigm</td></tr>
+<tr><td class="option-group">
+<kbd>--vb-name</kbd></td>
+<td><p class="first">Name of the population space</p>
+<p class="last">Default: “self”</p>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--diffeomorphism-name</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>Name of the diffeomorphism between population space</dt>
+<dd>and subject space</dd>
+</dl>
+<p class="last">Default: “identity”</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>--scale-type</kbd></td>
 <td><p class="first">Possible choices: diagonal, max, min</p>
-<p>should be either one of <code class="docutils literal notranslate"><span class="pre">diagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, or <code class="docutils literal notranslate"><span class="pre">min</span></code>.</p>
-<p>If SCALE_TYPE is <code class="docutils literal notranslate"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
-length of the diagonal of the orthorhombic measure lattice.  If
-SCALE_TYPE is <code class="docutils literal notranslate"><span class="pre">min</span></code> (or <code class="docutils literal notranslate"><span class="pre">max</span></code>), then SCALE is one half of the
-minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p>Scale type</p>
 <p class="last">Default: “max”</p>
-</td></tr>
-<tr><td class="option-group" colspan="2">
-<kbd>-o, --protocol-log</kbd></td>
-</tr>
-<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
-<p class="last">Default: “logs/{}-fmrisample.pkl”</p>
-</td></tr>
-<tr><td class="option-group">
-<kbd>--cohort</kbd></td>
-<td>only use entries instances which belong to this cohort. If
-no protocol file is used, then this is the name of the cohort to which
-this subject belongs.</td></tr>
-<tr><td class="option-group">
-<kbd>--id</kbd></td>
-<td>only use entries which belong to this subject id. If no protocol
-file is used, then this is the id of the subject in its cohort.</td></tr>
-<tr><td class="option-group">
-<kbd>--paradigm</kbd></td>
-<td>only use entries which belong to this irritation design.
-The name of the irritation will appear as part of the default file names
-produced by various fmristats command line tools.  Unless you are
-planing to provide custom file names to all of fmristats’ command line
-tools, it is recommend not to use any special characters in this
-name.</td></tr>
-<tr><td class="option-group">
-<kbd>--strftime</kbd></td>
-<td><p class="first">convert time to string according to this format specification.</p>
-<p class="last">Default: “%Y-%m-%d-%H%M”</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>-f, --force</kbd></td>
@@ -1696,10 +1762,14 @@ name.</td></tr>
 <div class="section" id="fsl4prune">
 <h2>fsl4prune<a class="headerlink" href="#fsl4prune" title="Permalink to this headline">¶</a></h2>
 <p>Prune</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fsl4prune</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">pruned</span> <span class="n">PRUNED</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
-                 <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fsl4prune</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">protocol</span> <span class="n">PROTOCOL</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">covariates</span> <span class="n">COVARIATES</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">irritation</span> <span class="n">IRRITATION</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">session</span> <span class="n">SESSION</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">REFERENCE_MAPS</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">POPULATION_MAP</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">cohort</span> <span class="n">COHORT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="nb">id</span> <span class="n">ID</span> <span class="p">[</span><span class="n">ID</span> <span class="o">...</span><span class="p">]]</span>
                  <span class="p">[</span><span class="o">--</span><span class="n">datetime</span> <span class="n">DATETIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">paradigm</span> <span class="n">PARADIGM</span><span class="p">]</span>
-                 <span class="p">[</span><span class="o">--</span><span class="n">strftime</span> <span class="n">STRFTIME</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="n">space</span> <span class="n">POPULATION_SPACE</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">VB_NAME</span><span class="p">]</span>
+                 <span class="p">[</span><span class="o">--</span><span class="n">diffeomorphism</span><span class="o">-</span><span class="n">name</span> <span class="n">DIFFEOMORPHISM_NAME</span><span class="p">]</span>
                  <span class="p">[</span><span class="o">--</span><span class="n">scale</span><span class="o">-</span><span class="nb">type</span> <span class="p">{</span><span class="n">diagonal</span><span class="p">,</span><span class="nb">max</span><span class="p">,</span><span class="nb">min</span><span class="p">}]</span>
                  <span class="p">[</span><span class="o">-</span><span class="n">p</span> <span class="n">PROPORTION</span> <span class="o">|</span> <span class="o">-</span><span class="n">t</span> <span class="n">THRESHOLD</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">f</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">v</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">j</span> <span class="n">CORES</span><span class="p">]</span>
                  <span class="p">[</span><span class="o">--</span><span class="n">cmd</span><span class="o">-</span><span class="n">bet</span> <span class="n">CMD_BET</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">variante</span> <span class="n">VARIANTE</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">file</span> <span class="n">VB_FILE</span><span class="p">]</span>
@@ -1713,78 +1783,92 @@ name.</td></tr>
 <col class="description" />
 <tbody valign="top">
 <tr><td class="option-group">
-<kbd>--fit</kbd></td>
-<td><p class="first">input file;path to a result file or a template which defines the path
-where to find or save the respected result files when using a protocol
-file.</p>
-<p class="last">Default: “../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit”</p>
+<kbd>--protocol</kbd></td>
+<td>A protocol file</td></tr>
+<tr><td class="option-group">
+<kbd>--covariates</kbd></td>
+<td>A covariate file</td></tr>
+<tr><td class="option-group">
+<kbd>--irritation</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a irritation file or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
 <tr><td class="option-group">
-<kbd>--pruned</kbd></td>
-<td><p class="first">input file;path to a result file or a template which defines the path
-where to find or save the respected result files when using a protocol
-file.</p>
-<p class="last">Default: “../data/fit/{2}/{4}/{5}/{0}-{1:04d}-{2}-{3}-{4}-{5}.fit”</p>
+<kbd>--session</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a session file or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd>-o, --protocol-log</kbd></td>
+<kbd>--reference-maps</kbd></td>
 </tr>
-<tr><td>&#160;</td><td><p class="first">Log file. Entries that could not be processed are marked as invalid</p>
-<p class="last">Default: “logs/{}-fsl4prune.pkl”</p>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a reference maps or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd>--population-map</kbd></td>
+</tr>
+<tr><td>&#160;</td><td><dl class="first last docutils">
+<dt>Path to a population map file or template for such a</dt>
+<dd>file</dd>
+</dl>
 </td></tr>
 <tr><td class="option-group">
-<kbd>--protocol</kbd></td>
-<td>protocol file.</td></tr>
-<tr><td class="option-group">
-<kbd>--cohort</kbd></td>
-<td>only use entries instances which belong to this cohort. If
-no protocol file is used, then this is the name of the cohort to which
-this subject belongs.</td></tr>
-<tr><td class="option-group">
-<kbd>--id</kbd></td>
-<td>only use entries which belong to this subject id. If no protocol
-file is used, then this is the id of the subject in its cohort.</td></tr>
-<tr><td class="option-group">
-<kbd>--datetime</kbd></td>
-<td>only use entries which are stamped with this date and
-time.</td></tr>
-<tr><td class="option-group">
-<kbd>--paradigm</kbd></td>
-<td>only use entries which belong to this irritation design.
-The name of the irritation will appear as part of the default file names
-produced by various fmristats command line tools.  Unless you are
-planing to provide custom file names to all of fmristats’ command line
-tools, it is recommend not to use any special characters in this
-name.</td></tr>
+<kbd>--fit</kbd></td>
+<td><dl class="first last docutils">
+<dt>Path to a result file or template for such a</dt>
+<dd>file</dd>
+</dl>
+</td></tr>
 <tr><td class="option-group">
 <kbd>--strftime</kbd></td>
-<td><p class="first">convert time to string according to this format specification.</p>
-<p class="last">Default: “%Y-%m-%d-%H%M”</p>
+<td>Format of date and time</td></tr>
+<tr><td class="option-group">
+<kbd>--cohort</kbd></td>
+<td>Cohort</td></tr>
+<tr><td class="option-group">
+<kbd>--id</kbd></td>
+<td>id</td></tr>
+<tr><td class="option-group">
+<kbd>--datetime</kbd></td>
+<td>Datetime</td></tr>
+<tr><td class="option-group">
+<kbd>--paradigm</kbd></td>
+<td>Paradigm</td></tr>
+<tr><td class="option-group">
+<kbd>--vb-name</kbd></td>
+<td><p class="first">Name of the population space</p>
+<p class="last">Default: “self”</p>
 </td></tr>
 <tr><td class="option-group" colspan="2">
-<kbd>--population-space</kbd></td>
+<kbd>--diffeomorphism-name</kbd></td>
 </tr>
-<tr><td>&#160;</td><td><p class="first">name of a population space.</p>
-<p class="last">Default: “reference”</p>
+<tr><td>&#160;</td><td><dl class="first docutils">
+<dt>Name of the diffeomorphism between population space</dt>
+<dd>and subject space</dd>
+</dl>
+<p class="last">Default: “identity”</p>
 </td></tr>
 <tr><td class="option-group">
 <kbd>--scale-type</kbd></td>
 <td><p class="first">Possible choices: diagonal, max, min</p>
-<p>should be either one of <code class="docutils literal notranslate"><span class="pre">diagonal</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, or <code class="docutils literal notranslate"><span class="pre">min</span></code>.</p>
-<p>If SCALE_TYPE is <code class="docutils literal notranslate"><span class="pre">diagonal</span></code>, then scale is equal to one half of the
-length of the diagonal of the orthorhombic measure lattice.  If
-SCALE_TYPE is <code class="docutils literal notranslate"><span class="pre">min</span></code> (or <code class="docutils literal notranslate"><span class="pre">max</span></code>), then SCALE is one half of the
-minimal (or maximal) edge length of the orthorhombic measure lattice.</p>
+<p>Scale type</p>
 <p class="last">Default: “max”</p>
 </td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd>-p, --proportion</kbd></td>
 </tr>
-<tr><td>&#160;</td><td><dl class="first last docutils">
+<tr><td>&#160;</td><td><dl class="first docutils">
 <dt>estimates which degrees of freedom are below the</dt>
 <dd>proportional threshold of the degrees of freedom in the
 effect field estimate are set to null.</dd>
 </dl>
+<p class="last">Default: 0.6</p>
 </td></tr>
 <tr><td class="option-group" colspan="2">
 <kbd>-t, --threshold</kbd></td>
@@ -2390,7 +2474,7 @@ estimation is performed again.</p>
 </div>
 <div class="section" id="fit2plot">
 <h2>fit2plot<a class="headerlink" href="#fit2plot" title="Permalink to this headline">¶</a></h2>
-<p>Plot summary field statistics of the effect field of a fitted RSM Signal
+<p>Plot summary field statistics of the effect field of a fitted Signal
 Model, e.g. the estimated activation pattern fields, activation
 certainty fields, t-test statistic fields, or intercept fields.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">usage</span><span class="p">:</span> <span class="n">fit2plot</span> <span class="p">[</span><span class="o">-</span><span class="n">h</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">fit</span> <span class="n">FIT</span><span class="p">]</span> <span class="p">[</span><span class="o">--</span><span class="n">figure</span> <span class="n">FIGURE</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="n">o</span> <span class="n">PROTOCOL_LOG</span><span class="p">]</span>
@@ -2853,8 +2937,8 @@ instead.  This will force to recreate any files.</p>
 <p>For more information visit <a class="reference external" href="https://fmristats.github.io/">https://fmristats.github.io/</a></p>
 </div>
 </div>
-<div class="section" id="miscellaneous">
-<h1>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="query-information">
+<h1>Query information<a class="headerlink" href="#query-information" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="fmriinfo">
 <h2>fmriinfo<a class="headerlink" href="#fmriinfo" title="Permalink to this headline">¶</a></h2>
 <p>Extract information from instance files and print information to
@@ -2982,7 +3066,7 @@ index space instead.</dd>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.3',
+            VERSION:'0.0.4',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

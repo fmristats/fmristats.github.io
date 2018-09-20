@@ -4,8 +4,10 @@ Population inference (explorative)
 
 
 
-Load population data, fit the model
-...................................
+Load data, fit model, and extract statistics
+............................................
+
+Load data:
 
 
 .. code:: python
@@ -15,6 +17,47 @@ Load population data, fit the model
     from fmristats.plot import *
     
     population_sample = load(path_to_sample)
+
+
+
+
+Number of subjects in the sample:
+
+
+.. code:: python
+
+    len(population_sample.covariates)
+
+
+.. code::
+
+    64
+    
+
+
+
+Number of subjects that are *not* right handed:
+
+
+.. code:: python
+
+    
+    (population_sample.covariates.waterloo < 20).sum()
+
+
+.. code::
+
+    0
+    
+
+
+
+Fit the population model to the sample of neural activities.
+
+
+.. code:: python
+
+    
     pop = PopulationModel(population_sample)
     meta = pop.fit()
 
@@ -30,8 +73,8 @@ Load population data, fit the model
 
 
 
-Get the Knapp-Hartung adjusted t-statistics field that tests for task
-related neural activity in the population:
+Extract the Knapp-Hartung adjusted t-statistics field that tests for
+task related neural activity in the population:
 
 
 .. code:: python
@@ -49,7 +92,7 @@ Plot:
     _ = picture(tstatistics,3,6,4)
 
 
-.. image:: figures/population-inference-explorative_figure4_1.png
+.. image:: figures/population-inference-explorative_figure7_1.png
    :width: 15 cm
 
 
@@ -68,7 +111,7 @@ Find the highest peak in the t-statistics field:
 
 .. code::
 
-    (50, 71, 33)
+    (51, 70, 34)
     
 
 
@@ -90,10 +133,10 @@ Plot the respective slice:
 
 .. code::
 
-    8.102079496215193
+    11.61039937479234
     
 
-.. image:: figures/population-inference-explorative_figure6_1.png
+.. image:: figures/population-inference-explorative_figure9_1.png
    :width: 15 cm
 
 
@@ -114,7 +157,7 @@ Find the coordinates of the peak in standard space:
 .. code::
 
     
-    [-10.  16.  -6.]
+    [-12.  14.  -4.]
     
 
 
@@ -124,9 +167,9 @@ structure these coordinates belong:
 
 .. code:: shell
 
-    atlasquery -a "MNI Structural Atlas" -c -14,12,-12
+    atlasquery -a "MNI Structural Atlas" -c -12,14,-4
     MNI Structural Atlas
-    40% Putamen, 25% Caudate, 3% Frontal Lobe
+    78% Caudate
 
 Extract data at index
 .....................
@@ -167,12 +210,12 @@ Define the critical values for the plots:
 
 .. code::
 
-    1.6448536269514722 1.6955187891366663
+    1.6448536269514722 1.6694022215079607
     
 
 
 
-Forest Plot
+Forest plot
 :::::::::::
 
 Forest Plot in ascending order of handiness (left handed on the bottom,
@@ -188,22 +231,33 @@ right handed on the top):
     x = dm.loc['intercept', 'point']
     s = dm.loc['intercept', 'stderr']
     
-    fig, ax = pt.subplots()
+    import seaborn as sb
+    sb.set_style('whitegrid')
+    
+    palette = sb.palettes.SEABORN_PALETTES['deep']
+    
+    figw = 5.842
+    figh = 8.442
+    
+    fig = pt.figure(figsize=(figw,figh))
+    ax = pt.subplot(111)
     ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task, df.yvec, xerr=crt_subject*df.stderr, fmt='o', label='Sample')
-    pt.box(False)
+    ax.errorbar(df.task, df.yvec, xerr=crt_subject*df.stderr, fmt='o',
+        label='Sample', c=palette[0])
+    ax.errorbar(x, -1, xerr=crt_population*s, fmt='o',
+        label='Population', c=palette[2])
+    ax.axhline(-.5,c='k',lw=.9, ls='-')
     ax.set_xlabel(r'Task inferred signal change at $x_1 (ati)$')
     ax.set_ylabel('Waterloo')
-    ax.errorbar(x, -1, xerr=crt_population*s, fmt='o', label='Population')
-    ax.axhline(-.5,c='k',lw=.9, ls='-')
-    pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
     ax.yaxis.set_ticks_position('none')
-    pt.legend()
+    pt.box(False)
+    pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
+    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=2)
     
     _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-explorative_figure11_1.png
+.. image:: figures/population-inference-explorative_figure14_1.png
    :width: 15cm
 
 
@@ -218,18 +272,20 @@ Funnel Plot
 .. code:: python
 
     
-    pt.close()
-    fig, ax = pt.subplots()
+    fig = pt.figure(figsize=(figw,figh))
+    ax = pt.subplot(111)
     ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task, df.reci, xerr=crt_subject*df.stderr, fmt='o', label='Sample')
+    ax.errorbar(df.task, df.reci,
+        xerr=crt_subject*df.stderr, fmt='o',
+        label='Sample', c=palette[0])
     ax.set_xlabel(r'Task inferred signal change at $x_1$ (ati)')
     ax.set_ylabel('Reciprocal of the Squared Standard Error')
-    pt.legend()
+    sb.despine()
     
     _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-explorative_figure13_1.png
+.. image:: figures/population-inference-explorative_figure16_1.png
    :width: 15 cm
 
 
@@ -259,8 +315,8 @@ Effect
 
 .. code::
 
-    16.48685988960975
-    lower: 13.04, upper 19.94
+    19.99205972926322
+    lower: 17.12, upper 22.87
     
 
 
@@ -270,16 +326,16 @@ p-Value
 
 .. code:: python
 
-    print(dm.loc['intercept', 'pvalue'])
+    x = dm.loc['intercept', 'tstatistic']
+    p = 1 - t.cdf(x, df = dm.loc['intercept', 'df'])
+    print(x,p)
 
 
 .. code::
 
-    1.8863173245620146e-09
+    11.61039937479234 0.0
     
 
 
 
-This p-value is *normative* in the sense that by selecting the highest
-peak in the field, this p-value would need to see some adjustments for
-multiple testing!
+By all means this p-value is practically :math:`0`.
