@@ -1917,9 +1917,9 @@ which MR signals have been aquired.</p>
 <code class="descname">create_data_matrix</code><span class="sig-paren">(</span><em>burn_in=None</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.create_data_matrix" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create the data matrix</p>
 <p>This is the essentially the same matrix as returned by
-.observations(). However, scan cycles with no subject
-irritation or missing data are removed. However, time is centred
-to its mean.</p>
+.observations(kwargs). However, scan cycles with no subject
+irritation, missing data, or severe head movements are removed,
+and time is centred to its mean.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1979,9 +1979,25 @@ take precedence: ‘vb’&gt; ‘vb_background’&gt; ‘vb_estimate’ &gt;
 </dd></dl>
 
 <dl class="method">
+<dt id="fmristats.smodel.SignalModel.data_at_coordinate">
+<code class="descname">data_at_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.data_at_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.smodel.SignalModel.data_at_index">
 <code class="descname">data_at_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.data_at_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the signal model to data at specificed coordinates given
+<dd><p>Fit the signal model to data at specified coordinates given
 with respect to the coordinate system of the subject reference
 space.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -1997,7 +2013,7 @@ space.</p>
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.data_at_subject_coordinate">
 <code class="descname">data_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.data_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the signal model to data at specificed coordinates given
+<dd><p>Fit the signal model to data at specified coordinates given
 with respect to the coordinate system of the subject reference
 space.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -2062,6 +2078,29 @@ take precedence: ‘vb’&gt; ‘vb_background’&gt; ‘vb_estimate’ &gt;
 </dd></dl>
 
 <dl class="method">
+<dt id="fmristats.smodel.SignalModel.get_data_matrix">
+<code class="descname">get_data_matrix</code><span class="sig-paren">(</span><em>burn_in=None</em>, <em>verbose=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.get_data_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the data matrix</p>
+<p>This is the essentially the same matrix as returned by
+.observations(kwargs). However, scan cycles missing data or
+severe head movements are removed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>ndarray, shape (n’,x,y,z,6), dtype</strong> – […,:3] = coordinates of observation
+[…, 3] = MR signal response
+[…, 4] = time of observation
+[…, 5] = task during time of observation
+[…, 6] = block number during time of observation</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.smodel.SignalModel.mean_index_affine">
 <code class="descname">mean_index_affine</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.mean_index_affine" title="Permalink to this definition">¶</a></dt>
 <dd><p>Affine transformation from reference space to the index space of
@@ -2084,8 +2123,8 @@ the acquisition grid</p>
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.model_at_coordinate">
 <code class="descname">model_at_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_coordinate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the signal model to data at specificed coordinates given
-with respect to the coordinate system of the population space.</p>
+<dd><p>Fit the signal model to data at specified coordinates given with
+respect to the coordinate system of the population space.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2099,7 +2138,7 @@ with respect to the coordinate system of the population space.</p>
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.model_at_index">
 <code class="descname">model_at_index</code><span class="sig-paren">(</span><em>index</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_index" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the signal model to data at specificed coordinates</p>
+<dd><p>Fit the signal model to data at specified coordinates</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -2113,7 +2152,7 @@ with respect to the coordinate system of the population space.</p>
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.model_at_subject_coordinate">
 <code class="descname">model_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>formula='y~C(task)/C(block</em>, <em>Sum)'</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
-<dd><p>Fit the signal model to data at specificed coordinates given
+<dd><p>Fit the signal model to data at specified coordinates given
 with respect to the coordinate system of the subject reference
 space.</p>
 <table class="docutils field-list" frame="void" rules="none">

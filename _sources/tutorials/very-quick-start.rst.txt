@@ -437,7 +437,7 @@ reference.
 
     ants4pop --population-map subject-MNI.pop \
         --vb MNI.image -v \
-        --session subject.fit --cycle 42
+        --session subject.ses --cycle 42
 
 You can query information about the created files:
 
@@ -535,3 +535,66 @@ This will save the fit to ``subject-MNI.fit``.
 
 .. _`warp coefficient file`: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/FNIRT/UserGuide#A--cout
 
+Example
+.......
+
+This is a complete summary of everything that was mentioned above. The
+code will parse the Nifti1-file of a subject, fit the foreground in the
+FMRI, it will fit the subject movements by a PCM-method and it will fit
+the population map using ANTS. Then it will fit the default model to the
+FMRI data by the MB-estimator and prune the result from non-brain areas
+using BET:
+
+.. code:: shell
+
+    # this will create the file subject-0099.irr:
+    fmriirritation --irritation subject-0099.irr \
+        --cohort FOR2107 \
+        --id 42 \
+        --datetime 2015-11-01 \
+        --paradigm HFM \
+        --namex shapes \
+        --onsetsx 2 84 166 248 330 \
+        --durationsx 30 \
+        --namey faces \
+        --onsetsy 37 119 201 283 \
+        --durationsy 44 \
+        --epi 3 \
+        --verbose
+
+    # this will create the file subject-0099.ses:
+    nii2session --session subject-0099.ses \
+        --nii subject-0099.nii.gz \
+        --irritation subject-0099.irr \
+        --epi-code 3 \
+        --detect-foreground -v
+
+    # this will create the file subject-0099.ref:
+    fmririgid --reference-maps subject-0099.ref \
+        --session subject-0099.ses \
+        --cycle 42 -v
+
+    # this will create the file vb-template.image:
+    nii2image --name template \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz\
+        vb-template.image
+
+    # this will create the file vb-background.image:
+    nii2image --name background \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz \
+        vb-background.image
+
+    # this will create the file subject-0099-MNI.pop:
+    ants4pop --population-map subject-0099-MNI.pop \
+        --vb MNI.image -v \
+        --session subject-0099.ses --cycle 42
+
+    # this will create the file subject-0099-MNI.fit:
+    fmrifit --fit subject-0099-MNI.fit \
+        --session subject-0099.ses \
+        --reference-maps subject-0099.ref \
+        --population-map subject-0099-MNI.pop \
+        --stimulus-block faces --control-block shapes -v
+
+    # this will write a mask to the file subject-0099-MNI.fit:
+    fsl4prune --fit subject-0099-MNI.fit -p .5 --variant R -v
