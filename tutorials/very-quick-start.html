@@ -465,7 +465,7 @@ either setting a user defined hard lower bound for the minimum:</p>
 </div>
 <p>Or by setting the lower bound to a given fraction of the maximum
 available MR measures at a point:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">-</span><span class="n">f</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">vv</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">6</span> <span class="o">-</span><span class="n">f</span>
 </pre></div>
 </div>
 <p>The generated brain mask is directly saved into the file
@@ -475,11 +475,11 @@ available MR measures at a point:</p>
 <h3>Prune by using a wrapper to BET<a class="headerlink" href="#prune-by-using-a-wrapper-to-bet" title="Permalink to this headline">¶</a></h3>
 <p>The difference between <code class="docutils literal notranslate"><span class="pre">fmriprune</span></code> and <code class="docutils literal notranslate"><span class="pre">fsl4prune</span></code> is that the
 latter also contains a wrapper to <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET">BET</a>. The following</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">f</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">6</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">f</span>
 </pre></div>
 </div>
 <p>is equivalent to:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">6</span>
 
 <span class="n">fit2nii</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span> <span class="o">--</span><span class="n">nii</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
     <span class="o">--</span><span class="n">parameter</span> <span class="n">intercept</span> <span class="o">--</span><span class="n">value</span> <span class="n">point</span> \
@@ -638,15 +638,17 @@ template has valid entries, i.e. grey scale intensities <span class="math notran
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>This is a complete summary of everything that was mentioned above. The
-code will parse the Nifti1-file of a subject, fit the foreground in the
-FMRI, it will fit the subject movements by a PCM-method and it will fit
-the population map using ANTS. Then it will fit the default model to the
-FMRI data by the MB-estimator and prune the result from non-brain areas
-using BET:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this will create the file subject-0099.irr:</span>
-<span class="n">fmriirritation</span> <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">irr</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">FOR2107</span> \
+<p>To summaries the above, the following will go through an example of
+analysing a single subject (number 0355 in a cohort called RG) that
+performed a Hariri face matching task.</p>
+<p>The code will parse the Nifti1-file of a subject, fit the foreground in
+the FMRI, it will fit the subject movements by a PCM-method and it will
+fit the population map using ANTS. Then it will fit the default model to
+the FMRI data by the MB-estimator and prune the result from non-brain
+areas using BET:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># this will create the file RG-0355-HFM.irr:</span>
+<span class="n">fmriirritation</span> <span class="o">--</span><span class="n">irritation</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">irr</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">RG</span> \
     <span class="o">--</span><span class="nb">id</span> <span class="mi">42</span> \
     <span class="o">--</span><span class="n">datetime</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span> \
     <span class="o">--</span><span class="n">paradigm</span> <span class="n">HFM</span> \
@@ -656,19 +658,19 @@ using BET:</p>
     <span class="o">--</span><span class="n">namey</span> <span class="n">faces</span> \
     <span class="o">--</span><span class="n">onsetsy</span> <span class="mi">37</span> <span class="mi">119</span> <span class="mi">201</span> <span class="mi">283</span> \
     <span class="o">--</span><span class="n">durationsy</span> <span class="mi">44</span> \
-    <span class="o">--</span><span class="n">epi</span> <span class="mi">3</span> \
+    <span class="o">--</span><span class="n">epi</span><span class="o">-</span><span class="n">code</span> <span class="mi">3</span> \
     <span class="o">--</span><span class="n">verbose</span>
 
-<span class="c1"># this will create the file subject-0099.ses:</span>
-<span class="n">nii2session</span> <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ses</span> \
-    <span class="o">--</span><span class="n">nii</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">--</span><span class="n">irritation</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">irr</span> \
+<span class="c1"># this will create the file RG-0355-HFM.ses:</span>
+<span class="n">nii2session</span> <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> \
+    <span class="o">--</span><span class="n">nii</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="o">--</span><span class="n">irritation</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">irr</span> \
     <span class="o">--</span><span class="n">epi</span><span class="o">-</span><span class="n">code</span> <span class="mi">3</span> \
     <span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span> <span class="o">-</span><span class="n">v</span>
 
-<span class="c1"># this will create the file subject-0099.ref:</span>
-<span class="n">fmririgid</span> <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ref</span> \
-    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ses</span> \
+<span class="c1"># this will create the file RG-0355-HFM.ref:</span>
+<span class="n">fmririgid</span> <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ref</span> \
+    <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span> <span class="o">-</span><span class="n">v</span>
 
 <span class="c1"># this will create the file vb-template.image:</span>
@@ -681,20 +683,21 @@ using BET:</p>
     <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
     <span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>
 
-<span class="c1"># this will create the file subject-0099-MNI.pop:</span>
-<span class="n">ants4pop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="mi">0099</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
+<span class="c1"># this will create the file RG-0355-HFM-MNI.pop:</span>
+<span class="n">ants4pop</span> <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
     <span class="o">--</span><span class="n">vb</span> <span class="n">MNI</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ses</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
+    <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
 
-<span class="c1"># this will create the file subject-0099-MNI.fit:</span>
-<span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">-</span><span class="mi">0099</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
-    <span class="o">--</span><span class="n">session</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ses</span> \
-    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">subject</span><span class="o">-</span><span class="mf">0099.</span><span class="n">ref</span> \
-    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">subject</span><span class="o">-</span><span class="mi">0099</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
+<span class="c1"># this will create the file RG-0355-HFM-MNI.fit:</span>
+
+<span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
+    <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ref</span> \
+    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">pop</span> \
     <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span> <span class="o">-</span><span class="n">v</span>
 
-<span class="c1"># this will write a mask to the file subject-0099-MNI.fit:</span>
-<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">-</span><span class="mi">0099</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">5</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span>
+<span class="c1"># this will write a mask to the file RG-0355-HFM-MNI.fit:</span>
+<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> <span class="o">-</span><span class="n">p</span> <span class="o">.</span><span class="mi">6</span> <span class="o">--</span><span class="n">variant</span> <span class="n">R</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 </div>

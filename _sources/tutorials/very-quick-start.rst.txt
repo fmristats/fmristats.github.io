@@ -319,7 +319,7 @@ available MR measures at a point:
 
 .. code:: shell
 
-    fmriprune --fit subject.fit -vv -p .5 -f
+    fmriprune --fit subject.fit -vv -p .6 -f
 
 The generated brain mask is directly saved into the file
 ``subject.fit``.
@@ -332,13 +332,13 @@ latter also contains a wrapper to BET_. The following
 
 .. code:: shell
 
-    fsl4prune --fit subject.fit -p .5 --variant R -v -f
+    fsl4prune --fit subject.fit -p .6 --variant R -v -f
 
 is equivalent to:
 
 .. code:: shell
 
-    fmriprune --fit subject.fit -p .5
+    fmriprune --fit subject.fit -p .6
 
     fit2nii --fit subject.fit --nii intercept.nii.gz \
         --parameter intercept --value point \
@@ -538,18 +538,21 @@ This will save the fit to ``subject-MNI.fit``.
 Example
 .......
 
-This is a complete summary of everything that was mentioned above. The
-code will parse the Nifti1-file of a subject, fit the foreground in the
-FMRI, it will fit the subject movements by a PCM-method and it will fit
-the population map using ANTS. Then it will fit the default model to the
-FMRI data by the MB-estimator and prune the result from non-brain areas
-using BET:
+To summaries the above, the following will go through an example of
+analysing a single subject (number 0355 in a cohort called RG) that
+performed a Hariri face matching task.
+
+The code will parse the Nifti1-file of a subject, fit the foreground in
+the FMRI, it will fit the subject movements by a PCM-method and it will
+fit the population map using ANTS. Then it will fit the default model to
+the FMRI data by the MB-estimator and prune the result from non-brain
+areas using BET:
 
 .. code:: shell
 
-    # this will create the file subject-0099.irr:
-    fmriirritation --irritation subject-0099.irr \
-        --cohort FOR2107 \
+    # this will create the file RG-0355-HFM.irr:
+    fmriirritation --irritation RG-0355-HFM.irr \
+        --cohort RG \
         --id 42 \
         --datetime 2015-11-01 \
         --paradigm HFM \
@@ -559,19 +562,19 @@ using BET:
         --namey faces \
         --onsetsy 37 119 201 283 \
         --durationsy 44 \
-        --epi 3 \
+        --epi-code 3 \
         --verbose
 
-    # this will create the file subject-0099.ses:
-    nii2session --session subject-0099.ses \
-        --nii subject-0099.nii.gz \
-        --irritation subject-0099.irr \
+    # this will create the file RG-0355-HFM.ses:
+    nii2session --session RG-0355-HFM.ses \
+        --nii RG-0355-HFM.nii.gz \
+        --irritation RG-0355-HFM.irr \
         --epi-code 3 \
         --detect-foreground -v
 
-    # this will create the file subject-0099.ref:
-    fmririgid --reference-maps subject-0099.ref \
-        --session subject-0099.ses \
+    # this will create the file RG-0355-HFM.ref:
+    fmririgid --reference-maps RG-0355-HFM.ref \
+        --session RG-0355-HFM.ses \
         --cycle 42 -v
 
     # this will create the file vb-template.image:
@@ -584,17 +587,18 @@ using BET:
         /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz \
         vb-background.image
 
-    # this will create the file subject-0099-MNI.pop:
-    ants4pop --population-map subject-0099-MNI.pop \
+    # this will create the file RG-0355-HFM-MNI.pop:
+    ants4pop --population-map RG-0355-HFM-MNI.pop \
         --vb MNI.image -v \
-        --session subject-0099.ses --cycle 42
+        --session RG-0355-HFM.ses --cycle 42
 
-    # this will create the file subject-0099-MNI.fit:
-    fmrifit --fit subject-0099-MNI.fit \
-        --session subject-0099.ses \
-        --reference-maps subject-0099.ref \
-        --population-map subject-0099-MNI.pop \
+    # this will create the file RG-0355-HFM-MNI.fit:
+
+    fmrifit --fit RG-0355-HFM-MNI.fit \
+        --session RG-0355-HFM.ses \
+        --reference-maps RG-0355-HFM.ref \
+        --population-map RG-0355-HFM-MNI.pop \
         --stimulus-block faces --control-block shapes -v
 
-    # this will write a mask to the file subject-0099-MNI.fit:
-    fsl4prune --fit subject-0099-MNI.fit -p .5 --variant R -v
+    # this will write a mask to the file RG-0355-HFM-MNI.fit:
+    fsl4prune --fit RG-0355-HFM-MNI.fit -p .6 --variant R -v
