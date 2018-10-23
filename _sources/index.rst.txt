@@ -43,7 +43,7 @@ The `Harvard UoB format`_ suggests to cite the software itself in this
 form:
 
     Thomas W. D. Möbius (2018) fmristats: Modelling the data and not the
-    images in FMRI (Version 0.0.4) [Computer program]. Available at
+    images in FMRI (Version 0.0.5) [Computer program]. Available at
     http://fmristats.github.io/
 
 In case you are using BibTeX:
