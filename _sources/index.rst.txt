@@ -72,9 +72,9 @@ In case you are using BibTeX:
         url     = {https://arxiv.org/abs/1809.07232},
     }
 
-    @misc{fmristats:0.0.4,
+    @misc{fmristats:0.0.5,
         title   = {fmristats: Modelling the data and not the images in FMRI
-            (Version 0.0.4) [Computer program]},
+            (Version 0.0.5) [Computer program]},
         author  = {Thomas Wilhelm Dieter Möbius},
         year    = 2018,
         month   = 9,
