@@ -23,9 +23,22 @@ individual subjects are random entities, and that the certainty at which
 the actual BOLD effect in an individual can be estimated from an FMRI
 varies across the brain and between the subjects.
 
+.. warning::
+
+    Please note that this is not the MATLAB program fmristat_ nor is it
+    a reimplementation of the software. fmristat_ (also part of niak_)
+    remains the reference implementation of Keith Worsley's methods_.
+    This software contains instead an implementation of Möbius' MB
+    estimator.
+
+.. _fmristat: http://www.math.mcgill.ca/keith/fmristat/
+
+.. _niak: https://github.com/SIMEXP/niak
+
+.. _methods: https://www.sciencedirect.com/science/article/pii/S1053811901909334
+
 MB estimation allows to process and report BOLD effects in ati units. In
-particular multicentre studies gain power by its use: if an effect is
-present in your data, you will be more likely to find it.
+particular multicentre studies gain power by its use.
 
 How to cite this software
 -------------------------

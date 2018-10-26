@@ -189,9 +189,16 @@ studies by random effects meta regression models, acknowledging that
 individual subjects are random entities, and that the certainty at which
 the actual BOLD effect in an individual can be estimated from an FMRI
 varies across the brain and between the subjects.</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Please note that this is not the MATLAB program <a class="reference external" href="http://www.math.mcgill.ca/keith/fmristat/">fmristat</a> nor is it
+a reimplementation of the software. <a class="reference external" href="http://www.math.mcgill.ca/keith/fmristat/">fmristat</a> (also part of <a class="reference external" href="https://github.com/SIMEXP/niak">niak</a>)
+remains the reference implementation of Keith Worsley’s <a class="reference external" href="https://www.sciencedirect.com/science/article/pii/S1053811901909334">methods</a>.
+This software contains instead an implementation of Möbius’ MB
+estimator.</p>
+</div>
 <p>MB estimation allows to process and report BOLD effects in ati units. In
-particular multicentre studies gain power by its use: if an effect is
-present in your data, you will be more likely to find it.</p>
+particular multicentre studies gain power by its use.</p>
 <div class="section" id="how-to-cite-this-software">
 <h2>How to cite this software<a class="headerlink" href="#how-to-cite-this-software" title="Permalink to this headline">¶</a></h2>
 <p>Current <a class="reference external" href="https://arxiv.org/abs/1809.07232v1">reference publication</a> for the MB estimator is:</p>

@@ -553,7 +553,7 @@ areas using BET:
     # this will create the file RG-0355-HFM.irr:
     fmriirritation --irritation RG-0355-HFM.irr \
         --cohort RG \
-        --id 42 \
+        --id 355 \
         --datetime 2015-11-01 \
         --paradigm HFM \
         --namex shapes \
