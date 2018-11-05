@@ -9,7 +9,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Index &mdash; fmristats 0.0.4 documentation</title>
+  <title>Index &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -89,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
 </ul>
@@ -178,6 +179,7 @@
  | <a href="#G"><strong>G</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
  | <a href="#R"><strong>R</strong></a>
@@ -251,16 +253,18 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#fmristats.diffeomorphisms.Image.components">components() (fmristats.diffeomorphisms.Image method)</a>
+</li>
       <li><a href="modules.html#fmristats.diffeomorphisms.Diffeomorphism.coordinates">coordinates() (fmristats.diffeomorphisms.Diffeomorphism method)</a>
 
       <ul>
         <li><a href="modules.html#fmristats.smodel.SignalModel.coordinates">(fmristats.smodel.SignalModel method)</a>
 </li>
       </ul></li>
-      <li><a href="modules.html#fmristats.diffeomorphisms.Diffeomorphism.coordinates_domain">coordinates_domain() (fmristats.diffeomorphisms.Diffeomorphism method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#fmristats.diffeomorphisms.Diffeomorphism.coordinates_domain">coordinates_domain() (fmristats.diffeomorphisms.Diffeomorphism method)</a>
+</li>
       <li><a href="modules.html#fmristats.smodel.SignalModel.create_data_matrix">create_data_matrix() (fmristats.smodel.SignalModel method)</a>
 </li>
       <li><a href="modules.html#fmristats.smodel.SignalModel.create_design_matrix">create_design_matrix() (fmristats.smodel.SignalModel method)</a>
@@ -296,6 +300,8 @@
       <li><a href="modules.html#fmristats.session.Session.descriptive_statistics_detailed">descriptive_statistics_detailed() (fmristats.session.Session method)</a>
 </li>
       <li><a href="modules.html#fmristats.reference.ReferenceMaps.detect_outlying">detect_outlying() (fmristats.reference.ReferenceMaps method)</a>
+</li>
+      <li><a href="modules.html#fmristats.diffeomorphisms.Image.detect_peaks">detect_peaks() (fmristats.diffeomorphisms.Image method)</a>
 </li>
       <li><a href="modules.html#fmristats.diffeomorphisms.Diffeomorphism">Diffeomorphism (class in fmristats.diffeomorphisms)</a>
 </li>
@@ -428,6 +434,18 @@
   </ul></td>
 </tr></table>
 
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#fmristats.smodel.Result.norm_to">norm_to() (fmristats.smodel.Result method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#fmristats.smodel.Result.norm_to_ati">norm_to_ati() (fmristats.smodel.Result method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -457,12 +475,16 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules.html#fmristats.reference.ReferenceMaps">ReferenceMaps (class in fmristats.reference)</a>
+      <li><a href="modules.html#fmristats.diffeomorphisms.Image.range">range() (fmristats.diffeomorphisms.Image method)</a>
 </li>
-      <li><a href="modules.html#fmristats.reference.ReferenceMaps.reset_reference_space">reset_reference_space() (fmristats.reference.ReferenceMaps method)</a>
+      <li><a href="modules.html#fmristats.diffeomorphisms.Image.ravel">ravel() (fmristats.diffeomorphisms.Image method)</a>
+</li>
+      <li><a href="modules.html#fmristats.reference.ReferenceMaps">ReferenceMaps (class in fmristats.reference)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules.html#fmristats.reference.ReferenceMaps.reset_reference_space">reset_reference_space() (fmristats.reference.ReferenceMaps method)</a>
+</li>
       <li><a href="modules.html#fmristats.affines.Affine.resolution">resolution() (fmristats.affines.Affine method)</a>
 </li>
       <li><a href="modules.html#fmristats.smodel.Result">Result (class in fmristats.smodel)</a>
@@ -522,6 +544,8 @@
       <li><a href="modules.html#fmristats.session.Session.set_slice_time">set_slice_time() (fmristats.session.Session method)</a>
 </li>
       <li><a href="modules.html#fmristats.pmap.PopulationMap.set_vb">set_vb() (fmristats.pmap.PopulationMap method)</a>
+</li>
+      <li><a href="modules.html#fmristats.pmap.PopulationMap.set_vb_ati">set_vb_ati() (fmristats.pmap.PopulationMap method)</a>
 </li>
       <li><a href="modules.html#fmristats.pmap.PopulationMap.set_vb_background">set_vb_background() (fmristats.pmap.PopulationMap method)</a>
 </li>
@@ -588,7 +612,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

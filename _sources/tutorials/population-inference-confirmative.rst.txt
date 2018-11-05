@@ -25,7 +25,7 @@ Plot:
 
 .. code:: python
 
-    _ = picture(tsubject,3,6,4)
+    picture(tsubject)
 
 
 .. image:: figures/population-inference-confirmative_figure3_1.png
@@ -52,15 +52,14 @@ Select the highest t-statistics peak:
 
 
 
-Plot the respective slice in subject space:
+Plot the respective slice:
 
 
 .. code:: python
 
     
-    picture(tsubject,3,1,1,[index[-1]], interpolation='bilinear')
-    pt.plot([index[0]], [index[1]], 'ko')
-    pt.plot([index[0]], [index[1]], 'w+')
+    picture(tsubject,3,1,1,[index[-1]],
+        interpolation='bilinear', mark_peak=True)
     
     print(tsubject.data[index])
 
@@ -110,42 +109,26 @@ Load data:
 
     
     population_sample = load(path_to_sample)
-
-
-
-
-Number of subjects in the sample:
-
-
-.. code:: python
-
-    len(population_sample.covariates)
+    
+    print("""
+    Number of subjects in the sample:   {:d}
+    Subjects that are not right handed: {:d}""".format(
+        len(population_sample.covariates),
+        (population_sample.covariates.waterloo < 20).sum()))
 
 
 .. code::
 
-    64
+    
+    Number of subjects in the sample:   64
+    Subjects that are not right handed: 0
     
 
 
 
-Number of subjects that are *not* right handed:
-
-
-.. code:: python
-
-    
-    (population_sample.covariates.waterloo < 20).sum()
-
-
-.. code::
-
-    0
-    
-
-
-
-Remove the initial subject from the sample.
+We are aiming to confirm a finding that has been suggested by an
+analysis of a single subject. Remove this *initial subject* from the
+sample.
 
 
 .. code:: python
@@ -173,17 +156,10 @@ expected.
     
     sample_size.mask()
     
-    vb = subsample.vb
-    vb.mask()
-    
-    picture(subsample.vb,3,6,4,cmap=cm.gray)
-    picture(sample_size,3,6,4,cmap=cm.viridis)
-    pt.colorbar()
-    
-    _=pt.tight_layout()
+    picture(sample_size,cmap=cm.viridis)
 
 
-.. image:: figures/population-inference-confirmative_figure11_1.png
+.. image:: figures/population-inference-confirmative_figure9_1.png
    :width: 15 cm
 
 
@@ -225,13 +201,10 @@ Plot:
 
 .. code:: python
 
-    picture(tstatistics,3,6,4)
-    pt.colorbar()
-    
-    _=pt.tight_layout()
+    picture(tstatistics)
 
 
-.. image:: figures/population-inference-confirmative_figure14_1.png
+.. image:: figures/population-inference-confirmative_figure12_1.png
    :width: 15 cm
 
 
@@ -242,11 +215,11 @@ Plot the respective slice in population space:
 .. code:: python
 
     
-    picture(tstatistics,3,1,1,[index[-1]], interpolation='bilinear')
+    picture(tstatistics,3,1,1,[index[-1]],
+        interpolation='bilinear')
+    
     pt.plot([index[0]], [index[1]], 'ko')
     pt.plot([index[0]], [index[1]], 'w+')
-    pt.colorbar()
-    pt.tight_layout()
     
     print(tstatistics.data[index])
 
@@ -256,7 +229,7 @@ Plot the respective slice in population space:
     2.705125720068511
     
 
-.. image:: figures/population-inference-confirmative_figure15_1.png
+.. image:: figures/population-inference-confirmative_figure13_1.png
    :width: 15 cm
 
 
@@ -283,8 +256,8 @@ Extract the meta data from the sample and the fit:
 
 
 
-Make some nice visualisations
-.............................
+Forest and funnel plot
+......................
 
 Define the critical values for the plots:
 
@@ -350,12 +323,10 @@ right handed on the top):
     pt.box(False)
     pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
     pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=3)
-    
-    _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-confirmative_figure19_1.png
-   :width: 15cm
+.. image:: figures/population-inference-confirmative_figure17_1.png
+   :width: 15 cm
 
 
 
@@ -384,11 +355,9 @@ Funnel plot
     ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
     ax.set_ylabel('Reciprocal of the Squared Standard Error')
     sb.despine()
-    
-    _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-confirmative_figure21_1.png
+.. image:: figures/population-inference-confirmative_figure19_1.png
    :width: 15 cm
 
 

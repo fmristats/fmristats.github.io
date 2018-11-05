@@ -1,0 +1,760 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Thresholding &mdash; fmristats 0.0.6 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Run analysis on a server" href="run-on-server.html" />
+    <link rel="prev" title="Subject inference (at one coordinate)" href="subject-inference-at-one-point.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Thresholding</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#load-statistics">Load statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#strategies-for-thresholding">Strategies for thresholding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#false-positive-rate">False positive rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#family-wise-error-rate">Family wise error rate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#false-discovery-rate">False discovery rate</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#get-summary-statistics">Get summary statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting-fields-above-a-threshold">Plotting fields above a threshold</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#effects-coordinates-locations">Effects, coordinates, locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#volcanoes">Volcanoes</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Thresholding</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/thresholding.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="thresholding">
+<h1>Thresholding<a class="headerlink" href="#thresholding" title="Permalink to this headline">¶</a></h1>
+<p>Let us assume a population model has been fitted in MNI standard space
+<span class="math notranslate nohighlight">\(M\)</span>. As a result, we have obtained an estimate of the
+to-be-expected, task related BOLD signal change in subjects of the
+respective population, namely the field:</p>
+<div class="math notranslate nohighlight">
+\[\left(\hat β(x) : x∈M \right).\]</div>
+<p>We have also obtained an estimate of the variance of <span class="math notranslate nohighlight">\(\hat β\)</span> at
+each <span class="math notranslate nohighlight">\(x∈M\)</span>, namely the field:</p>
+<div class="math notranslate nohighlight">
+\[\Big( s(x)) : x∈M \Big).\]</div>
+<p>We are interested in testing the set (or field) of hypothesis</p>
+<div class="math notranslate nohighlight">
+\[H_0(x): β(x) = 0 \qquad \text{versus} \qquad H_1(x): β(x) &gt; 0\]</div>
+<p>for every <span class="math notranslate nohighlight">\(x∈M\)</span> and to find areas in the brain, say <span class="math notranslate nohighlight">\(S ⊆ M\)</span>,
+which contain the <em>true</em> and <em>biologically relevant</em> activations. If we
+reject <span class="math notranslate nohighlight">\(H_0(x)\)</span> at some <span class="math notranslate nohighlight">\(x∈M\)</span>, we say that »we can expect
+significant activation at <span class="math notranslate nohighlight">\(x\)</span> in the population«.</p>
+<p>Some notation:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="24%" />
+<col width="25%" />
+<col width="25%" />
+<col width="27%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>&#160;</td>
+<td><span class="math notranslate nohighlight">\(H_0\)</span> accepted</td>
+<td><span class="math notranslate nohighlight">\(H_0\)</span> rejected</td>
+<td>Total</td>
+</tr>
+<tr class="row-even"><td><span class="math notranslate nohighlight">\(H_0\)</span> is true</td>
+<td><span class="math notranslate nohighlight">\(U\)</span></td>
+<td><span class="math notranslate nohighlight">\(V\)</span></td>
+<td><span class="math notranslate nohighlight">\(M_0\)</span></td>
+</tr>
+<tr class="row-odd"><td><span class="math notranslate nohighlight">\(H_0\)</span> is false</td>
+<td><span class="math notranslate nohighlight">\(T\)</span></td>
+<td><span class="math notranslate nohighlight">\(S\)</span></td>
+<td><span class="math notranslate nohighlight">\(M\setminus M_0\)</span></td>
+</tr>
+<tr class="row-even"><td>Total</td>
+<td><span class="math notranslate nohighlight">\(R\setminus M\)</span></td>
+<td><span class="math notranslate nohighlight">\(R\)</span></td>
+<td><span class="math notranslate nohighlight">\(M\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The sets <span class="math notranslate nohighlight">\(M\)</span> and <span class="math notranslate nohighlight">\(M_0\)</span> are fixed but unknown. The sets
+<span class="math notranslate nohighlight">\(U,V,T,S\)</span> and consequently also <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(R\setminus M\)</span>
+are random. We call <span class="math notranslate nohighlight">\(R\)</span> the <em>discoveries</em> in a study, and
+<span class="math notranslate nohighlight">\(V\)</span> the set of <em>false positives</em>. The aim is thus to find a set
+<span class="math notranslate nohighlight">\(R\)</span> that consists mainly of elements of <span class="math notranslate nohighlight">\(S\)</span> and that only
+contains a limited number of elements from the set <span class="math notranslate nohighlight">\(V\)</span> of false
+positives. To find a suitable <span class="math notranslate nohighlight">\(R\)</span>, one studies the test statistics
+field:</p>
+<div class="math notranslate nohighlight">
+\[\left(t(x) : t(x) = \frac {\hat β(x)}{s(x)}, x∈M \right).\]</div>
+<p>It is custom to define <span class="math notranslate nohighlight">\(R\)</span> as an <em>excursion set</em>, i.e.to find a
+suitable cut-off <span class="math notranslate nohighlight">\(t_0\)</span> and define</p>
+<div class="math notranslate nohighlight">
+\[R_{≥t_0} := \left(x∈M : t(x) ≥ t_0 \right).\]</div>
+<p>This chapter goes through different approaches for defining suitable
+candidates for <span class="math notranslate nohighlight">\(t_0\)</span>.</p>
+<div class="section" id="load-statistics">
+<h2>Load statistics<a class="headerlink" href="#load-statistics" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;interim-results/explorative.mfit&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Extract the t-test statistics and the task related BOLD effect from the
+statistics field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tstatistic</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_tstatistic</span><span class="p">()</span>
+<span class="n">bold</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_parameter</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="strategies-for-thresholding">
+<h2>Strategies for thresholding<a class="headerlink" href="#strategies-for-thresholding" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://nistats.github.io/">Nistats</a> has some functionality that may help in detecting areas with
+potentially relevant activation. (It is easy to export a fmristats’
+<em>Image</em>-object to a <em>Niilike</em>-object that <a class="reference external" href="https://nistats.github.io/">Nistats</a> can understand.)</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats.nifti</span> <span class="k">import</span> <span class="n">image2nii</span>
+<span class="kn">from</span> <span class="nn">nistats.thresholding</span> <span class="k">import</span> <span class="n">map_threshold</span>
+<span class="n">tnii</span> <span class="o">=</span> <span class="n">image2nii</span><span class="p">(</span><span class="n">tstatistic</span><span class="p">,</span> <span class="n">nan_to_zero</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># control the false positive rate:</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">fpr</span> <span class="o">=</span> <span class="n">map_threshold</span><span class="p">(</span><span class="n">tnii</span><span class="p">,</span> <span class="n">level</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">height_control</span><span class="o">=</span><span class="s1">&#39;fpr&#39;</span><span class="p">)</span>
+
+<span class="c1"># make a Bonferonni correction:</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">bon</span> <span class="o">=</span> <span class="n">map_threshold</span><span class="p">(</span><span class="n">tnii</span><span class="p">,</span> <span class="n">level</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">height_control</span><span class="o">=</span><span class="s1">&#39;bonferroni&#39;</span><span class="p">)</span>
+
+<span class="c1"># control the false discovery rate (Benjamini-Hochberg):</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">fdr</span> <span class="o">=</span> <span class="n">map_threshold</span><span class="p">(</span><span class="n">tnii</span><span class="p">,</span> <span class="n">level</span><span class="o">=.</span><span class="mi">05</span><span class="p">,</span> <span class="n">height_control</span><span class="o">=</span><span class="s1">&#39;fdr&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Let us have a look at the estimated thresholds:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Threshold (controlling FPR) : </span><span class="si">{:.2f}</span><span class="s2"></span>
+<span class="s2">Threshold (Bonferonni)      : </span><span class="si">{:.2f}</span><span class="s2"></span>
+<span class="s2">Threshold (controlling FDR) : </span><span class="si">{:.2f}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">fpr</span><span class="p">,</span> <span class="n">bon</span><span class="p">,</span> <span class="n">fdr</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Threshold</span> <span class="p">(</span><span class="n">controlling</span> <span class="n">FPR</span><span class="p">)</span> <span class="p">:</span> <span class="mf">1.64</span>
+<span class="n">Threshold</span> <span class="p">(</span><span class="n">Bonferonni</span><span class="p">)</span>      <span class="p">:</span> <span class="mf">4.97</span>
+<span class="n">Threshold</span> <span class="p">(</span><span class="n">controlling</span> <span class="n">FDR</span><span class="p">)</span> <span class="p">:</span> <span class="mf">2.63</span>
+</pre></div>
+</div>
+<p>Some notes on each of the three thresholds.</p>
+<div class="section" id="false-positive-rate">
+<h3>False positive rate<a class="headerlink" href="#false-positive-rate" title="Permalink to this headline">¶</a></h3>
+<p>Controlling the <em>false positive rate (FPR)</em> is very liberal in assigning
+significance to an area. The FPR is the proportion of falsely rejected
+<span class="math notranslate nohighlight">\(H_0\)</span> <em>within</em> the set of true <span class="math notranslate nohighlight">\(H_0\)</span>. In signs:</p>
+<div class="math notranslate nohighlight">
+\[FPR = \frac {𝔼\left(λ(V)\right)} {λ(M_0)}.\]</div>
+<p>(Read <span class="math notranslate nohighlight">\(λ(V)\)</span> as »the volume of <span class="math notranslate nohighlight">\(V\)</span>. More precisely,
+<span class="math notranslate nohighlight">\(λ\)</span> shall denote the Lebesgue measure.) Note that the actual data
+you have observed don’t even play a role in the construction of the
+FPR-threshold; the threshold is simply identical to:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats.distributions</span> <span class="k">import</span> <span class="n">norm</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="mf">0.05</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.6448536269514729</span>
+</pre></div>
+</div>
+<p>Controlling the FPR has the effect that even when there is <strong>no</strong>
+activation in the brain, we would still claim <span class="math notranslate nohighlight">\(5\%\)</span> of the brain’s
+area as significant. To quote Keith Worsley: »obviously unacceptable«
+<a class="footnote-reference" href="#id2" id="id1">[2]</a>.</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[2]</a></td><td>The Geometry of Random Images (1996) Chance 9(1), 27-39.</td></tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="family-wise-error-rate">
+<h3>Family wise error rate<a class="headerlink" href="#family-wise-error-rate" title="Permalink to this headline">¶</a></h3>
+<p>Bonferonni controls the <em>family wise error rate (FWER)</em> in a set of
+hypothesis tests. Using the notation introduced at the beginning of the
+chapter, the FWER is</p>
+<div class="math notranslate nohighlight">
+\[FWER = P(V=∅).\]</div>
+<p>Bonferonni’s method intrinsically depends on the »number« of hypothesis
+that are tested. The Bonferonni threshold accounts for this number and
+in our case this number is, well, infinite: The resolution at which we
+have evaluate the test statistics field <span class="math notranslate nohighlight">\((t(x) : x∈M)\)</span> is –
+although probably being a deliberate choice – ultimately an arbitrary
+choice. The resolution at which we have evaluated the <span class="math notranslate nohighlight">\(t\)</span>-field in
+this example is:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Resolution</span> <span class="p">(</span><span class="n">left</span> <span class="n">to</span> <span class="n">right</span><span class="p">):</span>         <span class="mf">2.00</span> <span class="n">mm</span>
+<span class="n">Resolution</span> <span class="p">(</span><span class="n">posterior</span> <span class="n">to</span> <span class="n">anterior</span><span class="p">):</span> <span class="mf">2.00</span> <span class="n">mm</span>
+<span class="n">Resolution</span> <span class="p">(</span><span class="n">inferior</span> <span class="n">to</span> <span class="n">superior</span><span class="p">):</span>  <span class="mf">2.00</span> <span class="n">mm</span>
+<span class="n">Diagonal</span> <span class="n">of</span> <span class="n">one</span> <span class="n">voxel</span><span class="p">:</span>              <span class="mf">3.46</span> <span class="n">mm</span>
+<span class="n">Volume</span> <span class="n">of</span> <span class="n">one</span> <span class="n">voxel</span><span class="p">:</span>                <span class="mf">8.00</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">1</span><span class="p">:</span>                      <span class="mf">1.00</span>
+<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                      <span class="mf">1.00</span>
+<span class="n">Aspect</span> <span class="mi">1</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                      <span class="mf">1.00</span>
+<span class="n">Rigid</span> <span class="n">transformation</span><span class="p">:</span> <span class="kc">False</span>
+</pre></div>
+</div>
+<p>But we could also have chosen a different template at a different
+resolution. If the resolution is increased, then so does the number of
+hypothesis that Bonferonni would need to account for, and so will the
+Bonferonni threshold. On the other hand, if we were to chose to
+evaluated <span class="math notranslate nohighlight">\(t\)</span> at a coarser resolution, the Bonferonni threshold
+will drop. You can see this effect by artificially dropping the
+resolution of the result field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">def</span> <span class="nf">bonferroni_at_grained_image</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span><span class="p">[::</span><span class="n">n</span><span class="p">,::</span><span class="n">n</span><span class="p">,::</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">n_voxels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">norm</span><span class="o">.</span><span class="n">isf</span><span class="p">(</span><span class="n">level</span> <span class="o">/</span> <span class="n">n_voxels</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Threshold </span><span class="si">{:n}</span><span class="s1">: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">bonferroni_at_grained_image</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Threshold</span> <span class="mi">1</span><span class="p">:</span> <span class="mf">4.97</span>
+<span class="n">Threshold</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">4.55</span>
+<span class="n">Threshold</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">4.29</span>
+<span class="n">Threshold</span> <span class="mi">4</span><span class="p">:</span> <span class="mf">4.10</span>
+<span class="n">Threshold</span> <span class="mi">5</span><span class="p">:</span> <span class="mf">3.94</span>
+</pre></div>
+</div>
+<p>The threshold drops with decreasing resolution and it will raise with
+increasing resolution. A threshold that depends on the resolution? Yes.
+Bonferonni-style thresholding of an image really makes no sense. The
+concept simply does not apply to a family of hypothesis of intrinsically
+infinite cardinality.</p>
+<p>This does not have to be all too surprising: Let us assume that there
+exits at least one <span class="math notranslate nohighlight">\(x∈M\)</span> in the brain with true BOLD activation.
+Then the continuity of the test statistics field <span class="math notranslate nohighlight">\(t\)</span> will force
+the set <span class="math notranslate nohighlight">\(R\)</span> to have a non-trivial, positive extend around
+<span class="math notranslate nohighlight">\(x\)</span>. (This is true for any threshold <span class="math notranslate nohighlight">\(t_0\)</span> with
+<span class="math notranslate nohighlight">\(t_0&lt;t(x)\)</span> but also whenever <span class="math notranslate nohighlight">\(x\)</span> does not lie at a peak in
+<span class="math notranslate nohighlight">\(t\)</span>.) But if <span class="math notranslate nohighlight">\(R\)</span> is not a null-set, then the probability
+that it contains at least one false positive can safely assumed to be
+<span class="math notranslate nohighlight">\(1\)</span>. (It is unlikely that our model matches reality in such
+perfection that we could safely assume the opposite.) It follows indeed
+<span class="math notranslate nohighlight">\(FWER=1\)</span> almost surly – no matter how you may chose the
+threshold. In other words, whenever you are willing to report any area
+as significant, the chance of making a family error is almost surly
+<span class="math notranslate nohighlight">\(1\)</span>. And to try to control an almost sure <span class="math notranslate nohighlight">\(100\%\)</span> at
+<span class="math notranslate nohighlight">\(5\%\)</span> really makes no sense.</p>
+</div>
+<div class="section" id="false-discovery-rate">
+<h3>False discovery rate<a class="headerlink" href="#false-discovery-rate" title="Permalink to this headline">¶</a></h3>
+<p>The <em>false discovery rate</em> measures the proportion of falsely rejected,
+true <span class="math notranslate nohighlight">\(H_0\)</span> among the set of <em>discoveries</em> <span class="math notranslate nohighlight">\(R\)</span>. Using the
+above notation, the FDR equals:</p>
+<div class="math notranslate nohighlight">
+\[FDR = 𝔼\left( \frac {λ(V)} {λ(R)} | λ(R)≠0 \right) ⋅ P(λ(R)≠0).\]</div>
+<p>Controlling the FDR – for example with Benjamini-Hochberg – does not
+show this strange behaviour that we have just previously seen, when
+feeding the method a coarser image:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nistats.thresholding</span> <span class="k">import</span> <span class="n">fdr_threshold</span>
+
+<span class="k">def</span> <span class="nf">fdr_at_grained_image</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mf">0.05</span><span class="p">):</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span><span class="p">[::</span><span class="n">n</span><span class="p">,::</span><span class="n">n</span><span class="p">,::</span><span class="n">n</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">fdr_threshold</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">level</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Threshold </span><span class="si">{:n}</span><span class="s1">: </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">fdr_at_grained_image</span><span class="p">(</span><span class="n">n</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Threshold</span> <span class="mi">1</span><span class="p">:</span> <span class="mf">2.63</span>
+<span class="n">Threshold</span> <span class="mi">2</span><span class="p">:</span> <span class="mf">2.63</span>
+<span class="n">Threshold</span> <span class="mi">3</span><span class="p">:</span> <span class="mf">2.65</span>
+<span class="n">Threshold</span> <span class="mi">4</span><span class="p">:</span> <span class="mf">2.64</span>
+<span class="n">Threshold</span> <span class="mi">5</span><span class="p">:</span> <span class="mf">2.65</span>
+</pre></div>
+</div>
+<p>As we can see, the threshold even increases mildly with decreasing
+resolution. If we feed less information to the procedure, the threshold
+is raised and not dropped. We may also expect the estimated threshold to
+eventually converge if the resolution of the t-statistics field
+increases further and to also become more accurate when supplied with
+more data.</p>
+<p>Note that Benjamini-Hochberg’s procedure for controlling the FDR in
+<span class="math notranslate nohighlight">\(R\)</span> has really been constructed with having independent tests in
+mind. If there exists any inter-dependencies between the tests (as it is
+the case here), the upper bound that is produced by Benjamini-Hochberg
+becomes conservative. When using Bonferonni-Hochberg to control the FDR
+in <span class="math notranslate nohighlight">\(R\)</span>, we can probably safely assume that the actual FDR is
+likely much smaller.</p>
+</div>
+</div>
+<div class="section" id="get-summary-statistics">
+<h2>Get summary statistics<a class="headerlink" href="#get-summary-statistics" title="Permalink to this headline">¶</a></h2>
+<p>The FDR is usually controlled at <span class="math notranslate nohighlight">\(1\%\)</span> and not <span class="math notranslate nohighlight">\(5\%\)</span>.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">level</span>     <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="n">fdr_threshold</span><span class="p">(</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">level</span><span class="p">)</span>
+<span class="n">active_volume</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">volume</span><span class="p">()</span>
+<span class="n">null_volume</span> <span class="o">=</span> <span class="n">level</span><span class="o">*</span><span class="n">active_volume</span>
+
+<span class="n">components</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">components</span><span class="p">(</span><span class="n">threshold</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Volume claimed active:                          </span><span class="si">{:&gt;9.2f}</span><span class="s2"> mm^3</span>
+<span class="s2">Upper bound of falsely discovered volume (FDV): </span><span class="si">{:&gt;9.2f}</span><span class="s2"> mm^3</span>
+<span class="s2">Upper bound of false discovery rate (FDR):      </span><span class="si">{:&gt;9.2f}</span><span class="s2"> %</span>
+<span class="s2">Bonferonni-Hochberg threshold:                  </span><span class="si">{:&gt;9.2f}</span><span class="s2"></span>
+<span class="s2">Components in brain claimed active:             </span><span class="si">{:&gt;9d}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">active_volume</span><span class="p">,</span> <span class="n">null_volume</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">level</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Volume</span> <span class="n">claimed</span> <span class="n">active</span><span class="p">:</span>                           <span class="mf">62352.00</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">Upper</span> <span class="n">bound</span> <span class="n">of</span> <span class="n">falsely</span> <span class="n">discovered</span> <span class="n">volume</span> <span class="p">(</span><span class="n">FDV</span><span class="p">):</span>    <span class="mf">623.52</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">Upper</span> <span class="n">bound</span> <span class="n">of</span> <span class="n">false</span> <span class="n">discovery</span> <span class="n">rate</span> <span class="p">(</span><span class="n">FDR</span><span class="p">):</span>           <span class="mf">1.00</span> <span class="o">%</span>
+<span class="n">Bonferonni</span><span class="o">-</span><span class="n">Hochberg</span> <span class="n">threshold</span><span class="p">:</span>                       <span class="mf">3.28</span>
+<span class="n">Components</span> <span class="ow">in</span> <span class="n">brain</span> <span class="n">claimed</span> <span class="n">active</span><span class="p">:</span>                    <span class="mi">96</span>
+</pre></div>
+</div>
+<p>Or let us chose to control the FDR at a level of <span class="math notranslate nohighlight">\(0.01\)</span> and
+additionally force that any area claimed as active has a minimum extend
+of <span class="math notranslate nohighlight">\(100 \text{mm}^3\)</span> (this corresponds roughly to a ball with
+radius <span class="math notranslate nohighlight">\(2.88 \text{mm}\)</span>):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># note component_size is in mm^3 and **not** in number of voxel!</span>
+<span class="n">components</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">components</span><span class="p">(</span><span class="n">threshold</span><span class="p">,</span> <span class="n">component_size</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">active_volume</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">volume</span><span class="p">()</span>
+<span class="n">null_volume</span> <span class="o">=</span> <span class="n">level</span><span class="o">*</span><span class="n">active_volume</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Volume claimed active:                          </span><span class="si">{:&gt;9.2f}</span><span class="s2"> mm^3</span>
+<span class="s2">Upper bound of falsely discovered volume (FDV): </span><span class="si">{:&gt;9.2f}</span><span class="s2"> mm^3</span>
+<span class="s2">Upper bound of false discovery rate (FDR):      </span><span class="si">{:&gt;9.2f}</span><span class="s2"> %</span>
+<span class="s2">Bonferonni-Hochberg threshold:                  </span><span class="si">{:&gt;9.2f}</span><span class="s2"></span>
+<span class="s2">Components in brain claimed active:             </span><span class="si">{:&gt;9d}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">active_volume</span><span class="p">,</span> <span class="n">null_volume</span><span class="p">,</span> <span class="mi">100</span><span class="o">*</span><span class="n">level</span><span class="p">,</span> <span class="n">threshold</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Volume</span> <span class="n">claimed</span> <span class="n">active</span><span class="p">:</span>                           <span class="mf">60680.00</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">Upper</span> <span class="n">bound</span> <span class="n">of</span> <span class="n">falsely</span> <span class="n">discovered</span> <span class="n">volume</span> <span class="p">(</span><span class="n">FDV</span><span class="p">):</span>    <span class="mf">606.80</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">Upper</span> <span class="n">bound</span> <span class="n">of</span> <span class="n">false</span> <span class="n">discovery</span> <span class="n">rate</span> <span class="p">(</span><span class="n">FDR</span><span class="p">):</span>           <span class="mf">1.00</span> <span class="o">%</span>
+<span class="n">Bonferonni</span><span class="o">-</span><span class="n">Hochberg</span> <span class="n">threshold</span><span class="p">:</span>                       <span class="mf">3.28</span>
+<span class="n">Components</span> <span class="ow">in</span> <span class="n">brain</span> <span class="n">claimed</span> <span class="n">active</span><span class="p">:</span>                    <span class="mi">24</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="plotting-fields-above-a-threshold">
+<h2>Plotting fields above a threshold<a class="headerlink" href="#plotting-fields-above-a-threshold" title="Permalink to this headline">¶</a></h2>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
+<span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span>
+</pre></div>
+</div>
+<p>The t-statistics field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistic</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/thresholding_figure12_1.png"><img alt="../_images/thresholding_figure12_1.png" src="../_images/thresholding_figure12_1.png" style="width: 15cm;" /></a>
+<p>The t-statistics field with some transparency on-top of the
+MNI-template:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistic</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">background</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">vb</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/thresholding_figure13_1.png"><img alt="../_images/thresholding_figure13_1.png" src="../_images/thresholding_figure13_1.png" style="width: 15cm;" /></a>
+<p>The bold effect field in ati-units on-top of the MNI-template in areas
+at which the t-tstatistic field lies above the FDR-controlled threshold
+and that have a minimum extent of <span class="math notranslate nohighlight">\(100 \text{mm}^3\)</span>.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">bold</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="n">threshold</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span>
+    <span class="n">background</span><span class="o">=</span><span class="n">result</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">vb</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/thresholding_figure14_1.png"><img alt="../_images/thresholding_figure14_1.png" src="../_images/thresholding_figure14_1.png" style="width: 15cm;" /></a>
+</div>
+<div class="section" id="effects-coordinates-locations">
+<h2>Effects, coordinates, locations<a class="headerlink" href="#effects-coordinates-locations" title="Permalink to this headline">¶</a></h2>
+<p>Thresholding a (continuous) field at a specified cut-off results in
+areas above the threshold which are path-wise connected components. Let
+us now extract (i) the highest t-statistics peak in each of the these
+components, (ii) the  coordinates of each peak in MNI standard space,
+(iii) the BOLD effects, and (iv) the structural region of the brain that
+each of these peaks belong to.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.ndimage</span> <span class="k">import</span> <span class="n">label</span><span class="p">,</span> <span class="n">maximum</span><span class="p">,</span> <span class="n">maximum_position</span>
+
+<span class="c1"># Find the position of the highest peak within each labelled region:</span>
+<span class="n">peaks</span> <span class="o">=</span> <span class="n">maximum_position</span><span class="p">(</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">components</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+<span class="c1"># Find the coordinates of the peaks in MNI standard space:</span>
+<span class="n">coordinates</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">apply_to_index</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span>
+
+<span class="c1"># Get their significance (the height of the t-statistics field)</span>
+<span class="n">tvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">peaks</span><span class="p">])</span>
+
+<span class="c1"># Get their task related BOLD effect</span>
+<span class="n">bvalues</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">bold</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">peaks</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Put everything together in a nice data frame:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pandas</span> <span class="k">import</span> <span class="n">DataFrame</span>
+
+<span class="n">dat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">peaks</span><span class="p">,</span> <span class="n">coordinates</span><span class="p">,</span>
+    <span class="n">bvalues</span><span class="p">[:,</span><span class="kc">None</span><span class="p">],</span> <span class="n">tvalues</span><span class="p">[:,</span><span class="kc">None</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;i&#39;</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">,</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;z&#39;</span><span class="p">,</span> \
+    <span class="s1">&#39;BOLD&#39;</span><span class="p">,</span> <span class="s1">&#39;t_statistic&#39;</span><span class="p">])</span>
+<span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;t_statistic&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>       <span class="n">i</span>     <span class="n">j</span>     <span class="n">k</span>     <span class="n">x</span>     <span class="n">y</span>     <span class="n">z</span>       <span class="n">BOLD</span>  <span class="n">t_statistic</span>
+<span class="mi">0</span>   <span class="mf">51.0</span>  <span class="mf">70.0</span>  <span class="mf">34.0</span> <span class="o">-</span><span class="mf">12.0</span>  <span class="mf">14.0</span>  <span class="o">-</span><span class="mf">4.0</span>  <span class="mf">19.992060</span>    <span class="mf">11.610399</span>
+<span class="mi">1</span>   <span class="mf">37.0</span>  <span class="mf">70.0</span>  <span class="mf">33.0</span>  <span class="mf">16.0</span>  <span class="mf">14.0</span>  <span class="o">-</span><span class="mf">6.0</span>  <span class="mf">20.909341</span>    <span class="mf">10.597062</span>
+<span class="mi">2</span>   <span class="mf">31.0</span>  <span class="mf">34.0</span>  <span class="mf">22.0</span>  <span class="mf">28.0</span> <span class="o">-</span><span class="mf">58.0</span> <span class="o">-</span><span class="mf">28.0</span>  <span class="mf">13.017904</span>     <span class="mf">7.868119</span>
+<span class="mi">3</span>   <span class="mf">65.0</span>  <span class="mf">77.0</span>  <span class="mf">35.0</span> <span class="o">-</span><span class="mf">40.0</span>  <span class="mf">28.0</span>  <span class="o">-</span><span class="mf">2.0</span>  <span class="mf">13.077190</span>     <span class="mf">7.846554</span>
+<span class="mi">4</span>   <span class="mf">50.0</span>  <span class="mf">23.0</span>  <span class="mf">38.0</span> <span class="o">-</span><span class="mf">10.0</span> <span class="o">-</span><span class="mf">80.0</span>   <span class="mf">4.0</span>  <span class="mf">10.078226</span>     <span class="mf">7.288186</span>
+<span class="mi">5</span>   <span class="mf">69.0</span>  <span class="mf">37.0</span>  <span class="mf">27.0</span> <span class="o">-</span><span class="mf">48.0</span> <span class="o">-</span><span class="mf">52.0</span> <span class="o">-</span><span class="mf">18.0</span>   <span class="mf">9.388852</span>     <span class="mf">7.125237</span>
+<span class="mi">6</span>   <span class="mf">48.0</span>  <span class="mf">72.0</span>  <span class="mf">58.0</span>  <span class="o">-</span><span class="mf">6.0</span>  <span class="mf">18.0</span>  <span class="mf">44.0</span>  <span class="mf">10.285229</span>     <span class="mf">6.775694</span>
+<span class="mi">7</span>   <span class="mf">38.0</span>  <span class="mf">25.0</span>  <span class="mf">14.0</span>  <span class="mf">14.0</span> <span class="o">-</span><span class="mf">76.0</span> <span class="o">-</span><span class="mf">44.0</span>  <span class="mf">10.502944</span>     <span class="mf">6.064055</span>
+<span class="mi">8</span>   <span class="mf">61.0</span>  <span class="mf">56.0</span>  <span class="mf">25.0</span> <span class="o">-</span><span class="mf">32.0</span> <span class="o">-</span><span class="mf">14.0</span> <span class="o">-</span><span class="mf">22.0</span>   <span class="mf">7.341440</span>     <span class="mf">5.712933</span>
+<span class="mi">9</span>   <span class="mf">28.0</span>  <span class="mf">75.0</span>  <span class="mf">33.0</span>  <span class="mf">34.0</span>  <span class="mf">24.0</span>  <span class="o">-</span><span class="mf">6.0</span>   <span class="mf">8.100019</span>     <span class="mf">5.432309</span>
+<span class="mi">10</span>  <span class="mf">68.0</span>  <span class="mf">68.0</span>  <span class="mf">31.0</span> <span class="o">-</span><span class="mf">46.0</span>  <span class="mf">10.0</span> <span class="o">-</span><span class="mf">10.0</span>   <span class="mf">7.165230</span>     <span class="mf">4.718494</span>
+<span class="mi">11</span>  <span class="mf">75.0</span>  <span class="mf">47.0</span>  <span class="mf">34.0</span> <span class="o">-</span><span class="mf">60.0</span> <span class="o">-</span><span class="mf">32.0</span>  <span class="o">-</span><span class="mf">4.0</span>   <span class="mf">6.966742</span>     <span class="mf">4.588513</span>
+<span class="mi">12</span>  <span class="mf">60.0</span>  <span class="mf">31.0</span>  <span class="mf">54.0</span> <span class="o">-</span><span class="mf">30.0</span> <span class="o">-</span><span class="mf">64.0</span>  <span class="mf">36.0</span>   <span class="mf">9.316358</span>     <span class="mf">4.497510</span>
+<span class="mi">13</span>  <span class="mf">61.0</span>  <span class="mf">59.0</span>  <span class="mf">15.0</span> <span class="o">-</span><span class="mf">32.0</span>  <span class="o">-</span><span class="mf">8.0</span> <span class="o">-</span><span class="mf">42.0</span>   <span class="mf">9.848705</span>     <span class="mf">4.442247</span>
+<span class="mi">14</span>  <span class="mf">46.0</span>  <span class="mf">90.0</span>  <span class="mf">27.0</span>  <span class="o">-</span><span class="mf">2.0</span>  <span class="mf">54.0</span> <span class="o">-</span><span class="mf">18.0</span>   <span class="mf">8.877041</span>     <span class="mf">4.400275</span>
+<span class="mi">15</span>  <span class="mf">41.0</span>  <span class="mf">24.0</span>  <span class="mf">19.0</span>   <span class="mf">8.0</span> <span class="o">-</span><span class="mf">78.0</span> <span class="o">-</span><span class="mf">34.0</span>   <span class="mf">8.999326</span>     <span class="mf">4.288485</span>
+<span class="mi">16</span>  <span class="mf">37.0</span>  <span class="mf">36.0</span>  <span class="mf">39.0</span>  <span class="mf">16.0</span> <span class="o">-</span><span class="mf">54.0</span>   <span class="mf">6.0</span>   <span class="mf">8.236626</span>     <span class="mf">4.231748</span>
+<span class="mi">17</span>  <span class="mf">37.0</span>  <span class="mf">57.0</span>  <span class="mf">35.0</span>  <span class="mf">16.0</span> <span class="o">-</span><span class="mf">12.0</span>  <span class="o">-</span><span class="mf">2.0</span>   <span class="mf">6.516204</span>     <span class="mf">4.038171</span>
+<span class="mi">18</span>  <span class="mf">54.0</span>  <span class="mf">34.0</span>  <span class="mf">27.0</span> <span class="o">-</span><span class="mf">18.0</span> <span class="o">-</span><span class="mf">58.0</span> <span class="o">-</span><span class="mf">18.0</span>   <span class="mf">6.354745</span>     <span class="mf">4.032904</span>
+<span class="mi">19</span>  <span class="mf">48.0</span>  <span class="mf">82.0</span>  <span class="mf">26.0</span>  <span class="o">-</span><span class="mf">6.0</span>  <span class="mf">38.0</span> <span class="o">-</span><span class="mf">20.0</span>   <span class="mf">9.863806</span>     <span class="mf">4.011300</span>
+<span class="mi">20</span>  <span class="mf">27.0</span>  <span class="mf">53.0</span>  <span class="mf">48.0</span>  <span class="mf">36.0</span> <span class="o">-</span><span class="mf">20.0</span>  <span class="mf">24.0</span>   <span class="mf">5.040805</span>     <span class="mf">3.999138</span>
+<span class="mi">21</span>  <span class="mf">42.0</span>  <span class="mf">53.0</span>  <span class="mf">29.0</span>   <span class="mf">6.0</span> <span class="o">-</span><span class="mf">20.0</span> <span class="o">-</span><span class="mf">14.0</span>   <span class="mf">9.220619</span>     <span class="mf">3.993770</span>
+<span class="mi">22</span>  <span class="mf">19.0</span>  <span class="mf">50.0</span>  <span class="mf">33.0</span>  <span class="mf">52.0</span> <span class="o">-</span><span class="mf">26.0</span>  <span class="o">-</span><span class="mf">6.0</span>   <span class="mf">6.093332</span>     <span class="mf">3.918589</span>
+<span class="mi">23</span>  <span class="mf">46.0</span>  <span class="mf">49.0</span>  <span class="mf">23.0</span>  <span class="o">-</span><span class="mf">2.0</span> <span class="o">-</span><span class="mf">28.0</span> <span class="o">-</span><span class="mf">26.0</span>   <span class="mf">8.933851</span>     <span class="mf">3.746942</span>
+</pre></div>
+</div>
+<p>Find the respective position of the coordinates in MNI standard space.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">subprocess</span> <span class="k">import</span> <span class="n">run</span><span class="p">,</span> <span class="n">PIPE</span>
+
+<span class="k">def</span> <span class="nf">atlasquery</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="s2">&quot;atlasquery -a &#39;MNI Structural Atlas&#39; -c </span><span class="si">{:f}</span><span class="s2">,</span><span class="si">{:f}</span><span class="s2">,</span><span class="si">{:f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">run</span><span class="p">([</span><span class="n">cmd</span><span class="p">],</span> <span class="n">shell</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">stdout</span><span class="o">=</span><span class="n">PIPE</span><span class="p">,</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()[</span><span class="mi">31</span><span class="p">:]</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;location&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">atlasquery</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">y</span><span class="p">,</span><span class="n">p</span><span class="o">.</span><span class="n">z</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">()]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,[</span><span class="s1">&#39;location&#39;</span><span class="p">,</span><span class="s1">&#39;BOLD&#39;</span><span class="p">,</span><span class="s1">&#39;t_statistic&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>                                location       BOLD  t_statistic
+0                            78% Caudate  19.992060    11.610399
+1                71% Putamen, 6% Caudate  20.909341    10.597062
+2                        100% Cerebellum  13.017904     7.868119
+3                       58% Frontal Lobe  13.077190     7.846554
+4                     79% Occipital Lobe  10.078226     7.288186
+5                      88% Temporal Lobe   9.388852     7.125237
+6                       91% Frontal Lobe  10.285229     6.775694
+7                        100% Cerebellum  10.502944     6.064055
+8                      89% Temporal Lobe   7.341440     5.712933
+9            66% Insula, 9% Frontal Lobe   8.100019     5.432309
+10          29% Temporal Lobe, 5% Insula   7.165230     4.718494
+11                     91% Temporal Lobe   6.966742     4.588513
+12                     91% Parietal Lobe   9.316358     4.497510
+13                     76% Temporal Lobe   9.848705     4.442247
+14                      48% Frontal Lobe   8.877041     4.400275
+15                        96% Cerebellum   8.999326     4.288485
+16  67% Parietal Lobe, 7% Occipital Lobe   8.236626     4.231748
+17                          32% Thalamus   6.516204     4.038171
+18                        97% Cerebellum   6.354745     4.032904
+19                      46% Frontal Lobe   9.863806     4.011300
+20                      7% Parietal Lobe   5.040805     3.999138
+21                       No label found!   9.220619     3.993770
+22                     90% Temporal Lobe   6.093332     3.918589
+23                       No label found!   8.933851     3.746942
+</pre></div>
+</div>
+</div>
+<div class="section" id="volcanoes">
+<h2>Volcanoes<a class="headerlink" href="#volcanoes" title="Permalink to this headline">¶</a></h2>
+<p>In many high-throughput sciences it has become customary to visualise
+potential discoveries in the form of volcano plots. A volcano plot shows
+the observed effects (as a surrogate for the biological significance) on
+the x-axis and a transformation of the respective p-values of the
+effects (namely <span class="math notranslate nohighlight">\(-\log_{10}(p)\)</span> as a surrogate for statistical
+significance) on the y-axis. Let us create such a plot for the peaks of
+the t-statistics field. Note that as we are only looking »into one
+direction«, the plot will look more like a fountain rather than a
+volcano.</p>
+<p>The following plot shows the estimated, task related BOLD effect of all
+peaks in the entire t-statistic field in ATI units on the x-axis, and
+the <span class="math notranslate nohighlight">\(-log_{10}(p)\)</span> of the respective p-value of this effect on the
+y-axis. The horizontal dashed line shows the Bonferonni-Hochberg
+threshold. We may assume that the proportion of false discoveries above
+the dashed line is below <span class="math notranslate nohighlight">\(1\%\)</span>. The highest peak in each connected
+component in the FDR-thresholded image is marked by a star. The
+components with a minimal extent of <span class="math notranslate nohighlight">\(100 \text{mm}^3\)</span> are
+coloured.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># extract peaks of the entire field</span>
+<span class="n">peakmap</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">detect_peaks</span><span class="p">()</span>
+
+<span class="c1"># t-values, effect estimates, and transformed p-values</span>
+<span class="n">all_tvalues</span> <span class="o">=</span> <span class="n">tstatistic</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">peakmap</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+<span class="n">all_bvalues</span> <span class="o">=</span> <span class="n">bold</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">peakmap</span><span class="o">.</span><span class="n">data</span><span class="p">]</span>
+
+<span class="c1"># transformed t-statistics</span>
+<span class="n">all_pt</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">all_tvalues</span><span class="p">))</span>
+<span class="n">df</span> <span class="p">[</span><span class="s1">&#39;pt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">norm</span><span class="o">.</span><span class="n">sf</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">t_statistic</span><span class="p">))</span>
+
+<span class="c1"># height of Bonferonni-Hochberg threshold</span>
+<span class="n">fdrline</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+
+<span class="n">pt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">fdrline</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">all_bvalues</span><span class="p">,</span> <span class="n">all_pt</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+<span class="c1"># highest peak in each connected component</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+
+<span class="c1"># location of top five entries in the discoveries</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+        <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+<span class="n">entry</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+    <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="mi">4</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">entry</span><span class="o">.</span><span class="n">BOLD</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">pt</span><span class="p">,</span> <span class="n">entry</span><span class="o">.</span><span class="n">location</span><span class="p">,</span>
+        <span class="n">horizontalalignment</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">verticalalignment</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/thresholding_figure18_1.png"><img alt="../_images/thresholding_figure18_1.png" src="../_images/thresholding_figure18_1.png" style="width: 15cm;" /></a>
+<p>In particular the exposed position of the top right discoveries suggest
+high reliability.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="run-on-server.html" class="btn btn-neutral float-right" title="Run analysis on a server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="subject-inference-at-one-point.html" class="btn btn-neutral" title="Subject inference (at one coordinate)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.6',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

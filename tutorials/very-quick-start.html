@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Getting to know fmristats &mdash; fmristats 0.0.4 documentation</title>
+  <title>Getting to know fmristats &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -108,6 +108,7 @@
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
 </ul>
@@ -197,10 +198,14 @@ approaches to FMRI data analysis recommend or encourage user to first
 spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
-Therefore, when using fmristats, you should <strong>NOT alter your images. DO
-NOT DO motion corrections. DO NOT correct for slice timing differences.
-DO NOT smooth your data.</strong> Your statistical analysis will benefit, you
-will gain power, and you will be rewarded with valid test statistics.</p>
+Therefore, when using fmristats:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">DO NOT alter your images. DO NOT perform any kind of motion
+correction. DO NOT correct for slice timing differences. DO NOT
+smooth your data. Your statistical analysis will benefit, you will
+gain power, and you will be rewarded with valid test statistics.</p>
+</div>
 <p>In order to fit a signal model to the FMRI session data of a subject,
 you need to first (i) define the <em>irritation</em>, <em>conditioning</em>, or
 <em>paradigm</em> of the session, i.e. provide the on- and offsets of the task
@@ -689,7 +694,6 @@ areas using BET:</p>
     <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
 
 <span class="c1"># this will create the file RG-0355-HFM-MNI.fit:</span>
-
 <span class="n">fmrifit</span> <span class="o">--</span><span class="n">fit</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="n">MNI</span><span class="o">.</span><span class="n">fit</span> \
     <span class="o">--</span><span class="n">session</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ses</span> \
     <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">RG</span><span class="o">-</span><span class="mi">0355</span><span class="o">-</span><span class="n">HFM</span><span class="o">.</span><span class="n">ref</span> \
@@ -745,7 +749,7 @@ areas using BET:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -23,7 +23,7 @@ individual subjects are random entities, and that the certainty at which
 the actual BOLD effect in an individual can be estimated from an FMRI
 varies across the brain and between the subjects.
 
-.. warning::
+.. note::
 
     Please note that this is not the MATLAB program fmristat_ nor is it
     a reimplementation of the software. fmristat_ (also part of niak_)
@@ -56,7 +56,7 @@ The `Harvard UoB format`_ suggests to cite the software itself in this
 form:
 
     Thomas W. D. Möbius (2018) fmristats: Modelling the data and not the
-    images in FMRI (Version 0.0.5) [Computer program]. Available at
+    images in FMRI (Version 0.0.6) [Computer program]. Available at
     http://fmristats.github.io/
 
 In case you are using BibTeX:
@@ -72,12 +72,12 @@ In case you are using BibTeX:
         url     = {https://arxiv.org/abs/1809.07232},
     }
 
-    @misc{fmristats:0.0.5,
+    @misc{fmristats:0.0.6,
         title   = {fmristats: Modelling the data and not the images in FMRI
-            (Version 0.0.5) [Computer program]},
+            (Version 0.0.6) [Computer program]},
         author  = {Thomas Wilhelm Dieter Möbius},
         year    = 2018,
-        month   = 9,
+        month   = 11,
         url     = {https://fmristats.github.io/},
     }
 
@@ -118,6 +118,7 @@ Tutorials discussing various parts of fmristats; expect this list to grow.
    tutorials/population-inference-confirmative
    tutorials/population-inference-covariates
    tutorials/subject-inference-at-one-point
+   tutorials/thresholding
    tutorials/run-on-server
    tutorials/notes
 

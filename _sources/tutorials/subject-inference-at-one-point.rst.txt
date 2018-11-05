@@ -82,7 +82,7 @@ Create a signal model instance
     model.set_hyperparameters('max')
     
     # save the model to disk (if you like)
-    model.save('subject.model')
+    model.save('interim-results/subject.model')
 
 
 
@@ -177,9 +177,10 @@ Plot the fields.
 
 .. code:: python
 
+    
     import matplotlib.pylab as pt
     import matplotlib.cm as cm
-    from fmristats.plot import picture, contour
+    from fmristats.plot import picture
     
     a0 = result.get_field('intercept','point')
     b0 = result.get_field('task','point')
@@ -194,7 +195,7 @@ The intercept:
 .. code:: python
 
     
-    picture(a0,3,6,3,interpolation='bilinear')
+    picture(a0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure10_1.png
@@ -208,7 +209,7 @@ The effect field:
 .. code:: python
 
     
-    picture(b0,3,6,3,interpolation='bilinear')
+    picture(b0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure11_1.png
@@ -222,7 +223,7 @@ The pattern of neuronal activity:
 .. code:: python
 
     
-    picture(t0,3,6,3,interpolation='bilinear')
+    picture(t0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure12_1.png
@@ -271,7 +272,7 @@ The intercept:
 .. code:: python
 
     
-    picture(a0,3,6,3,interpolation='bilinear')
+    picture(a0, interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure15_1.png
@@ -285,7 +286,7 @@ The effect field:
 .. code:: python
 
     
-    picture(b0,3,6,3,interpolation='bilinear')
+    picture(b0, interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure16_1.png
@@ -299,7 +300,7 @@ The pattern of neuronal activity:
 .. code:: python
 
     
-    picture(t0,3,6,3,interpolation='bilinear')
+    picture(t0, interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure17_1.png
@@ -307,21 +308,18 @@ The pattern of neuronal activity:
 
 
 
-If you like, also apply BET on the intercept of the fitted parameter
-field.
+If you like, also apply BET on the intercept.
 
 
 .. code:: python
 
     
-    intercept = result.get_field('intercept', 'point')
-    
     from fmristats.fsl import bet
     
     template = bet(
-            intercept = intercept,
-            intercept_file = 'intercept.nii.gz',
-            mask_file = 'intercept-mask.nii.gz',
+            intercept = a0,
+            intercept_file = 'interim-results/intercept.nii.gz',
+            mask_file = 'interim-results/intercept-mask.nii.gz',
             cmd='fsl5.0-bet',
             verbose = 2)
 
@@ -330,8 +328,8 @@ field.
 
     
     fsl5.0-bet
-      intercept.nii.gz
-      intercept-mask.nii.gz
+      interim-results/intercept.nii.gz
+      interim-results/intercept-mask.nii.gz
       -R
     
 
@@ -358,7 +356,7 @@ The intercept:
 .. code:: python
 
     
-    picture(a0,3,6,3,interpolation='bilinear')
+    picture(a0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure20_1.png
@@ -366,13 +364,13 @@ The intercept:
 
 
 
-The effect field: Most notably, the corona around the brain is gone!
+The effect field:
 
 
 .. code:: python
 
     
-    picture(b0,3,6,3,interpolation='bilinear')
+    picture(b0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure21_1.png
@@ -386,7 +384,7 @@ The pattern of neuronal activity:
 .. code:: python
 
     
-    picture(t0,3,6,3,interpolation='bilinear')
+    picture(t0,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure22_1.png
@@ -422,12 +420,8 @@ Plot the respective slice:
 .. code:: python
 
     
-    pt.close()
-    picture(t0,3,1,1,[index[-1]], interpolation='bilinear')
-    pt.colorbar()
-    contour(t0,3,1,1,[index[-1]], interpolation='bilinear')
-    pt.plot([index[0]], [index[1]], 'ko')
-    pt.plot([index[0]], [index[1]], 'w+')
+    picture(t0,3,1,1,[index[-1]],
+        interpolation='bilinear', mark_peak=True)
     
     print(t0.data[index])
 
@@ -468,6 +462,7 @@ Find the coordinates of the peak in standard space:
             nb_estimate:   nb_estimate
             vb_mask:       --
             nb_mask:       --
+            vb_ati:        --
     [ 12. -80.   8.]
     
 
@@ -550,8 +545,8 @@ Time series plot.
 .. code:: python
 
     
-    fig, ax = pt.subplots()
-    ax.scatter(data.time,data.y,s=w,marker='o')
+    fig, ax = pt.subplots(figsize=(8,9))
+    ax.scatter(data.time, data.y, s=w, marker='o', c='k')
     ax.set_ylabel('MR Signal')
     ax.set_xlabel('Time (s)')
     sb.despine()
@@ -754,8 +749,7 @@ Plot.
     
     dw.data = dw.data - 2
     
-    picture(dw,3,6,3,interpolation='bilinear')
-    pt.colorbar()
+    picture(dw,interpolation='bilinear')
 
 
 .. image:: figures/subject-inference-at-one-point_figure38_1.png
@@ -786,7 +780,7 @@ Effect strength
 
     15.031309466476994
     15.045584340232338
-    14.813080718251996
+    14.81308071825201
     
 
 
@@ -807,7 +801,7 @@ Test statistic
 
     7.682368014451706
     7.570981561542083
-    4.898837402953443
+    4.898837402953446
     
 
 
@@ -828,7 +822,7 @@ P-Values
 
     2.0436364772462996e-14
     4.770567259102657e-14
-    1.0102904574329112e-06
+    1.0102904574328985e-06
     
 
 

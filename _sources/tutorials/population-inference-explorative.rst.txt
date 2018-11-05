@@ -17,37 +17,19 @@ Load data:
     from fmristats.plot import *
     
     population_sample = load(path_to_sample)
-
-
-
-
-Number of subjects in the sample:
-
-
-.. code:: python
-
-    len(population_sample.covariates)
+    
+    print("""
+    Number of subjects in the sample:   {:d}
+    Subjects that are not right handed: {:d}""".format(
+        len(population_sample.covariates),
+        (population_sample.covariates.waterloo < 20).sum()))
 
 
 .. code::
 
-    64
     
-
-
-
-Number of subjects that are *not* right handed:
-
-
-.. code:: python
-
-    
-    (population_sample.covariates.waterloo < 20).sum()
-
-
-.. code::
-
-    0
+    Number of subjects in the sample:   64
+    Subjects that are not right handed: 0
     
 
 
@@ -60,6 +42,8 @@ Fit the population model to the sample of neural activities.
     
     pop = PopulationModel(population_sample)
     meta = pop.fit()
+    
+    meta.save('interim-results/explorative.mfit')
 
 
 .. code::
@@ -89,10 +73,10 @@ Plot:
 
 .. code:: python
 
-    _ = picture(tstatistics,3,6,4)
+    picture(tstatistics)
 
 
-.. image:: figures/population-inference-explorative_figure7_1.png
+.. image:: figures/population-inference-explorative_figure5_1.png
    :width: 15 cm
 
 
@@ -122,11 +106,8 @@ Plot the respective slice:
 .. code:: python
 
     
-    picture(tstatistics,3,1,1,[index[-1]], interpolation='bilinear')
-    pt.plot([index[0]], [index[1]], 'ko')
-    pt.plot([index[0]], [index[1]], 'w+')
-    pt.colorbar()
-    pt.tight_layout()
+    picture(tstatistics,3,1,1,[index[-1]],
+        interpolation='bilinear', mark_peak=True)
     
     print(tstatistics.data[index])
 
@@ -136,7 +117,7 @@ Plot the respective slice:
     11.61039937479234
     
 
-.. image:: figures/population-inference-explorative_figure9_1.png
+.. image:: figures/population-inference-explorative_figure7_1.png
    :width: 15 cm
 
 
@@ -190,8 +171,8 @@ Extract the meta data from the sample and the fit:
 
 
 
-Make some nice visualisations
-.............................
+Forest and funnel plot
+......................
 
 Define the critical values for the plots:
 
@@ -205,12 +186,12 @@ Define the critical values for the plots:
     crt_subject = norm.ppf(q=.95)
     crt_population = t.ppf(q=.95, df = dm.loc['intercept', 'df'])
     
-    print(crt_subject, crt_population)
+    print('{:4f}, {:4f}'.format(crt_subject, crt_population))
 
 
 .. code::
 
-    1.6448536269514722 1.6694022215079607
+    1.644854, 1.669402
     
 
 
@@ -253,12 +234,10 @@ right handed on the top):
     pt.box(False)
     pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
     pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=2)
-    
-    _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-explorative_figure14_1.png
-   :width: 15cm
+.. image:: figures/population-inference-explorative_figure12_1.png
+   :width: 15 cm
 
 
 
@@ -281,11 +260,9 @@ Funnel Plot
     ax.set_xlabel(r'Task inferred signal change at $x_1$ (ati)')
     ax.set_ylabel('Reciprocal of the Squared Standard Error')
     sb.despine()
-    
-    _=pt.tight_layout()
 
 
-.. image:: figures/population-inference-explorative_figure16_1.png
+.. image:: figures/population-inference-explorative_figure14_1.png
    :width: 15 cm
 
 
@@ -320,22 +297,19 @@ Effect
     
 
 
+
 p-Value
 :::::::
 
 
 .. code:: python
 
-    x = dm.loc['intercept', 'tstatistic']
-    p = 1 - t.cdf(x, df = dm.loc['intercept', 'df'])
-    print(x,p)
+    print(dm.loc['intercept', 'pvalue'])
 
 
 .. code::
 
-    11.61039937479234 0.0
+    1.3418933977536675e-17
     
 
 
-
-By all means this p-value is practically :math:`0`.

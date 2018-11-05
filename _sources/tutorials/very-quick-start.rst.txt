@@ -10,10 +10,14 @@ approaches to FMRI data analysis recommend or encourage user to first
 spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
-Therefore, when using fmristats, you should **NOT alter your images. DO
-NOT DO motion corrections. DO NOT correct for slice timing differences.
-DO NOT smooth your data.** Your statistical analysis will benefit, you
-will gain power, and you will be rewarded with valid test statistics.
+Therefore, when using fmristats:
+
+.. warning::
+
+    DO NOT alter your images. DO NOT perform any kind of motion
+    correction. DO NOT correct for slice timing differences. DO NOT
+    smooth your data. Your statistical analysis will benefit, you will
+    gain power, and you will be rewarded with valid test statistics.
 
 In order to fit a signal model to the FMRI session data of a subject,
 you need to first (i) define the *irritation*, *conditioning*, or
@@ -593,7 +597,6 @@ areas using BET:
         --session RG-0355-HFM.ses --cycle 42
 
     # this will create the file RG-0355-HFM-MNI.fit:
-
     fmrifit --fit RG-0355-HFM-MNI.fit \
         --session RG-0355-HFM.ses \
         --reference-maps RG-0355-HFM.ref \

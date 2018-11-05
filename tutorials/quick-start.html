@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Semi-Automated Analysis of Multiple Subjects &mdash; fmristats 0.0.4 documentation</title>
+  <title>Semi-Automated Analysis of Multiple Subjects &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -101,6 +101,7 @@
 <li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
 </ul>
@@ -190,15 +191,19 @@ approaches to FMRI data analysis recommend or encourage user to first
 spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
-Therefore, when using fmristats, you should <strong>NOT alter your images. DO
-NOT DO motion corrections. DO NOT correct for slice timing differences.
-DO NOT smooth your data.</strong> Your statistical analysis benefit from more
-power this way and you will be rewarded with valid test statistics.</p>
+Therefore, when using fmristats:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">DO NOT alter your images. DO NOT perform any kind of motion
+correction. DO NOT correct for slice timing differences. DO NOT
+smooth your data. Your statistical analysis will benefit, you will
+gain power, and you will be rewarded with valid test statistics.</p>
+</div>
 <div class="section" id="protocol-interface-for-large-studies">
 <h2>Protocol interface for large studies<a class="headerlink" href="#protocol-interface-for-large-studies" title="Permalink to this headline">¶</a></h2>
-<p>Needless to say, fmristats allows to fit models to data one subject at a
-time. If the plan, though, is to fit the data of multiple FMRI sessions
-in a semi-automatic way, fmristats provides its so-called <em>protocol
+<p>fmristats allows to fit models to data one subject at a time. If the
+plan, though, is to fit the data of multiple FMRI sessions in a
+semi-automatic way, fmristats provides its so-called <em>protocol
 interface</em>. The interface works with two files: a protocol file and a
 covariates file (although it is possible for these two files to be one
 and the same file).</p>
@@ -582,7 +587,7 @@ scheme in the example.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

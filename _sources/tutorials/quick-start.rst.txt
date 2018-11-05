@@ -10,17 +10,21 @@ approaches to FMRI data analysis recommend or encourage user to first
 spatially smooth data prior to the statistical data analysis and to
 apply motion or slice timing corrections. In fmristats, spatial
 smoothing is an integral part of the model fitting process itself.
-Therefore, when using fmristats, you should **NOT alter your images. DO
-NOT DO motion corrections. DO NOT correct for slice timing differences.
-DO NOT smooth your data.** Your statistical analysis benefit from more
-power this way and you will be rewarded with valid test statistics.
+Therefore, when using fmristats:
+
+.. warning::
+
+    DO NOT alter your images. DO NOT perform any kind of motion
+    correction. DO NOT correct for slice timing differences. DO NOT
+    smooth your data. Your statistical analysis will benefit, you will
+    gain power, and you will be rewarded with valid test statistics.
 
 Protocol interface for large studies
 ....................................
 
-Needless to say, fmristats allows to fit models to data one subject at a
-time. If the plan, though, is to fit the data of multiple FMRI sessions
-in a semi-automatic way, fmristats provides its so-called *protocol
+fmristats allows to fit models to data one subject at a time. If the
+plan, though, is to fit the data of multiple FMRI sessions in a
+semi-automatic way, fmristats provides its so-called *protocol
 interface*. The interface works with two files: a protocol file and a
 covariates file (although it is possible for these two files to be one
 and the same file).

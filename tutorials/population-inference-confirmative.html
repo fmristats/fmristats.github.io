@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Population inference (confirmative) &mdash; fmristats 0.0.4 documentation</title>
+  <title>Population inference (confirmative) &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -91,7 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#subject-reference">Subject reference</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#load-data-fit-model-and-extract-statistics">Load data, fit model, and extract statistics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#extract-data-at-index">Extract data at index</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#make-some-nice-visualisations">Make some nice visualisations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#forest-and-funnel-plot">Forest and funnel plot</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#forest-plot">Forest plot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#funnel-plot">Funnel plot</a></li>
 </ul>
@@ -105,6 +105,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
 </ul>
@@ -196,7 +197,7 @@
 </pre></div>
 </div>
 <p>Plot:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">_</span> <span class="o">=</span> <span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure3_1.png"><img alt="../_images/population-inference-confirmative_figure3_1.png" src="../_images/population-inference-confirmative_figure3_1.png" style="width: 15cm;" /></a>
@@ -210,10 +211,9 @@
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Plot the respective slice in subject space:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+<p>Plot the respective slice:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">mark_peak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">tsubject</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </pre></div>
@@ -241,23 +241,21 @@ structure these coordinates belong:</p>
 <h2>Load data, fit model, and extract statistics<a class="headerlink" href="#load-data-fit-model-and-extract-statistics" title="Permalink to this headline">¶</a></h2>
 <p>Load data:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">population_sample</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_sample</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Number of subjects in the sample:   </span><span class="si">{:d}</span><span class="s2"></span>
+<span class="s2">Subjects that are not right handed: </span><span class="si">{:d}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="nb">len</span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="p">),</span>
+    <span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">waterloo</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
 </pre></div>
 </div>
-<p>Number of subjects in the sample:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="p">)</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">subjects</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">sample</span><span class="p">:</span>   <span class="mi">64</span>
+<span class="n">Subjects</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">right</span> <span class="n">handed</span><span class="p">:</span> <span class="mi">0</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">64</span>
-</pre></div>
-</div>
-<p>Number of subjects that are <em>not</em> right handed:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">waterloo</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>
-</pre></div>
-</div>
-<p>Remove the initial subject from the sample.</p>
+<p>We are aiming to confirm a finding that has been suggested by an
+analysis of a single subject. Remove this <em>initial subject</em> from the
+sample.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subsample</span> <span class="o">=</span> <span class="n">population_sample</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
                 <span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -273,17 +271,10 @@ expected.</p>
 
 <span class="n">sample_size</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
 
-<span class="n">vb</span> <span class="o">=</span> <span class="n">subsample</span><span class="o">.</span><span class="n">vb</span>
-<span class="n">vb</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
-
-<span class="n">picture</span><span class="p">(</span><span class="n">subsample</span><span class="o">.</span><span class="n">vb</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">gray</span><span class="p">)</span>
-<span class="n">picture</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-
-<span class="n">_</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">picture</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure11_1.png"><img alt="../_images/population-inference-confirmative_figure11_1.png" src="../_images/population-inference-confirmative_figure11_1.png" style="width: 15cm;" /></a>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure9_1.png"><img alt="../_images/population-inference-confirmative_figure9_1.png" src="../_images/population-inference-confirmative_figure9_1.png" style="width: 15cm;" /></a>
 <p>Fit the population model to the sample of neural activities.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pop</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">subsample</span><span class="p">)</span>
 <span class="n">meta</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
@@ -302,19 +293,16 @@ task related neural activity in the population:</p>
 </pre></div>
 </div>
 <p>Plot:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-
-<span class="n">_</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure14_1.png"><img alt="../_images/population-inference-confirmative_figure14_1.png" src="../_images/population-inference-confirmative_figure14_1.png" style="width: 15cm;" /></a>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure12_1.png"><img alt="../_images/population-inference-confirmative_figure12_1.png" src="../_images/population-inference-confirmative_figure12_1.png" style="width: 15cm;" /></a>
 <p>Plot the respective slice in population space:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+
 <span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </pre></div>
@@ -322,7 +310,7 @@ task related neural activity in the population:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.705125720068511</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure15_1.png"><img alt="../_images/population-inference-confirmative_figure15_1.png" src="../_images/population-inference-confirmative_figure15_1.png" style="width: 15cm;" /></a>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure13_1.png"><img alt="../_images/population-inference-confirmative_figure13_1.png" src="../_images/population-inference-confirmative_figure13_1.png" style="width: 15cm;" /></a>
 </div>
 <div class="section" id="extract-data-at-index">
 <h2>Extract data at index<a class="headerlink" href="#extract-data-at-index" title="Permalink to this headline">¶</a></h2>
@@ -336,8 +324,8 @@ task related neural activity in the population:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="make-some-nice-visualisations">
-<h2>Make some nice visualisations<a class="headerlink" href="#make-some-nice-visualisations" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="forest-and-funnel-plot">
+<h2>Forest and funnel plot<a class="headerlink" href="#forest-and-funnel-plot" title="Permalink to this headline">¶</a></h2>
 <p>Define the critical values for the plots:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats.distributions</span> <span class="k">import</span> <span class="n">t</span>
 <span class="kn">from</span> <span class="nn">scipy.stats.distributions</span> <span class="k">import</span> <span class="n">norm</span>
@@ -387,11 +375,9 @@ right handed on the top):</p>
 <span class="n">pt</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">yvec</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">waterloo</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Meta&quot;</span><span class="p">]</span> <span class="p">)</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
-
-<span class="n">_</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure19_1.png"><img alt="../_images/population-inference-confirmative_figure19_1.png" src="../_images/population-inference-confirmative_figure19_1.png" style="width: 15cm;" /></a>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure17_1.png"><img alt="../_images/population-inference-confirmative_figure17_1.png" src="../_images/population-inference-confirmative_figure17_1.png" style="width: 15cm;" /></a>
 <p>There was one subject in the sample, who showed an even larger task
 related neural activity at the coordinates.</p>
 </div>
@@ -409,11 +395,9 @@ related neural activity at the coordinates.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Task inferred signal change at $x_0$ (ati)&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Reciprocal of the Squared Standard Error&#39;</span><span class="p">)</span>
 <span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
-
-<span class="n">_</span><span class="o">=</span><span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure21_1.png"><img alt="../_images/population-inference-confirmative_figure21_1.png" src="../_images/population-inference-confirmative_figure21_1.png" style="width: 15cm;" /></a>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure19_1.png"><img alt="../_images/population-inference-confirmative_figure19_1.png" src="../_images/population-inference-confirmative_figure19_1.png" style="width: 15cm;" /></a>
 </div>
 </div>
 <div class="section" id="formal">
@@ -493,7 +477,7 @@ prior to the fitting. There was no multiple testing.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

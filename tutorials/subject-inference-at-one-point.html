@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subject inference (at one coordinate) &mdash; fmristats 0.0.4 documentation</title>
+  <title>Subject inference (at one coordinate) &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Run analysis on a server" href="run-on-server.html" />
+    <link rel="next" title="Thresholding" href="thresholding.html" />
     <link rel="prev" title="Population inference (adjust for covariates)" href="population-inference-covariates.html" /> 
 
   
@@ -112,6 +112,7 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
 </ul>
@@ -253,7 +254,7 @@
 <span class="n">model</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
 
 <span class="c1"># save the model to disk (if you like)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;subject.model&#39;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;interim-results/subject.model&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -315,7 +316,7 @@
 <p>Plot the fields.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">pt</span>
 <span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span><span class="p">,</span> <span class="n">contour</span>
+<span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span>
 
 <span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
 <span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
@@ -323,17 +324,17 @@
 </pre></div>
 </div>
 <p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure10_1.png"><img alt="../_images/subject-inference-at-one-point_figure10_1.png" src="../_images/subject-inference-at-one-point_figure10_1.png" style="width: 15cm;" /></a>
 <p>The effect field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure11_1.png"><img alt="../_images/subject-inference-at-one-point_figure11_1.png" src="../_images/subject-inference-at-one-point_figure11_1.png" style="width: 15cm;" /></a>
 <p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure12_1.png"><img alt="../_images/subject-inference-at-one-point_figure12_1.png" src="../_images/subject-inference-at-one-point_figure12_1.png" style="width: 15cm;" /></a>
@@ -359,37 +360,34 @@ maximum available sample size.</p>
 </pre></div>
 </div>
 <p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure15_1.png"><img alt="../_images/subject-inference-at-one-point_figure15_1.png" src="../_images/subject-inference-at-one-point_figure15_1.png" style="width: 15cm;" /></a>
 <p>The effect field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure16_1.png"><img alt="../_images/subject-inference-at-one-point_figure16_1.png" src="../_images/subject-inference-at-one-point_figure16_1.png" style="width: 15cm;" /></a>
 <p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure17_1.png"><img alt="../_images/subject-inference-at-one-point_figure17_1.png" src="../_images/subject-inference-at-one-point_figure17_1.png" style="width: 15cm;" /></a>
-<p>If you like, also apply BET on the intercept of the fitted parameter
-field.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">intercept</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">)</span>
-
-<span class="kn">from</span> <span class="nn">fmristats.fsl</span> <span class="k">import</span> <span class="n">bet</span>
+<p>If you like, also apply BET on the intercept.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats.fsl</span> <span class="k">import</span> <span class="n">bet</span>
 
 <span class="n">template</span> <span class="o">=</span> <span class="n">bet</span><span class="p">(</span>
-        <span class="n">intercept</span> <span class="o">=</span> <span class="n">intercept</span><span class="p">,</span>
-        <span class="n">intercept_file</span> <span class="o">=</span> <span class="s1">&#39;intercept.nii.gz&#39;</span><span class="p">,</span>
-        <span class="n">mask_file</span> <span class="o">=</span> <span class="s1">&#39;intercept-mask.nii.gz&#39;</span><span class="p">,</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span>
+        <span class="n">intercept_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept.nii.gz&#39;</span><span class="p">,</span>
+        <span class="n">mask_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept-mask.nii.gz&#39;</span><span class="p">,</span>
         <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;fsl5.0-bet&#39;</span><span class="p">,</span>
         <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl5</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">bet</span>
-  <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
-  <span class="n">intercept</span><span class="o">-</span><span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">-</span><span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
   <span class="o">-</span><span class="n">R</span>
 </pre></div>
 </div>
@@ -402,17 +400,17 @@ field.</p>
 </pre></div>
 </div>
 <p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure20_1.png"><img alt="../_images/subject-inference-at-one-point_figure20_1.png" src="../_images/subject-inference-at-one-point_figure20_1.png" style="width: 15cm;" /></a>
-<p>The effect field: Most notably, the corona around the brain is gone!</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<p>The effect field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure21_1.png"><img alt="../_images/subject-inference-at-one-point_figure21_1.png" src="../_images/subject-inference-at-one-point_figure21_1.png" style="width: 15cm;" /></a>
 <p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure22_1.png"><img alt="../_images/subject-inference-at-one-point_figure22_1.png" src="../_images/subject-inference-at-one-point_figure22_1.png" style="width: 15cm;" /></a>
@@ -430,12 +428,8 @@ field.</p>
 </pre></div>
 </div>
 <p>Plot the respective slice:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
-<span class="n">contour</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">mark_peak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">t0</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </pre></div>
@@ -462,6 +456,7 @@ field.</p>
         <span class="n">nb_estimate</span><span class="p">:</span>   <span class="n">nb_estimate</span>
         <span class="n">vb_mask</span><span class="p">:</span>       <span class="o">--</span>
         <span class="n">nb_mask</span><span class="p">:</span>       <span class="o">--</span>
+        <span class="n">vb_ati</span><span class="p">:</span>        <span class="o">--</span>
 <span class="p">[</span> <span class="mf">12.</span> <span class="o">-</span><span class="mf">80.</span>   <span class="mf">8.</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -512,8 +507,8 @@ the observations by time.</p>
 </pre></div>
 </div>
 <p>Time series plot.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MR Signal&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 <span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
@@ -648,8 +643,7 @@ the observations by time.</p>
 
 <span class="n">dw</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="mi">2</span>
 
-<span class="n">picture</span><span class="p">(</span><span class="n">dw</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+<span class="n">picture</span><span class="p">(</span><span class="n">dw</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure38_1.png"><img alt="../_images/subject-inference-at-one-point_figure38_1.png" src="../_images/subject-inference-at-one-point_figure38_1.png" style="width: 15cm;" /></a>
@@ -667,7 +661,7 @@ the observations by time.</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">15.031309466476994</span>
 <span class="mf">15.045584340232338</span>
-<span class="mf">14.813080718251996</span>
+<span class="mf">14.81308071825201</span>
 </pre></div>
 </div>
 </div>
@@ -680,7 +674,7 @@ the observations by time.</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">7.682368014451706</span>
 <span class="mf">7.570981561542083</span>
-<span class="mf">4.898837402953443</span>
+<span class="mf">4.898837402953446</span>
 </pre></div>
 </div>
 </div>
@@ -693,7 +687,7 @@ the observations by time.</p>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0436364772462996e-14</span>
 <span class="mf">4.770567259102657e-14</span>
-<span class="mf">1.0102904574329112e-06</span>
+<span class="mf">1.0102904574328985e-06</span>
 </pre></div>
 </div>
 <p>Test whether time is an influential factor at this coordinate.</p>
@@ -725,7 +719,7 @@ time dimension of model 1 would be able to handle it.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="run-on-server.html" class="btn btn-neutral float-right" title="Run analysis on a server" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="thresholding.html" class="btn btn-neutral float-right" title="Thresholding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="population-inference-covariates.html" class="btn btn-neutral" title="Population inference (adjust for covariates)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -759,7 +753,7 @@ time dimension of model 1 would be able to handle it.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Modules &mdash; fmristats 0.0.4 documentation</title>
+  <title>Modules &mdash; fmristats 0.0.6 documentation</title>
   
 
   
@@ -89,6 +89,7 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference (confirmative)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/thresholding.html">Thresholding</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
 </ul>
@@ -875,6 +876,8 @@ nb (the subject space).</li>
 <li><strong>nb_estimate</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – An image in subject space.</li>
 <li><strong>vb_mask</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>array</em>) – An image in population space.</li>
 <li><strong>nb_mask</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>array</em>) – An image in subject space.</li>
+<li><strong>vb_ati</strong> (<em>None</em><em>, </em><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>array</em>) – An image in population space that will serve as the reference
+field for the BOLD unit.</li>
 </ul>
 </td>
 </tr>
@@ -891,15 +894,15 @@ diffeomorphism.</p>
 <p>If the software which has been used to fit the diffeomorphism
 creates a warped images of its inputs, they can be stored in
 <cite>vb_estimate</cite> and <cite>nb_estimate</cite> respectively.</p>
-<p>Naming convetions for images in <cite>vb</cite> and <cite>nb</cite> seem to be
-non-existant, ranging from <cite>input</cite>, <cite>target</cite>, <cite>template</cite>,
-<cite>reference</cite>, <cite>moving</cite>, <cite>fixed</cite>, and more: Although the induitive
-meaning of what these images shall represent is typically clear from
-teh context, the question which of these images live in <cite>vb</cite> or <cite>nb</cite>
-is not clear and ambigious at best. When fitting a diffeomorphism
-providing the algorithm with the arguments <cite>reference</cite> and <cite>input</cite>
-(FNIRT) or <cite>fixed</cite> and <cite>moving</cite> (ANTS): does the diffeomorphism go
-from <cite>reference</cite> to <cite>input</cite> or vice versa?</p>
+<p>There appears to be no clear naming convention for images in <cite>vb</cite>
+and <cite>nb</cite>. Examples for images in <cite>vb</cite> and <cite>nb</cite> are <cite>input</cite>,
+<cite>target</cite>, <cite>template</cite>, <cite>reference</cite>, <cite>moving</cite>, <cite>fixed</cite>, and more: The
+intuitive meaning of what these images shall represent is often (and
+not always) clear from the context, but the question which of these
+images live in <cite>vb</cite> or <cite>nb</cite> is ambiguous at best. Say, when fitting
+a diffeomorphism providing an algorithm with the arguments
+<cite>reference</cite> and <cite>input</cite> (FNIRT) or <cite>fixed</cite> and <cite>moving</cite> (ANTS): does
+the diffeomorphism go from <cite>reference</cite> to <cite>input</cite> or vice versa?</p>
 <dl class="method">
 <dt id="fmristats.pmap.PopulationMap.save">
 <code class="descname">save</code><span class="sig-paren">(</span><em>file</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.save" title="Permalink to this definition">¶</a></dt>
@@ -974,6 +977,27 @@ from <cite>reference</cite> to <cite>input</cite> or vice versa?</p>
 <dt id="fmristats.pmap.PopulationMap.set_vb">
 <code class="descname">set_vb</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set or reset the image in vb</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>image</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a><em> or </em><em>ndarray</em>) – The image or data array.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>If image is an Image, it will be checked whether its reference
+agrees with the reference of the diffeomorphism.  If image is an
+ndarray, it must be equal to the shape stored with the
+diffeomorphism, as it will then be assumed that they share the
+same reference: the image’s reference will be set identical to
+the reference of the diffeomorphism.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.pmap.PopulationMap.set_vb_ati">
+<code class="descname">set_vb_ati</code><span class="sig-paren">(</span><em>image</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.pmap.PopulationMap.set_vb_ati" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or reset the reference field for the BOLD unit.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1561,6 +1585,37 @@ array to coordinates in Euclidean space.</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="fmristats.diffeomorphisms.Image.components">
+<code class="descname">components</code><span class="sig-paren">(</span><em>threshold</em>, <em>component_size=None</em>, <em>direction='lower'</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Components of an image</p>
+<p>Enumerates (more precisely: labels) the components above or below
+the given threshold in the image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>threshold</strong> (<em>float</em>) – The threshold</li>
+<li><strong>component_size</strong> (<em>float</em>) – Minimal volume for a component to be labelled</li>
+<li><strong>direction</strong> (<em>str</em><em>, </em><em>'lower'</em><em> or </em><em>'upper'</em>) – Direction of the cut. Default is ‘lower’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
+<li><strong>labelled</strong> (<em>Image</em>) – The labelled image</li>
+<li><strong>labels</strong> (<em>list</em>) – The labels in the image</li>
+</ul>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>Please note that the <cite>component_size</cite> is expected to be given in
+mm^3 and <strong>not</strong> as the number of voxels.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.diffeomorphisms.Image.describe">
 <code class="descname">describe</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.describe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describe the image</p>
@@ -1574,6 +1629,15 @@ array to coordinates in Euclidean space.</li>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Image.detect_peaks">
+<code class="descname">detect_peaks</code><span class="sig-paren">(</span><em>connectivity=3</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.detect_peaks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Detects the peaks in an image</p>
+<p>Takes an image and detect the peaks using a local maximum
+filter. Returns a boolean mask of the peaks (i.e. 1 when the
+pixel’s value is the neighbourhood of a maximum and 0 otherwise)</p>
 </dd></dl>
 
 <dl class="method">
@@ -1635,7 +1699,7 @@ EPI code, and stack the slices into a xpic x ypic matrix</p>
 <dl class="method">
 <dt id="fmristats.diffeomorphisms.Image.mean">
 <code class="descname">mean</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.mean" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculates the mean signal in the image</p>
+<dd><p>Calculates the mean value in the image</p>
 <p class="rubric">Notes</p>
 <p>Values of 0 or nan will not contribute to the mean signal.  If
 your image <code class="docutils literal notranslate"><span class="pre">img</span></code> contains 0 values, then <code class="docutils literal notranslate"><span class="pre">im.data.mean()</span></code>
@@ -1644,12 +1708,38 @@ and <code class="docutils literal notranslate"><span class="pre">im.mean()</span
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>float</strong></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">mean value of the image</td>
 </tr>
 </tbody>
 </table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Image.range">
+<code class="descname">range</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the range of values in the image</p>
+<p class="rubric">Notes</p>
+<p>Values of 0 or nan will not contribute to the range.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>tuple</strong></td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">(minimum, maximum)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.diffeomorphisms.Image.ravel">
+<code class="descname">ravel</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.diffeomorphisms.Image.ravel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a contiguous flattened array of the image</p>
+<p>A 1-D array, containing the non-null, and non-nan elements of
+the input, is returned. Array is a copy of the data.</p>
 </dd></dl>
 
 <dl class="method">
@@ -1690,9 +1780,9 @@ and <code class="docutils literal notranslate"><span class="pre">im.mean()</span
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><strong>float</strong></td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">float</td>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">volume of non-zero values in the image</td>
 </tr>
 </tbody>
 </table>
@@ -1858,6 +1948,28 @@ combine other with mse (an estimate of sigma-squared) or df
 <dt id="fmristats.smodel.Result.mask">
 <code class="descname">mask</code><span class="sig-paren">(</span><em>mask=True</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.Result.mask" title="Permalink to this definition">¶</a></dt>
 <dd><p>Apply mask to parameter fields</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.Result.norm_to">
+<code class="descname">norm_to</code><span class="sig-paren">(</span><em>rf</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.Result.norm_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Norm the part of the statistics field that has a unit, to a
+reference field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>rf</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a>) – The reference field for the unit.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.Result.norm_to_ati">
+<code class="descname">norm_to_ati</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.Result.norm_to_ati" title="Permalink to this definition">¶</a></dt>
+<dd><p>Norm the part of the statistics field that has a unit, to the
+ati-reference field that is stored in the PopulationMap.</p>
 </dd></dl>
 
 <dl class="method">
@@ -2357,7 +2469,7 @@ summary statistics for <em>all</em> fields in the sample.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.0.4',
+            VERSION:'0.0.6',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
