@@ -15,7 +15,7 @@ each :math:`x∈M`, namely the field:
 
 .. math::
 
-    \Big( s(x)) : x∈M \Big).
+    \Big( s(x) : x∈M \Big).
 
 We are interested in testing the set (or field) of hypothesis
 
