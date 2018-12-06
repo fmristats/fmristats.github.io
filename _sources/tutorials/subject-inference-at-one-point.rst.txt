@@ -71,6 +71,14 @@ MB-estimator, namely the curvature of the spatial weighting kernel.
     model.set_hyperparameters('max')
 
 
+.. code::
+
+    AGB300-0002-WGT:
+                Number of within brain observations:  2,760,279
+                Number of    non brain observations: 25,502,121
+                Intercept field refers to time:          165.35 s
+    
+
 
 
 Save the model to disk (if you like):
@@ -134,11 +142,17 @@ Get some information about the model:
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-ffa80f5f4bc1> in
-    <module>()
-    ----> 1 print(model.describe())
-    NameError: name 'model' is not defined
+    
+            Hyperparameters:
+                Scale type:         max
+                Factor:            3.00
+    
+            Resulting in:
+                Mass:            0.9973
+                Scale:             2.30 mm
+                FWHM:              5.42 mm
+                Radius:            6.90 mm
+                Diagonal:         13.80 mm
     
 
 
@@ -276,12 +290,12 @@ Extract the data at the index:
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-c527cbf14634> in
-    <module>()
-    ----> 1 data = model.data_at_index(index).reset_index(drop=True)
-          2 print(data.iloc[:,3:].head())
-    NameError: name 'model' is not defined
+       signal        time  task  block  cycle  slice    weight
+    0   958.0 -154.664538   0.0    0.0    7.0   11.0  0.020139
+    1   986.0 -154.664538   0.0    0.0    7.0   11.0  0.048931
+    2  1031.0 -154.664538   0.0    0.0    7.0   11.0  0.021690
+    3  1073.0 -154.664538   0.0    0.0    7.0   11.0  0.069630
+    4  1108.0 -154.664538   0.0    0.0    7.0   11.0  0.169175
     
 
 
@@ -305,17 +319,10 @@ stimulus design:
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-2cc65dee225a> in
-    <module>()
-          1 # Task labels
-    ----> 2 print('Task labels:
-    {}'.format(data.task.unique()))
-          3
-          4 # Block labels and number of blocks
-          5 print('Block labels:
-    {}'.format(data.block.unique()))
-    NameError: name 'data' is not defined
+    Task labels:               [0. 1.]
+    Block labels:              [0. 1. 2. 3. 4. 5. 6. 7.]
+    Number of blocks per task: 8
+    Number of scan cycles:     94
     
 
 
@@ -335,20 +342,6 @@ of acquisition:
     w = (w-w.min())/(w.max()-w.min())
     w = .87*np.log(w+1.069)
 
-
-.. code::
-
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-1ca6bb202c48> in
-    <module>()
-    ----> 1 data.time = data.time - data.time.min()
-          2 elem, idx, count =
-    np.unique(data.time,return_index=True,return_counts=True)
-          3
-          4 w = data.weight
-          5 w = (w-w.min())/(w.max()-w.min())
-    NameError: name 'data' is not defined
-    
 
 
 
@@ -370,19 +363,6 @@ Create the scatter plot (click the image to enlarge):
     sb.despine()
     pt.tight_layout()
 
-
-.. code::
-
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-9cdfea7cd4f0> in
-    <module>()
-          5
-          6 fig, ax = pt.subplots(figsize=(8,9))
-    ----> 7 ax.scatter(data.time, data.signal, s=w, marker='o', c='k')
-          8 ax.set_ylabel('MR Signal')
-          9 ax.set_xlabel('Time (s)')
-    NameError: name 'data' is not defined
-    
 
 .. image:: figures/subject-inference-at-one-point_figure18_1.png
    :width: 15 cm
@@ -414,19 +394,6 @@ default as well as the generally recommended model when using fmristats.
     predict1 = fit1.predict()[idx]
 
 
-.. code::
-
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-bda2729de7d1> in
-    <module>()
-    ----> 1 fit1, model1, _ = model.fit_at_index(index,
-          2     formula='signal~C(task)/C(block, Sum)')
-          3
-          4 data['y1'] = fit1.predict()
-          5 predict1 = fit1.predict()[idx]
-    NameError: name 'model' is not defined
-    
-
 
 
 Model 2: linear in time and task
@@ -447,19 +414,6 @@ residual mean squared error of the fit, thus, reducing your power.
     predict2 = fit2.predict()[idx]
 
 
-.. code::
-
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-e0a8f343a3ed> in
-    <module>()
-    ----> 1 fit2, model2, _ = model.fit_at_index(index,
-          2     formula='signal~time+C(task)')
-          3
-          4 data['y2'] = fit2.predict()
-          5 predict2 = fit2.predict()[idx]
-    NameError: name 'model' is not defined
-    
-
 
 
 Model 3: b-spline model with 12 degrees of freedom
@@ -478,19 +432,6 @@ the effects of over-fitting.
     data['y3'] = fit3.predict()
     predict3 = fit3.predict()[idx]
 
-
-.. code::
-
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-45bf433e3bd3> in
-    <module>()
-    ----> 1 fit3, model3, _ = model.fit_at_index(index,
-          2     formula='signal~bs(time,df=12)+C(task)')
-          3
-          4 data['y3'] = fit3.predict()
-          5 predict3 = fit3.predict()[idx]
-    NameError: name 'model' is not defined
-    
 
 
 
@@ -615,6 +556,9 @@ You may also combine the two plots (click image to enlarge):
     pt.savefig(scatter_plot, pad_inches=0, bbox_inches='tight')
 
 
+.. image:: figures/subject-inference-at-one-point_figure24_1.png
+   :width: 15 cm
+
 
 
 Formal testing
@@ -636,13 +580,9 @@ Effect strength
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-47fdde1931d2> in
-    <module>()
-    ----> 1 print(fit1.params[1])
-          2 print(fit2.params[1])
-          3 print(fit3.params[1])
-    NameError: name 'fit1' is not defined
+    14.526104774712344
+    14.057526450085476
+    13.339944081795096
     
 
 
@@ -661,13 +601,9 @@ Test statistic
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-e720ccecbafe> in
-    <module>()
-    ----> 1 print(fit1.tvalues[1])
-          2 print(fit2.tvalues[1])
-          3 print(fit3.tvalues[1])
-    NameError: name 'fit1' is not defined
+    7.460551272843621
+    7.112567149684203
+    4.4370014597571314
     
 
 
@@ -686,13 +622,9 @@ P-Values
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-b66c23901cb5> in
-    <module>()
-    ----> 1 print(fit1.pvalues[1])
-          2 print(fit2.pvalues[1])
-          3 print(fit3.pvalues[1])
-    NameError: name 'fit1' is not defined
+    1.0980615941762318e-13
+    1.3918174784009391e-12
+    9.422750022149465e-06
     
 
 
@@ -708,11 +640,7 @@ coordinate:
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-cbc3ead6feb4> in
-    <module>()
-    ----> 1 print(fit2.pvalues[2])
-    NameError: name 'fit2' is not defined
+    0.08344187219441945
     
 
 
@@ -730,13 +658,8 @@ coordinate:
 
 .. code::
 
-    ---------------------------------------------------------------------------NameError
-    Traceback (most recent call last)<ipython-input-1-11172a5a7815> in
-    <module>()
-    ----> 1 R = np.identity(len(fit3.params))
-          2 R = R[2:,:]
-          3 print(fit3.f_test(R))
-    NameError: name 'fit3' is not defined
+    <F test: F=array([[1.9721569]]), p=0.022923767880701367,
+    df_denom=3273, df_num=12>
     
 
 
