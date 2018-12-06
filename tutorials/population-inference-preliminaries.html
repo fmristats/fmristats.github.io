@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Population inference (set-up) &mdash; fmristats 0.0.6 documentation</title>
+  <title>Population inference: Create a sample for further analysis &mdash; fmristats 0.1.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Population inference (explorative)" href="population-inference-explorative.html" />
-    <link rel="prev" title="Semi-Automated Analysis of Multiple Subjects" href="quick-start.html" /> 
+    <link rel="next" title="Population inference: Confirmation study" href="population-inference-confirmative.html" />
+    <link rel="prev" title="Subject analysis: Inference at a single coordinate" href="subject-inference-at-one-point.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0
+                0.1
               </div>
             
           
@@ -83,34 +83,21 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference (set-up)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#preliminaries">Preliminaries</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fit-the-population-maps">Fit the Population Maps</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fit-the-signal-models-to-the-fmris-fist-level">Fit the Signal Models to the FMRIs (fist level)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-an-ati-reference-field">Create an ATI reference field</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-the-sample-for-the-meta-analysis">Create the sample for the meta analysis</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#example">Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference: Create a sample for further analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-ati-reference-field">The ATI reference field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-the-sample-for-your-study">Create the sample for your study</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -159,7 +146,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Population inference (set-up)</li>
+      <li>Population inference: Create a sample for further analysis</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -178,173 +165,67 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="population-inference-set-up">
-<h1>Population inference (set-up)<a class="headerlink" href="#population-inference-set-up" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="preliminaries">
-<h2>Preliminaries<a class="headerlink" href="#preliminaries" title="Permalink to this headline">¶</a></h2>
-<p>If you aim for population inference, you need to relate the brains
-<span class="math notranslate nohighlight">\(R_j\)</span> of all subjects <span class="math notranslate nohighlight">\(j\)</span> in your study to each other, i.e.
-you need to chose a representative, say a template brain <span class="math notranslate nohighlight">\(M\)</span> in
-MNI Standard Space, and fit diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span> which map
-<span class="math notranslate nohighlight">\(M\)</span> to each <span class="math notranslate nohighlight">\(R_j\)</span>.</p>
+  <div class="section" id="population-inference-create-a-sample-for-further-analysis">
+<span id="population-ati"></span><h1>Population inference: Create a sample for further analysis<a class="headerlink" href="#population-inference-create-a-sample-for-further-analysis" title="Permalink to this headline">¶</a></h1>
+<p>Signal models have been fitted to FMRI session data:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span>
+
+<span class="n">fsl4prune</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<div class="section" id="the-ati-reference-field">
+<h2>The ATI reference field<a class="headerlink" href="#the-ati-reference-field" title="Permalink to this headline">¶</a></h2>
+<p>Model based estimation encourages to analyse and report BOLD effects in
+<em>above template image</em> (ATI) units. The reason is that FMRI have no
+»natural« unit. If <span class="math notranslate nohighlight">\((α_j(x), x∈M)\)</span> is the intercept and
+<span class="math notranslate nohighlight">\((β_j(x), x∈M)\)</span> is the estimated task related BOLD effect in an
+FMRI, and if <span class="math notranslate nohighlight">\((μ_x, x∈M)\)</span> is an <em>ATI reference field</em> in standard
+space <span class="math notranslate nohighlight">\(M\)</span>, then</p>
 <div class="math notranslate nohighlight">
-\[ψ_j: M \to R_j.\]</div>
-<p>You have created the irritation designs, the FMRI session data for each
-subject, and you have fitted the head movements:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create Irritation Designs</span>
-<span class="n">mat2irr</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span>
+\[c_jβ_j (x) := c_j(x) ⋅ β_j(x) \quad \text { with } \quad c_j(x) =
+\frac {μ_x}{α_j(x)}\]</div>
+<p>is the BOLD effect at <span class="math notranslate nohighlight">\(x\)</span> in <em>ATI</em>.</p>
+<p>As shown <a class="reference external" href="https://arxiv.org/abs/1809.07232v1">here</a>, the statistical analysis of the task related BOLD
+effects benefits (by gaining power without loosing statistical validity)
+when the analysis is performed with the fields <span class="math notranslate nohighlight">\(c_jβ_j\)</span> and
+<strong>not</strong> with the fields <span class="math notranslate nohighlight">\(β_j\)</span>. This is in particular true for
+multicentre studies.</p>
+<p>A reasonable choice for the ATI reference field is to chose a field with
+similar curvature as the estimated statistics fields in the sample. As
+this curvature is predominately influenced by the choice of the spatial
+weighting scheme, a canonical choice is to smooth a template in standard
+space by the same spatial weighting that has been used when fitting the
+individual statistic fields.</p>
+<p>Look for the parameter <code class="docutils literal notranslate"><span class="pre">scale</span></code> in one of your fits:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">results</span><span class="o">/</span><span class="n">WGT</span><span class="o">/</span><span class="n">AGB300</span><span class="o">/</span><span class="mi">0002</span><span class="o">/</span><span class="n">AGB300</span><span class="o">-</span><span class="mi">0002</span><span class="o">-</span><span class="n">WGT</span><span class="o">-</span><span class="mi">2014</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">24</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">ants</span><span class="o">-</span><span class="n">pcm</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="o">...</span><span class="p">]</span>
+   <span class="n">Hyperparameters</span><span class="p">:</span>
+        <span class="n">Scale</span> <span class="nb">type</span><span class="p">:</span>         <span class="nb">max</span>
+        <span class="n">Factor</span><span class="p">:</span>            <span class="mf">3.00</span>
 
-<span class="c1"># Create Session Designs</span>
-<span class="n">nii2ses</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span>
-
-<span class="c1"># Fit head movements</span>
-<span class="n">fmririgid</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
+    <span class="n">Resulting</span> <span class="ow">in</span><span class="p">:</span>
+        <span class="n">Mass</span><span class="p">:</span>            <span class="mf">0.9973</span>
+        <span class="n">Scale</span><span class="p">:</span>             <span class="mf">2.30</span> <span class="n">mm</span>
+        <span class="n">FWHM</span><span class="p">:</span>              <span class="mf">5.42</span> <span class="n">mm</span>
+        <span class="n">Radius</span><span class="p">:</span>            <span class="mf">6.90</span> <span class="n">mm</span>
+        <span class="n">Diagonal</span><span class="p">:</span>         <span class="mf">13.80</span> <span class="n">mm</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>And you have checked whether the fitted head movement look ok:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span># Assessment of head tracking ability
-ref2plot --protocol sample.pkl -v
-
-for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
-</pre></div>
-</div>
-</div>
-<div class="section" id="fit-the-population-maps">
-<h2>Fit the Population Maps<a class="headerlink" href="#fit-the-population-maps" title="Permalink to this headline">¶</a></h2>
-<p>Use ANTS to fit the <span class="math notranslate nohighlight">\(ψ_j\)</span>:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ants4pop</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span>  <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
-</pre></div>
-</div>
-<p>Use FNIRT to fit the <span class="math notranslate nohighlight">\(ψ_j\)</span>:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl4pop</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span>  <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span>
-</pre></div>
-</div>
-<p>I had the feeling that – out of the box – ANTS provided better fits
-for the <span class="math notranslate nohighlight">\(ψ_j\)</span> than FNIRT. If you are using the wrapper <cite>fsl4pop</cite>,
-you probably need to manually help FNIRT to find the correct fit. See
-the help of <cite>fsl4pop</cite> for how to use custom warp coefficient files.</p>
-</div>
-<div class="section" id="fit-the-signal-models-to-the-fmris-fist-level">
-<h2>Fit the Signal Models to the FMRIs (fist level)<a class="headerlink" href="#fit-the-signal-models-to-the-fmris-fist-level" title="Permalink to this headline">¶</a></h2>
-<p>Fitting the signal model to the FMRI of each subject.</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-
-<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span> <span class="o">-</span><span class="n">j</span> <span class="mi">1</span>
-</pre></div>
-</div>
-<p><em>Alternative 1</em>: fit three subjects only:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-
-<span class="n">fmriprune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-
-<span class="n">fsl4prune</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> <span class="mi">42</span> <span class="mi">84</span> \
-    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-</pre></div>
-</div>
-<p><em>Alternative 2</em>: fit nothing, do a dry run instead (s=skip):</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">vs</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-</pre></div>
-</div>
-<p><em>Alternative 3</em>: remove orphan log-files (i=ignore-locks, s=skip):</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">vis</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="create-an-ati-reference-field">
-<h2>Create an ATI reference field<a class="headerlink" href="#create-an-ati-reference-field" title="Permalink to this headline">¶</a></h2>
-<p>In case you have FSL installed on your system, you may find various
-templates in</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span>
-</pre></div>
-</div>
-<p>The tool <cite>nii2image</cite> can be used to convert various imaging formats to
-fmristats’ own file format.</p>
+<p>Then create the corresponding ATI reference field:</p>
 <div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">mni152</span> \
     <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm_brain</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>
+    <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>
 
-<span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">mni152background</span> \
-    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
-    <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>
-</pre></div>
-</div>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriati</span> <span class="mf">2.09</span> <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span> <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span>
+<span class="n">fmriati</span> <span class="mf">2.3</span> <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> <span class="o">-</span><span class="n">v</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="create-the-sample-for-the-meta-analysis">
-<h2>Create the sample for the meta analysis<a class="headerlink" href="#create-the-sample-for-the-meta-analysis" title="Permalink to this headline">¶</a></h2>
-<p>To see the correct order of the positional arguments for <code class="docutils literal notranslate"><span class="pre">fmrisample</span></code>:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">h</span>
-</pre></div>
-</div>
-<p>Create the sample for population inference:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">vf</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="n">population</span><span class="o">-</span><span class="n">inference</span><span class="o">.</span><span class="n">sample</span> \
-    <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>  \
-    <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>  \
-    <span class="o">../</span><span class="n">data</span><span class="o">/</span><span class="n">vbs</span><span class="o">/</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> \
-    <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="example">
-<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>An example may look as follows:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span># Create Irritation Designs
-mat2irr --protocol sample.pkl -v --strftime short -f
-
-# Create Session Designs
-nii2ses --protocol sample.pkl -v --detect-foreground --strftime short
-
-# Fit head movements
-fmririgid --protocol sample.pkl -v --strftime short --cycle 42
-
-# Assessment of head tracking ability
-ref2plot --protocol sample.pkl -v --strftime short
-
-for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
-
-for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
-
-# In this example, subject 0004 appears to show severe head movments
-# in cycle 42. We therefore choose a different scan cycle as the
-# subject&#39;s reference space.
-
-fmririgid --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
-
-ref2plot --protocol sample.pkl -v --strftime short --cohort AGB300 --id 4
-
-for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
-
-# The quality control plot looks a loot better now.
-
-# Fit population map
-ants4pop --protocol sample.pkl -v --strftime short --cycle 42
-
-# Fit population map
-ants4pop --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
-
-# Fit signal models in standard space
-
-fmrifit --protocol sample.pkl -v --strftime short \
-    --stimulus-block letter \
-    --vb mni152 --diffeomorphism ants
+<div class="section" id="create-the-sample-for-your-study">
+<h2>Create the sample for your study<a class="headerlink" href="#create-the-sample-for-your-study" title="Permalink to this headline">¶</a></h2>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">v</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">sample</span> <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span>
 </pre></div>
 </div>
 </div>
@@ -358,10 +239,10 @@ fmrifit --protocol sample.pkl -v --strftime short \
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="population-inference-explorative.html" class="btn btn-neutral float-right" title="Population inference (explorative)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="population-inference-confirmative.html" class="btn btn-neutral float-right" title="Population inference: Confirmation study" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="quick-start.html" class="btn btn-neutral" title="Semi-Automated Analysis of Multiple Subjects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="subject-inference-at-one-point.html" class="btn btn-neutral" title="Subject analysis: Inference at a single coordinate" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -370,7 +251,7 @@ fmrifit --protocol sample.pkl -v --strftime short \
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
 
     </p>
   </div>
@@ -389,21 +270,24 @@ fmrifit --protocol sample.pkl -v --strftime short \
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.0.6',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

@@ -1,0 +1,6 @@
+cohort,id,sex,age,handedness,valid
+FOO,1,female,23,67.0,True
+FOO,2,female,24,49.0,True
+BAR,1,female,25,37.0,False
+BAR,2,male,26,-59.0,True
+

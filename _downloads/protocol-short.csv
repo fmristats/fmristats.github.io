@@ -1,0 +1,8 @@
+cohort,id,date,paradigm,valid,epi
+FOO,1,2013-04-22,HFM,True,3
+FOO,1,2014-05-04,WGT,False,3
+FOO,2,2014-05-04,HFM,True,3
+FOO,2,2014-04-24,WGT,True,3
+BAR,1,2015-07-23,WGT,True,3
+BAR,2,2014-04-25,WGT,True,3
+

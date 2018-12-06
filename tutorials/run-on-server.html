@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Run analysis on a server &mdash; fmristats 0.0.6 documentation</title>
+  <title>Run the analysis on a server &mdash; fmristats 0.1.0 documentation</title>
   
 
   
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0
+                0.1
               </div>
             
           
@@ -83,26 +83,17 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Run analysis on a server</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Run the analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -151,7 +142,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Run analysis on a server</li>
+      <li>Run the analysis on a server</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -170,55 +161,47 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="run-analysis-on-a-server">
-<h1>Run analysis on a server<a class="headerlink" href="#run-analysis-on-a-server" title="Permalink to this headline">¶</a></h1>
-<p>You have created the session files, estimated the head movements (aka.reference maps), and the diffeomorphisms mapping form standard space to
-the respective subject spaces (aka.population maps). What is missing,
-now: you would like to fit the subject model to the FMRI of each subject
-but you don’t have enough resources on your local hardware. Solution:
-move the stuff to a server.</p>
-<p>On your computer, your data tree will thus far look as follows:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>data
-├── irr
-├── pop
-├── ref
-├── ses
-└── vbs
-    ├── MNI152_T1_2mm_brain.image
-    └── MNI152_T1_2mm.image
+  <div class="section" id="run-the-analysis-on-a-server">
+<h1>Run the analysis on a server<a class="headerlink" href="#run-the-analysis-on-a-server" title="Permalink to this headline">¶</a></h1>
+<p>You have created the session files, estimated the head movements (the
+reference maps), and the diffeomorphisms mapping form standard space to
+the respective subject reference spaces (the population maps). Now you
+would like to fit a FMRI signal model to the data of each subject but
+you don’t have enough resources on your local hardware. Solution: Move
+your calculations to a server.</p>
+<p>The following will copy all necessary files to the server:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">avuz</span> <span class="o">-</span><span class="n">n</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.session&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.rigids&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.popmap&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;tutorial.study&#39;</span> \
+    <span class="n">results</span> <span class="n">username</span><span class="nd">@hostserver</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>What you need at minimum on the host computer in order to run the
-analysis:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>data
-├── pop
-├── ref
-├── ses
-└── vbs
-    ├── MNI152_T1_2mm_brain.image
-    └── MNI152_T1_2mm.image
+<p>Or equivalently:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">avuz</span> <span class="o">-</span><span class="n">n</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.session&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.rigids&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.popmap&#39;</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;tutorial.study&#39;</span> \
+    <span class="n">results</span><span class="o">/</span> <span class="n">username</span><span class="nd">@hostserver</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">results</span>
 </pre></div>
 </div>
-<p>Solution: copy the tree to the host server:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="n">data</span> <span class="n">username</span><span class="nd">@hostname</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span>
+<p>Now, you can log in and run <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code>. After the calculations are
+finished, pull the results back to your machine:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">avuz</span> <span class="o">-</span><span class="n">n</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.fit&#39;</span> \
+    <span class="n">username</span><span class="nd">@hostserver</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">results</span> <span class="o">.</span>
 </pre></div>
 </div>
-<p>Also copy the sample, you would like to analyse:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">scp</span> <span class="o">-</span><span class="n">r</span> <span class="n">results</span><span class="o">/</span><span class="n">mysample</span><span class="o">.</span><span class="n">pkl</span> <span class="n">username</span><span class="nd">@hostname</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">results</span>
+<p>Or equivalently:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rsync</span> <span class="o">-</span><span class="n">avuz</span> <span class="o">-</span><span class="n">n</span> \
+    <span class="o">--</span><span class="n">include</span> <span class="s1">&#39;**/*.fit&#39;</span> \
+    <span class="n">username</span><span class="nd">@hostserver</span><span class="p">:</span><span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">results</span><span class="o">/</span> <span class="n">results</span>
 </pre></div>
 </div>
-<p>Then log in to the server and run the analysis:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ssh</span> <span class="n">hostname</span>
-
-<span class="n">cd</span> <span class="o">~/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">results</span>
-
-<span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">mysample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span>
-</pre></div>
-</div>
-<p>The advantage is that none of the software that you have needed to
-create the population maps (such as ANTS, FSL, or SPM) is needed on the
+<p>The advantage is that none of the software that was needed to create the
+population maps (such as <a class="reference external" href="http://stnava.github.io/ANTs/">ANTS</a>, <a class="reference external" href="https://afni.nimh.nih.gov/">AFNI</a>, <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/">FSL</a>, or <a class="reference external" href="https://www.fil.ion.ucl.ac.uk/spm/">SPM</a>) is needed on the
 server side. Just fmristats.</p>
 </div>
 
@@ -242,7 +225,7 @@ server side. Just fmristats.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
 
     </p>
   </div>
@@ -261,21 +244,24 @@ server side. Just fmristats.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.0.6',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

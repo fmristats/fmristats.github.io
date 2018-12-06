@@ -1,63 +1,61 @@
-Run analysis on a server
-------------------------
+Run the analysis on a server
+----------------------------
 
-You have created the session files, estimated the head movements (aka.\
+You have created the session files, estimated the head movements (the
 reference maps), and the diffeomorphisms mapping form standard space to
-the respective subject spaces (aka.\ population maps). What is missing,
-now: you would like to fit the subject model to the FMRI of each subject
-but you don't have enough resources on your local hardware. Solution:
-move the stuff to a server.
+the respective subject reference spaces (the population maps). Now you
+would like to fit a FMRI signal model to the data of each subject but
+you don't have enough resources on your local hardware. Solution: Move
+your calculations to a server.
 
-On your computer, your data tree will thus far look as follows:
-
-.. code:: shell
-
-    data
-    ├── irr
-    ├── pop
-    ├── ref
-    ├── ses
-    └── vbs
-        ├── MNI152_T1_2mm_brain.image
-        └── MNI152_T1_2mm.image
-
-What you need at minimum on the host computer in order to run the
-analysis:
+The following will copy all necessary files to the server:
 
 .. code:: shell
 
-    data
-    ├── pop
-    ├── ref
-    ├── ses
-    └── vbs
-        ├── MNI152_T1_2mm_brain.image
-        └── MNI152_T1_2mm.image
+    rsync -avuz -n \
+        --include '**/*.session' \
+        --include '**/*.rigids' \
+        --include '**/*.popmap' \
+        --include 'tutorial.study' \
+        results username@hostserver:~/path/to/
 
-Solution: copy the tree to the host server:
-
-.. code:: shell
-
-    scp -r data username@hostname:~/path/to/project
-
-Also copy the sample, you would like to analyse:
+Or equivalently:
 
 .. code:: shell
 
-    scp -r results/mysample.pkl username@hostname:~/path/to/project/results
+    rsync -avuz -n \
+        --include '**/*.session' \
+        --include '**/*.rigids' \
+        --include '**/*.popmap' \
+        --include 'tutorial.study' \
+        results/ username@hostserver:~/path/to/results
 
-Then log in to the server and run the analysis:
+Now, you can log in and run ``fmrifit``. After the calculations are
+finished, pull the results back to your machine:
 
 .. code:: shell
 
-    ssh hostname
+    rsync -avuz -n \
+        --include '**/*.fit' \
+        username@hostserver:~/path/to/results .
 
-    cd ~/path/to/project/results
+Or equivalently:
 
-    fmrifit --protocol mysample.pkl -v --strftime short \
-        --stimulus-block letter \
-        --vb mni152 --diffeomorphism ants
+.. code:: shell
 
-The advantage is that none of the software that you have needed to
-create the population maps (such as ANTS, FSL, or SPM) is needed on the
+    rsync -avuz -n \
+        --include '**/*.fit' \
+        username@hostserver:~/path/to/results/ results
+
+The advantage is that none of the software that was needed to create the
+population maps (such as ANTS_, AFNI_, FSL_, or SPM_) is needed on the
 server side. Just fmristats.
+
+.. _FSL: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/
+
+.. _SPM: https://www.fil.ion.ucl.ac.uk/spm/
+
+.. _AFNI: https://afni.nimh.nih.gov/
+
+.. _ANTS: http://stnava.github.io/ANTs/
+

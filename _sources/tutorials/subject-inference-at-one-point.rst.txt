@@ -1,45 +1,31 @@
-Subject inference (at one coordinate)
--------------------------------------
+.. _subject-inference:
+
+Subject analysis: Inference at a single coordinate
+--------------------------------------------------
 
 A signal model has been fitted to FMRI session data:
 
 .. code:: shell
 
-    fmrifit --protocol sample.pkl -v \
-        --cohort AGB300 \
-        --id 2 \
-        --paradigm WGT \
-        --strftime short \
-        --stimulus-block letter -s
+    fmrifit -v --stimulus-block letter --window 2 1 1 --id 2
 
-Or, say in MNI standard space:
+    fsl4prune -v --id 2
 
-.. code:: shell
 
-    fmrifit --protocol sample.pkl -v \
-        --cohort AGB300 \
-        --id 2 \
-        --paradigm WGT \
-        --strftime short \
-        --vb mni152 --diffeomorphism ants \
-        --stimulus-block letter
 
-This is indeed the command line equivalent to the following python code:
+
+The Python interface will usually give you some further flexibility.
 
 Create the model
 ................
 
-
-
-
-Load the data.
+Load the FMRI data, the head movements, and the population map from disk:
 
 
 .. code:: python
 
     
     from fmristats import *
-    from fmristats.pmap import pmap_reference
     
     # the FMRI data
     session = load(path_to_session)
@@ -47,17 +33,20 @@ Load the data.
     # the fitted head movements (reference maps)
     reference_maps = load(path_to_reference_maps)
     
-    # set the standard space equal to the mean position of the subject in
-    # the scanner and the diffeomorphism to the identity.
-    population_map = pmap_reference(session=session, resolution=2.)
+    # smooth out the movement estimates a little
+    reference_maps.mean(2)
+    reference_maps.mean(1)
+    reference_maps.mean(1)
     
-    # alternatively load a diffeomorphism from disk
+    # load a diffeomorphism from disk
     population_map = load(path_to_population_map)
 
 
 
 
-Create a signal model instance
+Create the model: Set the stimulus design in the model, set the
+MRI-observations, and set the only(!) hyperparameter of the
+MB-estimator, namely the curvature of the spatial weighting kernel.
 
 
 .. code:: python
@@ -68,21 +57,28 @@ Create a signal model instance
         reference_maps=reference_maps,
         population_map=population_map)
     
-    # create the design matrix of subject conditioning
-    model.create_irritation_design(
+    model.set_stimulus_design(
             s='letter',
             c='control',
             offset=5.242,
             preset=1.42)
     
-    # create the data matrix, setting a burn in of 4 scan cycles
-    model.create_data_matrix(burn_in=4)
+    # discard the data of the first four scan cycles
+    model.set_data(burn_in=4)
     
-    # set the FWHM of the weighting scheme to the default value
+    # set the width of the Gaussian kernel that is used for spatial
+    # weighting
     model.set_hyperparameters('max')
-    
-    # save the model to disk (if you like)
-    model.save('interim-results/subject.model')
+
+
+
+
+Save the model to disk (if you like):
+
+
+.. code:: python
+
+    model.save('subject.model')
 
 
 
@@ -99,32 +95,31 @@ Get some information about the FMRI data:
 .. code:: python
 
     print(session.reference.describe())
-    print(reference_maps.describe())
     print(session.describe())
+    print(reference_maps.describe())
 
 
 .. code::
 
     
-            Resolution (left to right):         3.00 mm
-            Resolution (posterior to anterior): 3.00 mm
-            Resolution (inferior to superior):  4.60 mm
-            Diagonal of one voxel:              6.26 mm
+            Resolution (left to right):          3.00 mm
+            Resolution (posterior to anterior):  3.00 mm
+            Resolution (inferior to superior):   4.60 mm
+            Diagonal of one voxel:               6.26 mm
             Volume of one voxel:                41.40 mm^3
-            Aspect 0 on 1:                      1.00
-            Aspect 0 on 2:                      0.65
-            Aspect 1 on 2:                      0.65
-            Rigid transformation: False
+            Aspect 0 on 1:                       1.00
+            Aspect 0 on 2:                       0.65
+            Aspect 1 on 2:                       0.65
+    
+            EPI code: 3
     
             Scans:        6900
             Valid:        6900
             Outlying:        0 (0.00%)
+    
             Scan cycles:   230
             Valid:         230
             Outlying:        0 (0.00%)
-    
-    
-            EPI code: 3
     
 
 
@@ -139,18 +134,11 @@ Get some information about the model:
 
 .. code::
 
-    
-            Hyperparameters
-            ---------------
-            Scale type:   max
-            Scale:        2.30 mm
-            Factor:       3.00
-    
-            Resulting in:
-                Mass:         0.99730
-                FWHM:         5.42 mm
-                Radius:       6.90 mm
-                Diagonal:     13.80 mm
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-ffa80f5f4bc1> in
+    <module>()
+    ----> 1 print(model.describe())
+    NameError: name 'model' is not defined
     
 
 
@@ -162,8 +150,15 @@ Fit the model
 .. code:: python
 
     result = model.fit()
-    
-    # save the result to disk (if you like)
+
+
+
+
+Save the result to disk (if you like):
+
+
+.. code:: python
+
     result.save('subject.fit')
 
 
@@ -172,280 +167,70 @@ Fit the model
 
 
 
-Plot the fields.
+Prune the statistics field from non-brain areas. You are expected to do
+his manually, as fmristats will usually avoid deleting data:
 
 
 .. code:: python
 
-    
-    import matplotlib.pylab as pt
-    import matplotlib.cm as cm
-    from fmristats.plot import picture
-    
-    a0 = result.get_field('intercept','point')
-    b0 = result.get_field('task','point')
-    t0 = result.get_field('task', 'tstatistic')
+    result.mask()
 
 
 
 
-The intercept:
-
-
-.. code:: python
-
-    
-    picture(a0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure10_1.png
-   :width: 15 cm
-
-
-
-The effect field:
-
-
-.. code:: python
-
-    
-    picture(b0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure11_1.png
-   :width: 15 cm
-
-
-
-The pattern of neuronal activity:
-
-
-.. code:: python
-
-    
-    picture(t0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure12_1.png
-   :width: 15 cm
-
-
-
-Remove non-brain areas from the parameter fields (prune)
-........................................................
-
-Set a threshold for the minimum number of observations that should be
-available for fitting. E.g. set this number to a proportion of the
-maximum available sample size.
-
-
-.. code:: python
-
-    
-    gf = result.get_field('df')
-    proportion_df = .6
-    threshold_df = int(proportion_df * np.nanmax(gf.data))
-    
-    print('Lower threshold for the degrees of freedom: {:d}'.format(threshold_df))
-
-
-
-
-Apply the threshold:
-
-
-.. code:: python
-
-    
-    result.mask(gf.data >= threshold_df)
-    
-    a0 = result.get_field('intercept','point')
-    b0 = result.get_field('task','point')
-    t0 = result.get_field('task', 'tstatistic')
-
-
-
-
-The intercept:
-
-
-.. code:: python
-
-    
-    picture(a0, interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure15_1.png
-   :width: 15 cm
-
-
-
-The effect field:
-
-
-.. code:: python
-
-    
-    picture(b0, interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure16_1.png
-   :width: 15 cm
-
-
-
-The pattern of neuronal activity:
-
-
-.. code:: python
-
-    
-    picture(t0, interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure17_1.png
-   :width: 15 cm
-
-
-
-If you like, also apply BET on the intercept.
-
-
-.. code:: python
-
-    
-    from fmristats.fsl import bet
-    
-    template = bet(
-            intercept = a0,
-            intercept_file = 'interim-results/intercept.nii.gz',
-            mask_file = 'interim-results/intercept-mask.nii.gz',
-            cmd='fsl5.0-bet',
-            verbose = 2)
-
-
-.. code::
-
-    
-    fsl5.0-bet
-      interim-results/intercept.nii.gz
-      interim-results/intercept-mask.nii.gz
-      -R
-    
-
-
-
-Apply the mask:
-
-
-.. code:: python
-
-    
-    result.mask(template.get_mask())
-    
-    a0 = result.get_field('intercept','point')
-    b0 = result.get_field('task','point')
-    t0 = result.get_field('task', 'tstatistic')
-
-
-
-
-The intercept:
-
-
-.. code:: python
-
-    
-    picture(a0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure20_1.png
-   :width: 15 cm
-
-
-
-The effect field:
-
-
-.. code:: python
-
-    
-    picture(b0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure21_1.png
-   :width: 15 cm
-
-
-
-The pattern of neuronal activity:
-
-
-.. code:: python
-
-    
-    picture(t0,interpolation='bilinear')
-
-
-.. image:: figures/subject-inference-at-one-point_figure22_1.png
-   :width: 15 cm
-
-
-
-Find the highest peak of neuronal activity
-..........................................
+Select the highest peak in the t-field
+......................................
 
 Select the highest peak in the t-statistics field:
 
 
 .. code:: python
 
+    tstatistics = result.get_field('task', 'tstatistic')
     
-    peak = np.nanargmax(t0.data)
-    index = np.unravel_index(peak, t0.data.shape)
+    index = np.unravel_index(np.nanargmax(tstatistics.data), tstatistics.data.shape)
+    coordinate = tstatistics.apply_to_index(index)
     
-    print(index)
+    print("""
+        index in the image :          {}
+        coordinate in standard space: {}
+        hight of the peak:            {:.2f}""".format(
+            index, coordinate, tstatistics.data[index]))
 
 
 .. code::
 
-    (39, 23, 40)
+    
+        index in the image :          (39, 23, 40)
+        coordinate in standard space: [ 12. -80.   8.]
+        hight of the peak:            7.64
     
 
 
 
-Plot the respective slice:
+Plot the respective horizontal slice that goes through the above peak:
 
 
 .. code:: python
 
+    from fmristats.plot import picture
     
-    picture(t0,3,1,1,[index[-1]],
+    picture(tstatistics,3,1,1,[index[-1]],
         interpolation='bilinear', mark_peak=True)
-    
-    print(t0.data[index])
 
 
-.. code::
-
-    7.9078320395958235
-    
-
-.. image:: figures/subject-inference-at-one-point_figure24_1.png
+.. image:: figures/subject-inference-at-one-point_figure13_1.png
    :width: 15 cm
 
 
 
-Find the coordinates of the peak in standard space:
+Find out the name of standard space, so that you may use a query tool to
+find the region to which this coordinate belongs:
 
 
 .. code:: python
 
-    
     print(population_map.describe())
-    
-    coordinate = t0.apply_to_index(index)
-    print(coordinate)
 
 
 .. code::
@@ -453,17 +238,16 @@ Find the coordinates of the peak in standard space:
     
             Population map
             --------------
-            name:          ants
-            vb:            MNI152_T1_2mm_brain
-            nb:            AGB300-0002-WGT
-            vb_background: MNI152_T1_2mm
-            nb_background: --
-            vb_estimate:   vb_estimate
-            nb_estimate:   nb_estimate
-            vb_mask:       --
-            nb_mask:       --
-            vb_ati:        --
-    [ 12. -80.   8.]
+            diffeomorphism: ants
+            vb:             mni152
+            nb:             AGB300-0002-WGT-42
+            vb_background:  mni152-t1
+            nb_background:  --
+            vb_estimate:    vb_estimate_ants
+            nb_estimate:    nb_estimate_ants
+            vb_mask:        --
+            nb_mask:        --
+            vb_ati:         --
     
 
 
@@ -477,40 +261,68 @@ structure these coordinates belong:
     MNI Structural Atlas
     40% Occipital Lobe
 
-Scatter plot of FMRI data
-.........................
+Create a scatter plot of FMRI data around a coordinate
+......................................................
 
-Extract the data at the index.
+Extract the data at the index:
 
 
 .. code:: python
 
     
-    data = model.data_at_index(index)
-    data.head()
-    data.shape
-    
-    # Block labels and number of blocks
-    data.block.unique()
-    data.block.unique().size
-    print('Number of blocks: {}'.format(len(data.block.unique())))
-    
-    # Cycles which are within task blocks and their total number
-    data.cycle.unique()
-    data.cycle.unique().size
-    print('Number of slices: {}'.format(len(data.cycle.unique())))
+    data = model.data_at_index(index).reset_index(drop=True)
+    print(data.iloc[:,3:].head())
 
 
 .. code::
 
-    Number of blocks: 8
-    Number of slices: 94
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-c527cbf14634> in
+    <module>()
+    ----> 1 data = model.data_at_index(index).reset_index(drop=True)
+          2 print(data.iloc[:,3:].head())
+    NameError: name 'model' is not defined
     
 
 
 
-Define a scale :math:`w` for the weights for visualisation and order
-the observations by time.
+Some information about the number of blocks and block labels of the
+stimulus design:
+
+
+.. code:: python
+
+    # Task labels
+    print('Task labels:               {}'.format(data.task.unique()))
+    
+    # Block labels and number of blocks
+    print('Block labels:              {}'.format(data.block.unique()))
+    print('Number of blocks per task: {}'.format(len(data.block.unique())))
+    
+    # Scan cycles within task blocks and their total number
+    print('Number of scan cycles:     {}'.format(len(data.cycle.unique())))
+
+
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-2cc65dee225a> in
+    <module>()
+          1 # Task labels
+    ----> 2 print('Task labels:
+    {}'.format(data.task.unique()))
+          3
+          4 # Block labels and number of blocks
+          5 print('Block labels:
+    {}'.format(data.block.unique()))
+    NameError: name 'data' is not defined
+    
+
+
+
+For visualisation, define a suitable scale for the scatters in relation
+to their distance to :math:`x`, and order the MRI-observations by time
+of acquisition:
 
 
 .. code:: python
@@ -524,114 +336,174 @@ the observations by time.
     w = .87*np.log(w+1.069)
 
 
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-1ca6bb202c48> in
+    <module>()
+    ----> 1 data.time = data.time - data.time.min()
+          2 elem, idx, count =
+    np.unique(data.time,return_index=True,return_counts=True)
+          3
+          4 w = data.weight
+          5 w = (w-w.min())/(w.max()-w.min())
+    NameError: name 'data' is not defined
+    
 
 
-Define plotting parameters.
+
+Create the scatter plot (click the image to enlarge):
 
 
 .. code:: python
 
     
+    import matplotlib.pylab as pt
     import seaborn as sb
     sb.set_style('whitegrid')
     pt.style.use(['seaborn-whitegrid', 'seaborn-colorblind'])
-
-
-
-
-Time series plot.
-
-
-.. code:: python
-
     
     fig, ax = pt.subplots(figsize=(8,9))
-    ax.scatter(data.time, data.y, s=w, marker='o', c='k')
+    ax.scatter(data.time, data.signal, s=w, marker='o', c='k')
     ax.set_ylabel('MR Signal')
     ax.set_xlabel('Time (s)')
     sb.despine()
     pt.tight_layout()
 
 
-.. image:: figures/subject-inference-at-one-point_figure29_1.png
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-9cdfea7cd4f0> in
+    <module>()
+          5
+          6 fig, ax = pt.subplots(figsize=(8,9))
+    ----> 7 ax.scatter(data.time, data.signal, s=w, marker='o', c='k')
+          8 ax.set_ylabel('MR Signal')
+          9 ax.set_xlabel('Time (s)')
+    NameError: name 'data' is not defined
+    
+
+.. image:: figures/subject-inference-at-one-point_figure18_1.png
    :width: 15 cm
 
 
 
-(Click image to enlarge.)
+Fit different models to the data at the coordinate
+..................................................
 
-Fit different models to the data at these coordinates
-.....................................................
+fmristats is very flexible when it comes to defining models for your
+FMRI data. In deed, you have the full power of patsy_ at your disposal.
 
-Model 1: task/block
-###################
+.. _patsy: https://patsy.readthedocs.io/en/latest/
+
+Model 1: fully saturated and nested task/block design
+#####################################################
+
+This is a very parsimonious and robust model for FMRI and it is the
+default as well as the generally recommended model when using fmristats.
 
 
 .. code:: python
 
     
-    model1 = model.model_at_index(index)
-    fit1 = model1.fit()
+    fit1, model1, _ = model.fit_at_index(index,
+        formula='signal~C(task)/C(block, Sum)')
+    
     data['y1'] = fit1.predict()
-    data['w1'] = fit1.wresid
     predict1 = fit1.predict()[idx]
-
-
-
-
-Model 2: time+task
-##################
-
-
-.. code:: python
-
-    
-    model2 = model.model_at_index(index,formula='y~time+C(task)')
-    fit2 = model2.fit()
-    data['y2'] = fit2.predict()
-    data['w2'] = fit2.wresid
-    predict2 = fit2.predict()[idx]
-    
-    t = model2.exog[:,2]
-    t = t - t.min()
-    
-    (data.time == t).all()
 
 
 .. code::
 
-    True
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-bda2729de7d1> in
+    <module>()
+    ----> 1 fit1, model1, _ = model.fit_at_index(index,
+          2     formula='signal~C(task)/C(block, Sum)')
+          3
+          4 data['y1'] = fit1.predict()
+          5 predict1 = fit1.predict()[idx]
+    NameError: name 'model' is not defined
     
 
 
 
-Model 3: bs(time, df=12)
-########################
+Model 2: linear in time and task
+################################
+
+This appears to be a common model. Note, however, that the model is
+unable to account for nested effects which typically will increase the
+residual mean squared error of the fit, thus, reducing your power.
 
 
 .. code:: python
 
     
-    model3 = model.model_at_index(index,formula='y~bs(time,df=12)+C(task)')
-    fit3 = model3.fit()
+    fit2, model2, _ = model.fit_at_index(index,
+        formula='signal~time+C(task)')
+    
+    data['y2'] = fit2.predict()
+    predict2 = fit2.predict()[idx]
+
+
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-e0a8f343a3ed> in
+    <module>()
+    ----> 1 fit2, model2, _ = model.fit_at_index(index,
+          2     formula='signal~time+C(task)')
+          3
+          4 data['y2'] = fit2.predict()
+          5 predict2 = fit2.predict()[idx]
+    NameError: name 'model' is not defined
+    
+
+
+
+Model 3: b-spline model with 12 degrees of freedom
+##################################################
+
+This model is insanely flexible and may be used as an example to show
+the effects of over-fitting.
+
+
+.. code:: python
+
+    
+    fit3, model3, _ = model.fit_at_index(index,
+        formula='signal~bs(time,df=12)+C(task)')
+    
     data['y3'] = fit3.predict()
-    data['w3'] = fit3.wresid
     predict3 = fit3.predict()[idx]
 
+
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-45bf433e3bd3> in
+    <module>()
+    ----> 1 fit3, model3, _ = model.fit_at_index(index,
+          2     formula='signal~bs(time,df=12)+C(task)')
+          3
+          4 data['y3'] = fit3.predict()
+          5 predict3 = fit3.predict()[idx]
+    NameError: name 'model' is not defined
+    
 
 
 
 Plot the fitted regression surfaces
 ...................................
 
-Create a plot of the fitted regression surfaces.
+Plot of the fitted regression surfaces (click image to enlarge):
 
 
 .. code:: python
 
     
     current_palette = sb.color_palette()
-    #sb.palplot(current_palette)
     c1 = current_palette[0]
     c2 = current_palette[1]
     c3 = current_palette[2]
@@ -646,21 +518,8 @@ Create a plot of the fitted regression surfaces.
     ax.set_xlabel('Time (s)')
     sb.despine()
     pt.tight_layout()
-
-
-.. image:: figures/subject-inference-at-one-point_figure33_1.png
-   :width: 15 cm
-
-
-
-(Click image to enlarge.)
-
-Add block labels.
-
-
-.. code:: python
-
     
+    #Add block labels:
     positions = data.groupby(['task', 'block']).mean()
     positions = positions[['time','y1','y2','y3']]
     positions.reset_index(inplace=True)
@@ -680,18 +539,6 @@ Add block labels.
     a = fit1.params[0]
     b = fit1.params[1] + a
     
-    pt.close()
-    fig, ax = pt.subplots()
-    ax.axhline(a, c='grey', alpha=.3, lw=10)#, label='mean signal in A')
-    ax.axhline(b, c='lightgrey', alpha=.3, lw=10)#, label='mean signal in B')
-    ax.plot(elem,predict1,'-',c=c1,lw=.9,label='task/block')
-    ax.plot(elem,predict2,'--',c=c2,lw=.9,label='task+time')
-    ax.plot(elem,predict3,':',c=c3,lw=.9,label='task+bs(time,df=12)')
-    ax.legend()
-    ax.set_ylabel('Expected Signal as Predicted by Model')
-    ax.set_xlabel('Time (s)')
-    sb.despine()
-    pt.tight_layout()
     for r in positions.itertuples():
         if np.isclose(r.task,0):
             label = r'$B_{}$'.format(int(r.block)+1)
@@ -700,64 +547,75 @@ Add block labels.
         ax.annotate(label, xy=(r.time-1, r.value+.5))
 
 
-.. image:: figures/subject-inference-at-one-point_figure34_1.png
+.. image:: figures/subject-inference-at-one-point_figure22_1.png
    :width: 15 cm
 
 
 
-(Click image to enlarge.)
+You may also combine the two plots (click image to enlarge):
 
 
 
-
-Durbin-Watson
-.............
 
 
 .. code:: python
 
     
-    dw = result.get_field('durbin_watson')
-
-
-
-
-Durbin-Watson at the coordinates of the peak:
-
-
-.. code:: python
-
+    figw = 11.842
+    figh = 5.442
     
-    dw.data[index]
-
-
-.. code::
-
-    1.9064023355229434
+    figw = 11.842
+    figh = 7.442
     
-
-
-
-Plot.
-
-
-.. code:: python
-
+    a = fit1.params[0]
+    b = fit1.params[1] + a
     
-    sb.set_style('white')
-    pt.style.use(['seaborn-white', 'seaborn-colorblind'])
+    left       = 0.1
+    right      = 0.95
+    maintop    = 0.99
+    mainbottom = 0.38
+    meantop    = 0.36
+    meanbottom = 0.1
     
-    dw.data = dw.data - 2
+    pt.figure(figsize=(figw,figh))
     
-    picture(dw,interpolation='bilinear')
+    # The top figure:
+    main_ax = pt.axes([left,mainbottom,right-left,maintop-mainbottom])
+    mean_ax = pt.axes([left,meanbottom,right-left,meantop-meanbottom],
+        sharex=main_ax)
+    main_ax.scatter(data.time,data.signal,c='k',s=w,marker='o')
+    main_ax.set_ylabel('Observed MR Signal')
+    main_ax.plot(elem,predict1,'-',c=c1,lw=1.2,label='task/block')
+    pt.setp(main_ax.get_xticklabels(),visible=False)
+    sb.despine()
+    
+    # The bottom figure:
+    mean_ax.axhline(a, c='grey', alpha=.3, lw=10)#, label='mean signal in A')
+    mean_ax.axhline(b, c='lightgrey', alpha=.3, lw=10)#, label='mean signal in B')
+    mean_ax.plot(elem,predict1,'-',c=c1,lw=1.2,
+            label='task/block [fully saturated]')
+    mean_ax.plot(elem,predict2,'--',c=c2,lw=.8,
+            label='task+time [linear in time]')
+    mean_ax.plot(elem,predict3,':',c=c3,lw=.8,
+            label='task+bs(time,df=12) [high temporal flexibility]')
+    mean_ax.set_ylabel('Estimated Mean\nby Model')
+    mean_ax.set_xlabel('Time (s)')
+    mean_ax.legend(loc='lower center', bbox_to_anchor=(.5, -0.43), ncol=3)
+    
+    #Add block labels:
+    for r in positions.itertuples():
+        if np.isclose(r.task,0):
+            label = r'$B_{}$'.format(int(r.block)+1)
+        else:
+            label = r'$A_{}$'.format(int(r.block)+1)
+        mean_ax.annotate(label, xy=(r.time-1, r.value+1.8))
+    sb.despine()
+    
+    # Save the plot to disk:
+    pt.savefig(scatter_plot, pad_inches=0, bbox_inches='tight')
 
 
-.. image:: figures/subject-inference-at-one-point_figure38_1.png
-   :width: 15 cm
 
-
-
-Distribution looks very symmetric with no clear systematic.
 
 Formal testing
 ..............
@@ -778,9 +636,13 @@ Effect strength
 
 .. code::
 
-    15.031309466476994
-    15.045584340232338
-    14.81308071825201
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-47fdde1931d2> in
+    <module>()
+    ----> 1 print(fit1.params[1])
+          2 print(fit2.params[1])
+          3 print(fit3.params[1])
+    NameError: name 'fit1' is not defined
     
 
 
@@ -799,9 +661,13 @@ Test statistic
 
 .. code::
 
-    7.682368014451706
-    7.570981561542083
-    4.898837402953446
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-e720ccecbafe> in
+    <module>()
+    ----> 1 print(fit1.tvalues[1])
+          2 print(fit2.tvalues[1])
+          3 print(fit3.tvalues[1])
+    NameError: name 'fit1' is not defined
     
 
 
@@ -820,21 +686,43 @@ P-Values
 
 .. code::
 
-    2.0436364772462996e-14
-    4.770567259102657e-14
-    1.0102904574328985e-06
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-b66c23901cb5> in
+    <module>()
+    ----> 1 print(fit1.pvalues[1])
+          2 print(fit2.pvalues[1])
+          3 print(fit3.pvalues[1])
+    NameError: name 'fit1' is not defined
     
 
 
 
-Test whether time is an influential factor at this coordinate.
+Test whether time is an influential factor in model 2 at this
+coordinate:
 
 
 .. code:: python
 
-    
     print(fit2.pvalues[2])
+
+
+.. code::
+
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-cbc3ead6feb4> in
+    <module>()
+    ----> 1 print(fit2.pvalues[2])
+    NameError: name 'fit2' is not defined
     
+
+
+
+Test whether time is an influential factor in model 2 at this
+coordinate:
+
+
+.. code:: python
+
     R = np.identity(len(fit3.params))
     R = R[2:,:]
     print(fit3.f_test(R))
@@ -842,14 +730,20 @@ Test whether time is an influential factor at this coordinate.
 
 .. code::
 
-    0.7833649721827338
-    <F test: F=array([[1.96084842]]), p=0.023899320282703664,
-    df_denom=3310, df_num=12>
+    ---------------------------------------------------------------------------NameError
+    Traceback (most recent call last)<ipython-input-1-11172a5a7815> in
+    <module>()
+    ----> 1 R = np.identity(len(fit3.params))
+          2 R = R[2:,:]
+          3 print(fit3.f_test(R))
+    NameError: name 'fit3' is not defined
     
 
 
 
-Note that all p-values need to be adjusted for multiple testing. It can
-safely be argued that time has no significant influence. Data suggest no
-temporal signal fluctuation. Note that if there were, the non-parametric
-time dimension of model 1 would be able to handle it.
+It can safely be argued that time has no significant influence, and that
+the data suggest no temporal signal fluctuation at :math:`x`. Note that
+even if there were, the non-parametric time dimension of model 1 would
+still be able to handle it.
+
+All p-values need to be adjusted for multiple testing.

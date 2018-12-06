@@ -1,162 +1,169 @@
-Population inference (confirmative)
------------------------------------
+.. _confirmative:
+
+Population inference: Confirmation study
+----------------------------------------
 
 
 
 
-Subject reference
-.................
+The analysis in :ref:`subject-inference` suggested that a word
+generating task results in a relevant and statistical significant
+increase in BOLD effect in the occipital lobe:
+
+
+.. image:: figures/population-inference-confirmative_figure2_1.png
+   :width: 15 cm
+
+
+
+In this section, we aim to confirm this finding in a population of
+right-handed, healthy subjects. For right-handed, healthy subjects (with
+a `Waterloo Handedness Score`_ above +20) from the population have been
+drawn, their FMRI have been analysed, and the results collected in the
+file ``tutorial.sample``:
+
+.. code::
+
+    fmrisample -v tutorial.sample \
+        --covariates-query 'waterloo > 20'
+
+.. _`Waterloo Handedness Score`: https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf
+
+Load data and fit the population model
+......................................
 
 
 .. code:: python
 
-    
     from fmristats import *
     from fmristats.plot import *
-    
-    result = load(path_to_fit)
-    tsubject = result.get_field('task', 'tstatistic')
-
-
-
-
-Plot:
-
-
-.. code:: python
-
-    picture(tsubject)
-
-
-.. image:: figures/population-inference-confirmative_figure3_1.png
-   :width: 15 cm
-
-
-
-Select the highest t-statistics peak:
-
-
-.. code:: python
-
-    
-    peak = np.nanargmax(tsubject.data)
-    index = np.unravel_index(peak, tsubject.data.shape)
-    
-    print(index)
-
-
-.. code::
-
-    (39, 23, 40)
-    
-
-
-
-Plot the respective slice:
-
-
-.. code:: python
-
-    
-    picture(tsubject,3,1,1,[index[-1]],
-        interpolation='bilinear', mark_peak=True)
-    
-    print(tsubject.data[index])
-
-
-.. code::
-
-    7.9078320395958235
-    
-
-.. image:: figures/population-inference-confirmative_figure5_1.png
-   :width: 15 cm
-
-
-
-Find the coordinates of the peak in standard space:
-
-
-.. code:: python
-
-    
-    coordinate = tsubject.apply_to_index(index)
-    print(coordinate)
-
-
-.. code::
-
-    [ 12. -80.   8.]
-    
-
-
-
-Use the ``atlasquery`` tool from the FSL project to see to which
-structure these coordinates belong:
-
-.. code:: shell
-
-    atlasquery -a "MNI Structural Atlas" -c 12,-80,8
-    MNI Structural Atlas % Occipital Lobe
-
-Load data, fit model, and extract statistics
-............................................
-
-Load data:
-
-
-.. code:: python
-
     
     population_sample = load(path_to_sample)
     
     print("""
-    Number of subjects in the sample:   {:d}
-    Subjects that are not right handed: {:d}""".format(
-        len(population_sample.covariates),
-        (population_sample.covariates.waterloo < 20).sum()))
+        Number of subjects in total:     {:d}
+        Number of right-handed subjects: {:d}
+        Number of  left-handed subjects: {:d}""".format(
+            len(population_sample.covariates),
+            (population_sample.covariates.waterloo >= 20).sum(),
+            (population_sample.covariates.waterloo <= 20).sum()))
 
 
 .. code::
 
     
-    Number of subjects in the sample:   64
-    Subjects that are not right handed: 0
+        Number of subjects in total:     64
+        Number of right-handed subjects: 64
+        Number of  left-handed subjects: 0
     
 
 
 
 We are aiming to confirm a finding that has been suggested by an
-analysis of a single subject. Remove this *initial subject* from the
-sample.
+analysis of a single subject. Hence, remove this *initial subject* from
+the sample.
 
 
 .. code:: python
 
     
-    subsample = population_sample.filter(
-                    population_sample.covariates.id != 2)
+    sample = population_sample.filter(population_sample.covariates.id != 2)
 
 
 
 
-Have a look at the sample size per template voxel. It appears that there
-are some voxels close to the surface areas of the template where one or
-more population diffeomorphisms :math:`ψ_j` did not fully map the
-template brain onto the subject brain. But this is probably to be
-expected.
+First, we shall have a look at the sample size per voxel in the
+MNI152-template (the number of subjects which have valid entries at this
+voxel):
 
 
 .. code:: python
 
     
     sample_size = Image(
-        population_sample.vb.reference,
-        np.isfinite(subsample.statistics).all(axis=-2).sum(axis=-1))
+        sample.vb.reference,
+        np.isfinite(sample.statistics).all(axis=-2).sum(axis=-1))
     
-    sample_size.mask()
+    picture(sample_size.mask(inplace=False),cmap=cm.viridis)
+
+
+.. image:: figures/population-inference-confirmative_figure5_1.png
+   :width: 15 cm
+
+
+
+It appears that for some voxels close to the surface of the
+MNI152-template the population diffeomorphisms :math:`ψ_j` did not fully
+map the template brain onto the respective subject brain. This is to be
+expected.
+
+
+.. code:: python
+
     
-    picture(sample_size,cmap=cm.viridis)
+    print('Sample size at the index of interest: {:.0f}'.format(
+        sample_size.data[index]))
+
+
+.. code::
+
+    Sample size at the index of interest: 63
+    
+
+
+
+Let us now fit the population model (which is a random effects meta
+regression model in fmristats) to the sample of BOLD effects and their
+respective estimated standard errors:
+
+
+.. code:: python
+
+    
+    popmod = PopulationModel(sample)
+    result = popmod.fit()
+
+
+.. code::
+
+      … not all points in the mask are identifiable.
+      … points with missing data along subject dimension.
+      … number of points to estimate: 902629
+      … perform a meta analysis
+    
+
+
+
+Extract the Knapp-Hartung adjusted t-statistics field
+.....................................................
+
+Extract the Knapp-Hartung adjusted t-statistics field that tests for
+non-zero, task related BOLD effects:
+
+
+.. code:: python
+
+    tstatistics = result.get_tstatistic()
+    
+    picture(tstatistics)
+
+
+.. image:: figures/population-inference-confirmative_figure8_1.png
+   :width: 15 cm
+
+
+
+Now, plot the respective slice through the t-statistics field that has
+shown the above BOLD effect in the initial subject:
+
+
+.. code:: python
+
+    
+    pt.plot([index[0]], [index[1]], 'ko')
+    pt.plot([index[0]], [index[1]], 'w+')
+    picture(tstatistics,3,1,1,[index[-1]],
+        interpolation='bilinear')
 
 
 .. image:: figures/population-inference-confirmative_figure9_1.png
@@ -164,63 +171,11 @@ expected.
 
 
 
-Fit the population model to the sample of neural activities.
+The t-statistic at these coordinates is:
 
 
 .. code:: python
 
-    
-    pop = PopulationModel(subsample)
-    meta = pop.fit()
-
-
-.. code::
-
-      … all voxels in the mask are identifiable.
-      … some voxel have missing data along the subject dimension.
-      … mask has shape: (91, 109, 91)
-      … number of pixels to be fitted: 163431
-      … a meta analysis will be performed
-    
-
-
-
-Extract the Knapp-Hartung adjusted t-statistics field that tests for
-task related neural activity in the population:
-
-
-.. code:: python
-
-    tstatistics = meta.get_tstatistic()
-
-
-
-
-Plot:
-
-
-.. code:: python
-
-    picture(tstatistics)
-
-
-.. image:: figures/population-inference-confirmative_figure12_1.png
-   :width: 15 cm
-
-
-
-Plot the respective slice in population space:
-
-
-.. code:: python
-
-    
-    picture(tstatistics,3,1,1,[index[-1]],
-        interpolation='bilinear')
-    
-    pt.plot([index[0]], [index[1]], 'ko')
-    pt.plot([index[0]], [index[1]], 'w+')
-    
     print(tstatistics.data[index])
 
 
@@ -229,18 +184,16 @@ Plot the respective slice in population space:
     2.705125720068511
     
 
-.. image:: figures/population-inference-confirmative_figure13_1.png
-   :width: 15 cm
 
 
 
 
 
+Create a forest plot of BOLD statistics
+.......................................
 
-Extract data at index
-.....................
-
-Extract the meta data from the sample and the fit:
+Extract the estimated BOLD effects and the respective standard errors of
+the estimated BOLD effects from the sample:
 
 
 .. code:: python
@@ -250,14 +203,11 @@ Extract the meta data from the sample and the fit:
     df.valid.all()
     df.sort_values(by='waterloo', inplace=True)
     
-    dm = meta.at_index(index)
+    dm = result.at_index(index)
     dm.set_index('parameter', inplace=True)
 
 
 
-
-Forest and funnel plot
-......................
 
 Define the critical values for the plots:
 
@@ -269,7 +219,7 @@ Define the critical values for the plots:
     from scipy.stats.distributions import norm
     
     crt_subject = norm.ppf(q=.95)
-    crt_population = t.ppf(q=.95, df = dm.loc['intercept', 'df'])
+    crt_population = t.ppf(q=.95, df = dm.loc['Intercept', 'df'])
     
     print(crt_subject, crt_population)
 
@@ -281,29 +231,38 @@ Define the critical values for the plots:
 
 
 
-Forest plot
-:::::::::::
-
-Forest Plot in ascending order of handiness (left handed on the bottom,
-right handed on the top):
+Set some general options for the visualisation:
 
 
 .. code:: python
 
     
-    df['yvec'] = range(len(df.task))
-    df['reci'] = 1/ df.stderr**2
-    
-    x = dm.loc['intercept', 'point']
-    s = dm.loc['intercept', 'stderr']
+    import matplotlib
+    matplotlib.rc('xtick', labelsize=8)
+    matplotlib.rc('ytick', labelsize=8)
     
     import seaborn as sb
     sb.set_style('whitegrid')
-    
     palette = sb.palettes.SEABORN_PALETTES['deep']
     
     figw = 5.842
     figh = 8.442
+
+
+
+
+Create a forest plot in ascending order of handiness (left handed on the
+bottom, right handed on the top):
+
+
+.. code:: python
+
+    
+    x = dm.loc['Intercept', 'point']
+    s = dm.loc['Intercept', 'stderr']
+    
+    df['yvec'] = range(len(df.task))
+    df['waterloo'] = df.waterloo.astype(int)
     
     fig = pt.figure(figsize=(figw,figh))
     ax = pt.subplot(111)
@@ -317,15 +276,15 @@ right handed on the top):
     ax.errorbar(x, -1, xerr=crt_population*s, fmt='o',
         label='Population', c=palette[2])
     ax.axhline(-.5,c='k',lw=.9, ls='-')
-    ax.set_xlabel(r'Task inferred signal change at $x_1 (ati)$')
+    ax.set_xlabel(r'Task related BOLD effect at $x_0$ in ATI')
     ax.set_ylabel('Waterloo')
     ax.yaxis.set_ticks_position('none')
     pt.box(False)
     pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
-    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=3)
+    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.2), ncol=3)
 
 
-.. image:: figures/population-inference-confirmative_figure17_1.png
+.. image:: figures/population-inference-confirmative_figure15_1.png
    :width: 15 cm
 
 
@@ -333,82 +292,61 @@ right handed on the top):
 
 
 
-There was one subject in the sample, who showed an even larger task
-related neural activity at the coordinates.
+Quite interestingly, there was even one subject in the sample that
+showed an even larger task related BOLD effect than the initial subject
+at theses coordinates.
 
-Funnel plot
-:::::::::::
+Create a funnel plot of BOLD statistics
+.......................................
 
-
-.. code:: python
-
-    
-    fig = pt.figure(figsize=(figw,figh))
-    ax = pt.subplot(111)
-    ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task[df.id!=2], df.reci[df.id!=2],
-        xerr=crt_subject*df.stderr[df.id!=2], fmt='o',
-        label='Sample', c=palette[0])
-    ax.errorbar(df.task[df.id==2], df.reci[df.id==2],
-        xerr=crt_subject*df.stderr[df.id==2], fmt='o',
-        label='Initial Subject', c=palette[1])
-    ax.set_xlabel(r'Task inferred signal change at $x_0$ (ati)')
-    ax.set_ylabel('Reciprocal of the Squared Standard Error')
-    sb.despine()
+Create a funnel plot with the estimated BOLD effect on the x-axis and
+the reciprocal of the squared standard error on the y-axis:
 
 
-.. image:: figures/population-inference-confirmative_figure19_1.png
+
+
+
+.. image:: figures/population-inference-confirmative_figure18_1.png
    :width: 15 cm
 
 
 
+Formal testing
+..............
 
+Any prior knowledge had been removed prior to testing the hypothesis of
+whether there exists a task related BOLD effect at :math:`x` in the
+sample. Hence, there is no need to adjust for multiple testing in the
+inference for the population, we there was, well, no multiple testing.
 
-
-Formal
-......
-
-Effect
-::::::
-
-
-.. code:: python
-
-    x = dm.loc['intercept', 'point']
-    s = dm.loc['intercept', 'stderr']
-    
-    # Effect
-    print(x)
-    
-    # 95% confidence interval
-    print('lower: {:.2f}, upper {:.2f}'.format(
-        x-crt_population*s, x+crt_population*s))
-
-
-.. code::
-
-    5.97386597039026
-    lower: 2.29, upper 9.66
-    
-
-
-
-p-Value
-:::::::
+Point estimate, confidence interval, and p-value of BOLD effect of the
+word generating task at the point :math:`x` in the population:
 
 
 .. code:: python
 
-    print(dm.loc['intercept', 'pvalue'])
+    x = dm.loc['Intercept', 'point']
+    s = dm.loc['Intercept', 'stderr']
+    
+    print("""
+    Point estimate of the BOLD effect: {:.2f}
+    Lower bound of a 95% confidence interval: {:.2f}
+    Upper bound of a 95% confidence interval: {:.2f}
+    p-value for ≠0:                           {:.4f}""".format(
+        x, x-crt_population*s, x+crt_population*s,
+        dm.loc['Intercept', 'pvalue']))
 
 
 .. code::
 
-    0.004402267614864508
+    
+    Point estimate of the BOLD effect: 5.97
+    Lower bound of a 95% confidence interval: 2.29
+    Upper bound of a 95% confidence interval: 9.66
+    p-value for ≠0:                           0.0044
     
 
 
 
-**Note:** This is the actual p-value for neural activity at these
-coordinates in standard space: any prior knowledge had been removed
-prior to the fitting. There was no multiple testing.
+We may reject the null hypothesis that there exists no BOLD effect at
+:math:`x` at :math:`1\%` level of significance.

@@ -1,0 +1,441 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Subject analysis: Prune a statistics field from non-brain areas &mdash; fmristats 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Subject analysis: Inference at a single coordinate" href="subject-inference-at-one-point.html" />
+    <link rel="prev" title="Analysing multiple subjects" href="study-interface.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Subject analysis: Prune a statistics field from non-brain areas</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#fitting-a-brain-mask-fmriprune">Fitting a brain mask: fmriprune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fitting-a-brain-mask-fsl4prune">Fitting a brain mask: fsl4prune</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fitting-a-brain-mask-python">Fitting a brain mask: Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#by-threshold">By threshold</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#by-bet">By BET</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Subject analysis: Prune a statistics field from non-brain areas</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/subject-remove-non-brain-areas.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="subject-analysis-prune-a-statistics-field-from-non-brain-areas">
+<h1>Subject analysis: Prune a statistics field from non-brain areas<a class="headerlink" href="#subject-analysis-prune-a-statistics-field-from-non-brain-areas" title="Permalink to this headline">¶</a></h1>
+<p>A signal model has been fitted to FMRI session data:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>The WLS optimisation in the fitting procedure uses a weighting scheme
+with non-null spatial extent. Thus, evaluating (i.e. fitting) an FMRI
+model close but outside of the actual brain of a subject will
+nevertheless result in »valid« parameter estimates. These »outside fits«
+can be detected post-hoc as they are naturally accompanied by a drastic
+drop in sample size.</p>
+<p>By default, <code class="docutils literal notranslate"><span class="pre">fmrifit</span></code> will estimate a default <em>data mask</em> in standard
+space from the foreground/background difference saved in
+<code class="docutils literal notranslate"><span class="pre">subject.session</span></code>. If this mask still contains non-brain areas (and it
+is likely that it does), you may want to further prune the fitted
+parameter fields from these areas.</p>
+<div class="section" id="fitting-a-brain-mask-fmriprune">
+<h2>Fitting a brain mask: fmriprune<a class="headerlink" href="#fitting-a-brain-mask-fmriprune" title="Permalink to this headline">¶</a></h2>
+<p>The command line programs <code class="docutils literal notranslate"><span class="pre">fmriprune</span></code> or <code class="docutils literal notranslate"><span class="pre">fsl4prune</span></code> can be used to
+generate brain masks and help in detecting these non-brain areas in the
+fit. Both commands will force a minimum number of observations to be
+available around each grid point either by setting a user defined hard
+lower bound for the minimum:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">threshold</span> <span class="mi">1800</span>
+</pre></div>
+</div>
+<p>Or by setting the lower bound to a given fraction of the maximum
+available measurements around a point:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">fraction</span> <span class="o">.</span><span class="mi">7</span>
+</pre></div>
+</div>
+<p>The options <code class="docutils literal notranslate"><span class="pre">--threshold</span></code> and <code class="docutils literal notranslate"><span class="pre">--fraction</span></code> are exclusive and the
+default is <code class="docutils literal notranslate"><span class="pre">--fraction</span> <span class="pre">.6842</span></code>. The generated brain mask is directly
+saved into the file <code class="docutils literal notranslate"><span class="pre">subject.fit</span></code>.</p>
+</div>
+<div class="section" id="fitting-a-brain-mask-fsl4prune">
+<h2>Fitting a brain mask: fsl4prune<a class="headerlink" href="#fitting-a-brain-mask-fsl4prune" title="Permalink to this headline">¶</a></h2>
+<p>The difference between <code class="docutils literal notranslate"><span class="pre">fmriprune</span></code> and <code class="docutils literal notranslate"><span class="pre">fsl4prune</span></code> is that the
+latter also contains a wrapper to the FSL command line tool <a class="reference external" href="https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/BET">BET</a>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl4prune</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+<p>The wrapper is equivalent to the following:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriprune</span> <span class="o">--</span><span class="n">fit</span> <span class="n">subject</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
+<span class="n">intercept</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">fmristats.nifti</span> <span class="k">import</span> <span class="n">image2nii</span>
+<span class="kn">import</span> <span class="nn">nibabel</span> <span class="k">as</span> <span class="nn">ni</span>
+<span class="n">ni</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">image2nii</span><span class="p">(</span><span class="n">intercept</span><span class="p">),</span> <span class="s1">&#39;intercept.nii.gz&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bet</span> <span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="o">-</span><span class="n">R</span>
+
+<span class="n">nii2image</span> <span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> <span class="n">mask</span><span class="o">.</span><span class="n">image</span>
+</pre></div>
+</div>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="s1">&#39;mask.image&#39;</span><span class="p">)</span>
+
+<span class="n">result</span><span class="o">.</span><span class="n">population_map</span><span class="o">.</span><span class="n">set_vb_mask</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fitting-a-brain-mask-python">
+<h2>Fitting a brain mask: Python<a class="headerlink" href="#fitting-a-brain-mask-python" title="Permalink to this headline">¶</a></h2>
+<p>The Python interface gives you further control for defining brain masks.
+Load a statistics field to Python:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_fit</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The statistics fields:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span>
+
+<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The intercept:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure5_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure5_1.png" src="../_images/subject-remove-non-brain-areas_figure5_1.png" style="width: 15cm;" /></a>
+<p>The BOLD effect field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure6_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure6_1.png" src="../_images/subject-remove-non-brain-areas_figure6_1.png" style="width: 15cm;" /></a>
+<p>The t-statistics field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure7_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure7_1.png" src="../_images/subject-remove-non-brain-areas_figure7_1.png" style="width: 15cm;" /></a>
+<p>Most notably, you should realise that the task related BOLD effect field
+looks very faint: In contrast to some very large and strong effects on
+the periphery of the brain (strong in absolute effect size, not in
+significance), the BOLD effects within the brain are very weak. This is
+a sign that these effects are likely the result of small errors in the
+estimated head movements of the subject and not the result of BOLD
+changes in the MR signal. You want to prune the statistics field from
+these areas.</p>
+<div class="section" id="by-threshold">
+<h3>By threshold<a class="headerlink" href="#by-threshold" title="Permalink to this headline">¶</a></h3>
+<p>Set a threshold for the minimum number of observations that should be
+available for fitting; set this number to a proportion of the maximum
+available sample size.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gf</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;df&#39;</span><span class="p">)</span>
+<span class="n">proportion_df</span> <span class="o">=</span> <span class="o">.</span><span class="mi">6</span>
+<span class="n">threshold_df</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">proportion_df</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">gf</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lower threshold for the degrees of freedom: </span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">threshold_df</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Lower</span> <span class="n">threshold</span> <span class="k">for</span> <span class="n">the</span> <span class="n">degrees</span> <span class="n">of</span> <span class="n">freedom</span><span class="p">:</span> <span class="mi">2263</span>
+</pre></div>
+</div>
+<p>Apply the threshold:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">gf</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;=</span> <span class="n">threshold_df</span><span class="p">)</span>
+
+<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The intercept:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure10_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure10_1.png" src="../_images/subject-remove-non-brain-areas_figure10_1.png" style="width: 15cm;" /></a>
+<p>The BOLD effect field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure11_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure11_1.png" src="../_images/subject-remove-non-brain-areas_figure11_1.png" style="width: 15cm;" /></a>
+<p>The t-statistics field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure12_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure12_1.png" src="../_images/subject-remove-non-brain-areas_figure12_1.png" style="width: 15cm;" /></a>
+<p>And indeed, the task related BOLD effect field looks less faint.</p>
+</div>
+<div class="section" id="by-bet">
+<h3>By BET<a class="headerlink" href="#by-bet" title="Permalink to this headline">¶</a></h3>
+<p>You map also apply BET on the intercept.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats.fsl</span> <span class="k">import</span> <span class="n">bet</span>
+
+<span class="n">template</span> <span class="o">=</span> <span class="n">bet</span><span class="p">(</span>
+        <span class="n">intercept</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span>
+        <span class="n">intercept_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept.nii.gz&#39;</span><span class="p">,</span>
+        <span class="n">mask_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept-mask.nii.gz&#39;</span><span class="p">,</span>
+        <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;fsl5.0-bet&#39;</span><span class="p">,</span>
+        <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl5</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">bet</span>
+  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">-</span><span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
+  <span class="o">-</span><span class="n">R</span>
+</pre></div>
+</div>
+<p>Apply the mask:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get_mask</span><span class="p">())</span>
+
+<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The intercept:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure15_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure15_1.png" src="../_images/subject-remove-non-brain-areas_figure15_1.png" style="width: 15cm;" /></a>
+<p>The BOLD effect field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure16_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure16_1.png" src="../_images/subject-remove-non-brain-areas_figure16_1.png" style="width: 15cm;" /></a>
+<p>The t-statistics field:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/subject-remove-non-brain-areas_figure17_1.png"><img alt="../_images/subject-remove-non-brain-areas_figure17_1.png" src="../_images/subject-remove-non-brain-areas_figure17_1.png" style="width: 15cm;" /></a>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="subject-inference-at-one-point.html" class="btn btn-neutral float-right" title="Subject analysis: Inference at a single coordinate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="study-interface.html" class="btn btn-neutral" title="Analysing multiple subjects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,78 +1,94 @@
-Population inference (explorative)
-----------------------------------
+.. _explorative:
+
+Population inference: Exploratory study
+---------------------------------------
 
 
 
 
-Load data, fit model, and extract statistics
-............................................
+In :ref:`confirmative`, we performed a confirmative study to, well,
+confirm a previous finding. In this section, we shall perform an
+explorative study and aim to evaluate where we might expect significant
+BOLD increases in an FMRI when subjects from a right-handed, healthy
+population perform a word generating task.
 
-Load data:
+For this a sample of subjects from the population (with a `Waterloo
+Handedness Score`_ above +20) was drawn at random, their FMRI analysed,
+and the results collected in the file ``tutorial.sample``:
+
+.. code::
+
+    fmrisample -v tutorial.sample \
+        --covariates-query 'waterloo > 20'
+
+.. _`Waterloo Handedness Score`: https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf
+
+Load data and fit the population model
+......................................
 
 
 .. code:: python
 
-    
     from fmristats import *
     from fmristats.plot import *
     
     population_sample = load(path_to_sample)
     
     print("""
-    Number of subjects in the sample:   {:d}
-    Subjects that are not right handed: {:d}""".format(
-        len(population_sample.covariates),
-        (population_sample.covariates.waterloo < 20).sum()))
+        Number of subjects in total:     {:d}
+        Number of right-handed subjects: {:d}
+        Number of  left-handed subjects: {:d}""".format(
+            len(population_sample.covariates),
+            (population_sample.covariates.waterloo >= 20).sum(),
+            (population_sample.covariates.waterloo <= 20).sum()))
 
 
 .. code::
 
     
-    Number of subjects in the sample:   64
-    Subjects that are not right handed: 0
+        Number of subjects in total:     64
+        Number of right-handed subjects: 64
+        Number of  left-handed subjects: 0
     
 
 
 
-Fit the population model to the sample of neural activities.
+Let us now fit the population model (which is a random effects meta
+regression model in fmristats) to the sample of BOLD effects and their
+respective estimated standard errors:
 
 
 .. code:: python
 
     
-    pop = PopulationModel(population_sample)
-    meta = pop.fit()
-    
-    meta.save('interim-results/explorative.mfit')
+    popmod = PopulationModel(population_sample)
+    result = popmod.fit()
 
 
 .. code::
 
-      … all voxels in the mask are identifiable.
-      … some voxel have missing data along the subject dimension.
-      … mask has shape: (91, 109, 91)
-      … number of pixels to be fitted: 163431
-      … a meta analysis will be performed
+      … not all points in the mask are identifiable.
+      … points with missing data along subject dimension.
+      … number of points to estimate: 902629
+      … perform a meta analysis
     
 
 
+
+
+
+
+Extract the Knapp-Hartung adjusted t-statistics field
+.....................................................
 
 Extract the Knapp-Hartung adjusted t-statistics field that tests for
-task related neural activity in the population:
+non-zero, task related BOLD effects:
 
 
 .. code:: python
 
-    tstatistics = meta.get_tstatistic()
-
-
-
-
-Plot:
-
-
-.. code:: python
-
+    from fmristats.plot import picture
+    tstatistics = result.get_tstatistic()
     picture(tstatistics)
 
 
@@ -81,26 +97,35 @@ Plot:
 
 
 
-Find the highest peak in the t-statistics field:
+Select the highest peak in the t-field
+......................................
+
+Select the highest peak in the t-statistics field:
 
 
 .. code:: python
 
+    index = np.unravel_index(np.nanargmax(tstatistics.data), tstatistics.data.shape)
+    coordinate = tstatistics.apply_to_index(index)
     
-    peak = np.nanargmax(tstatistics.data)
-    index = np.unravel_index(peak, tstatistics.data.shape)
-    
-    print(index)
+    print("""
+        index in the image :          {}
+        coordinate in standard space: {}
+        hight of the peak:            {:.2f}""".format(
+            index, coordinate, tstatistics.data[index]))
 
 
 .. code::
 
-    (51, 70, 34)
+    
+        index in the image :          (51, 70, 34)
+        coordinate in standard space: [-12.  14.  -4.]
+        hight of the peak:            11.61
     
 
 
 
-Plot the respective slice:
+Plot the respective horizontal slice that goes through the above peak:
 
 
 .. code:: python
@@ -108,38 +133,10 @@ Plot the respective slice:
     
     picture(tstatistics,3,1,1,[index[-1]],
         interpolation='bilinear', mark_peak=True)
-    
-    print(tstatistics.data[index])
 
-
-.. code::
-
-    11.61039937479234
-    
 
 .. image:: figures/population-inference-explorative_figure7_1.png
    :width: 15 cm
-
-
-
-
-
-
-Find the coordinates of the peak in standard space:
-
-
-.. code:: python
-
-    
-    coordinate = tstatistics.apply_to_index(index)
-    print(coordinate)
-
-
-.. code::
-
-    
-    [-12.  14.  -4.]
-    
 
 
 
@@ -152,10 +149,14 @@ structure these coordinates belong:
     MNI Structural Atlas
     78% Caudate
 
-Extract data at index
-.....................
 
-Extract the meta data from the sample and the fit:
+
+
+Create a forest plot of BOLD statistics
+.......................................
+
+Extract the estimated BOLD effects and the respective standard errors of
+the estimated BOLD effects from the sample:
 
 
 .. code:: python
@@ -165,14 +166,11 @@ Extract the meta data from the sample and the fit:
     df.valid.all()
     df.sort_values(by='waterloo', inplace=True)
     
-    dm = meta.at_index(index)
+    dm = result.at_index(index)
     dm.set_index('parameter', inplace=True)
 
 
 
-
-Forest and funnel plot
-......................
 
 Define the critical values for the plots:
 
@@ -184,56 +182,69 @@ Define the critical values for the plots:
     from scipy.stats.distributions import norm
     
     crt_subject = norm.ppf(q=.95)
-    crt_population = t.ppf(q=.95, df = dm.loc['intercept', 'df'])
+    crt_population = t.ppf(q=.95, df = dm.loc['Intercept', 'df'])
     
-    print('{:4f}, {:4f}'.format(crt_subject, crt_population))
+    print(crt_subject, crt_population)
 
 
 .. code::
 
-    1.644854, 1.669402
+    1.6448536269514722 1.6694022215079607
     
 
 
 
-Forest plot
-:::::::::::
-
-Forest Plot in ascending order of handiness (left handed on the bottom,
-right handed on the top):
+Set some general options for the visualisation:
 
 
 .. code:: python
 
     
-    df['yvec'] = range(len(df.task))
-    df['reci'] = 1/ df.stderr**2
-    
-    x = dm.loc['intercept', 'point']
-    s = dm.loc['intercept', 'stderr']
+    import matplotlib
+    matplotlib.rc('xtick', labelsize=8)
+    matplotlib.rc('ytick', labelsize=8)
     
     import seaborn as sb
     sb.set_style('whitegrid')
-    
     palette = sb.palettes.SEABORN_PALETTES['deep']
     
     figw = 5.842
     figh = 8.442
+
+
+
+
+Create a forest plot in ascending order of handiness (left handed on the
+bottom, right handed on the top):
+
+
+.. code:: python
+
+    
+    x = dm.loc['Intercept', 'point']
+    s = dm.loc['Intercept', 'stderr']
+    
+    df['yvec'] = range(len(df.task))
+    df['waterloo'] = df.waterloo.astype(int)
     
     fig = pt.figure(figsize=(figw,figh))
     ax = pt.subplot(111)
     ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task, df.yvec, xerr=crt_subject*df.stderr, fmt='o',
+    ax.errorbar(df.task[df.id!=2], df.yvec[df.id!=2],
+        xerr=crt_subject*df.stderr[df.id!=2], fmt='o',
         label='Sample', c=palette[0])
+    ax.errorbar(df.task[df.id==2], df.yvec[df.id==2],
+        xerr=crt_subject*df.stderr[df.id==2], fmt='o',
+        label='Initial Subject', c=palette[1])
     ax.errorbar(x, -1, xerr=crt_population*s, fmt='o',
         label='Population', c=palette[2])
     ax.axhline(-.5,c='k',lw=.9, ls='-')
-    ax.set_xlabel(r'Task inferred signal change at $x_1 (ati)$')
+    ax.set_xlabel(r'Task related BOLD effect at $x_0$ in ATI')
     ax.set_ylabel('Waterloo')
     ax.yaxis.set_ticks_position('none')
     pt.box(False)
     pt.yticks(np.hstack((df.yvec, -1)), list(df.waterloo) + ["Meta"] )
-    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.1), ncol=2)
+    pt.legend(loc='lower center', bbox_to_anchor=(.5, -0.2), ncol=3)
 
 
 .. image:: figures/population-inference-explorative_figure12_1.png
@@ -244,72 +255,54 @@ right handed on the top):
 
 
 
-Funnel Plot
-:::::::::::
+Create a funnel plot of BOLD statistics
+.......................................
+
+Create a funnel plot with the estimated BOLD effect on the x-axis and
+the reciprocal of the squared standard error on the y-axis:
 
 
-.. code:: python
-
-    
-    fig = pt.figure(figsize=(figw,figh))
-    ax = pt.subplot(111)
-    ax.axvline(0,c='k',lw=.9, ls=':')
-    ax.errorbar(df.task, df.reci,
-        xerr=crt_subject*df.stderr, fmt='o',
-        label='Sample', c=palette[0])
-    ax.set_xlabel(r'Task inferred signal change at $x_1$ (ati)')
-    ax.set_ylabel('Reciprocal of the Squared Standard Error')
-    sb.despine()
 
 
-.. image:: figures/population-inference-explorative_figure14_1.png
+
+.. image:: figures/population-inference-explorative_figure15_1.png
    :width: 15 cm
 
 
 
+Formal testing
+..............
 
-
-
-Formal
-......
-
-Effect
-::::::
-
-
-.. code:: python
-
-    x = dm.loc['intercept', 'point']
-    s = dm.loc['intercept', 'stderr']
-    
-    # Effect
-    print(x)
-    
-    # 95% confidence interval
-    print('lower: {:.2f}, upper {:.2f}'.format(
-        x-crt_population*s, x+crt_population*s))
-
-
-.. code::
-
-    19.99205972926322
-    lower: 17.12, upper 22.87
-    
-
-
-
-p-Value
-:::::::
+Point estimate, (unadjusted) confidence interval, and (unadjusted)
+p-value of BOLD effect of the word generating task at the point
+:math:`x` in the population (yes, now we have a multiple testing
+problem):
 
 
 .. code:: python
 
-    print(dm.loc['intercept', 'pvalue'])
+    x = dm.loc['Intercept', 'point']
+    s = dm.loc['Intercept', 'stderr']
+    
+    print("""
+    Point estimate of the BOLD effect: {:.2f}
+    Lower bound of a 95% confidence interval: {:.2f}
+    Upper bound of a 95% confidence interval: {:.2f}
+    p-value for ≠0:                           {:.4g}""".format(
+        x, x-crt_population*s, x+crt_population*s,
+        dm.loc['Intercept', 'pvalue']))
 
 
 .. code::
 
-    1.3418933977536675e-17
+    
+    Point estimate of the BOLD effect: 19.99
+    Lower bound of a 95% confidence interval: 17.12
+    Upper bound of a 95% confidence interval: 22.87
+    p-value for ≠0:                           1.342e-17
     
 
 
+
+Different strategies for how to deal with this kind of multiple testing
+problem are discussed in the chapter: :ref:`thresholding`.

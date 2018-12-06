@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Population inference (confirmative) &mdash; fmristats 0.0.6 documentation</title>
+  <title>Population inference: Confirmation study &mdash; fmristats 0.1.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Population inference (adjust for covariates)" href="population-inference-covariates.html" />
-    <link rel="prev" title="Population inference (explorative)" href="population-inference-explorative.html" /> 
+    <link rel="next" title="Population inference: Exploratory study" href="population-inference-explorative.html" />
+    <link rel="prev" title="Population inference: Create a sample for further analysis" href="population-inference-preliminaries.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0
+                0.1
               </div>
             
           
@@ -83,41 +83,24 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference (confirmative)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#subject-reference">Subject reference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#load-data-fit-model-and-extract-statistics">Load data, fit model, and extract statistics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#extract-data-at-index">Extract data at index</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#forest-and-funnel-plot">Forest and funnel plot</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#forest-plot">Forest plot</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#funnel-plot">Funnel plot</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference: Confirmation study</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#load-data-and-fit-the-population-model">Load data and fit the population model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#extract-the-knapp-hartung-adjusted-t-statistics-field">Extract the Knapp-Hartung adjusted t-statistics field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-forest-plot-of-bold-statistics">Create a forest plot of BOLD statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-funnel-plot-of-bold-statistics">Create a funnel plot of BOLD statistics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#formal-testing">Formal testing</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#formal">Formal</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#effect">Effect</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#p-value">p-Value</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -166,7 +149,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Population inference (confirmative)</li>
+      <li>Population inference: Confirmation study</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -185,153 +168,129 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="population-inference-confirmative">
-<h1>Population inference (confirmative)<a class="headerlink" href="#population-inference-confirmative" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subject-reference">
-<h2>Subject reference<a class="headerlink" href="#subject-reference" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="population-inference-confirmation-study">
+<span id="confirmative"></span><h1>Population inference: Confirmation study<a class="headerlink" href="#population-inference-confirmation-study" title="Permalink to this headline">¶</a></h1>
+<p>The analysis in <a class="reference internal" href="subject-inference-at-one-point.html#subject-inference"><span class="std std-ref">Subject analysis: Inference at a single coordinate</span></a> suggested that a word
+generating task results in a relevant and statistical significant
+increase in BOLD effect in the occipital lobe:</p>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure2_1.png"><img alt="../_images/population-inference-confirmative_figure2_1.png" src="../_images/population-inference-confirmative_figure2_1.png" style="width: 15cm;" /></a>
+<p>In this section, we aim to confirm this finding in a population of
+right-handed, healthy subjects. For right-handed, healthy subjects (with
+a <a class="reference external" href="https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf">Waterloo Handedness Score</a> above +20) from the population have been
+drawn, their FMRI have been analysed, and the results collected in the
+file <code class="docutils literal notranslate"><span class="pre">tutorial.sample</span></code>:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrisample</span> <span class="o">-</span><span class="n">v</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">sample</span> \
+    <span class="o">--</span><span class="n">covariates</span><span class="o">-</span><span class="n">query</span> <span class="s1">&#39;waterloo &gt; 20&#39;</span>
+</pre></div>
+</div>
+<div class="section" id="load-data-and-fit-the-population-model">
+<h2>Load data and fit the population model<a class="headerlink" href="#load-data-and-fit-the-population-model" title="Permalink to this headline">¶</a></h2>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_fit</span><span class="p">)</span>
-<span class="n">tsubject</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Plot:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure3_1.png"><img alt="../_images/population-inference-confirmative_figure3_1.png" src="../_images/population-inference-confirmative_figure3_1.png" style="width: 15cm;" /></a>
-<p>Select the highest t-statistics peak:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmax</span><span class="p">(</span><span class="n">tsubject</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">peak</span><span class="p">,</span> <span class="n">tsubject</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Plot the respective slice:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tsubject</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
-    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">mark_peak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">tsubject</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">7.9078320395958235</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure5_1.png"><img alt="../_images/population-inference-confirmative_figure5_1.png" src="../_images/population-inference-confirmative_figure5_1.png" style="width: 15cm;" /></a>
-<p>Find the coordinates of the peak in standard space:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">coordinate</span> <span class="o">=</span> <span class="n">tsubject</span><span class="o">.</span><span class="n">apply_to_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">coordinate</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">12.</span> <span class="o">-</span><span class="mf">80.</span>   <span class="mf">8.</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Use the <code class="docutils literal notranslate"><span class="pre">atlasquery</span></code> tool from the FSL project to see to which
-structure these coordinates belong:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">atlasquery</span> <span class="o">-</span><span class="n">a</span> <span class="s2">&quot;MNI Structural Atlas&quot;</span> <span class="o">-</span><span class="n">c</span> <span class="mi">12</span><span class="p">,</span><span class="o">-</span><span class="mi">80</span><span class="p">,</span><span class="mi">8</span>
-<span class="n">MNI</span> <span class="n">Structural</span> <span class="n">Atlas</span> <span class="o">%</span> <span class="n">Occipital</span> <span class="n">Lobe</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="load-data-fit-model-and-extract-statistics">
-<h2>Load data, fit model, and extract statistics<a class="headerlink" href="#load-data-fit-model-and-extract-statistics" title="Permalink to this headline">¶</a></h2>
-<p>Load data:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">population_sample</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_sample</span><span class="p">)</span>
+<span class="n">population_sample</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_sample</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">Number of subjects in the sample:   </span><span class="si">{:d}</span><span class="s2"></span>
-<span class="s2">Subjects that are not right handed: </span><span class="si">{:d}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="nb">len</span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="p">),</span>
-    <span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">waterloo</span> <span class="o">&lt;</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+<span class="s2">    Number of subjects in total:     </span><span class="si">{:d}</span><span class="s2"></span>
+<span class="s2">    Number of right-handed subjects: </span><span class="si">{:d}</span><span class="s2"></span>
+<span class="s2">    Number of  left-handed subjects: </span><span class="si">{:d}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="p">),</span>
+        <span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">waterloo</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span>
+        <span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">waterloo</span> <span class="o">&lt;=</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">subjects</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">sample</span><span class="p">:</span>   <span class="mi">64</span>
-<span class="n">Subjects</span> <span class="n">that</span> <span class="n">are</span> <span class="ow">not</span> <span class="n">right</span> <span class="n">handed</span><span class="p">:</span> <span class="mi">0</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">subjects</span> <span class="ow">in</span> <span class="n">total</span><span class="p">:</span>     <span class="mi">64</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">right</span><span class="o">-</span><span class="n">handed</span> <span class="n">subjects</span><span class="p">:</span> <span class="mi">64</span>
+<span class="n">Number</span> <span class="n">of</span>  <span class="n">left</span><span class="o">-</span><span class="n">handed</span> <span class="n">subjects</span><span class="p">:</span> <span class="mi">0</span>
 </pre></div>
 </div>
 <p>We are aiming to confirm a finding that has been suggested by an
-analysis of a single subject. Remove this <em>initial subject</em> from the
-sample.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">subsample</span> <span class="o">=</span> <span class="n">population_sample</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
-                <span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+analysis of a single subject. Hence, remove this <em>initial subject</em> from
+the sample.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">population_sample</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">population_sample</span><span class="o">.</span><span class="n">covariates</span><span class="o">.</span><span class="n">id</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Have a look at the sample size per template voxel. It appears that there
-are some voxels close to the surface areas of the template where one or
-more population diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span> did not fully map the
-template brain onto the subject brain. But this is probably to be
-expected.</p>
+<p>First, we shall have a look at the sample size per voxel in the
+MNI152-template (the number of subjects which have valid entries at this
+voxel):</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sample_size</span> <span class="o">=</span> <span class="n">Image</span><span class="p">(</span>
-    <span class="n">population_sample</span><span class="o">.</span><span class="n">vb</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
-    <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">subsample</span><span class="o">.</span><span class="n">statistics</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">sample</span><span class="o">.</span><span class="n">vb</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">statistics</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">))</span>
 
-<span class="n">sample_size</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
+<span class="n">picture</span><span class="p">(</span><span class="n">sample_size</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure5_1.png"><img alt="../_images/population-inference-confirmative_figure5_1.png" src="../_images/population-inference-confirmative_figure5_1.png" style="width: 15cm;" /></a>
+<p>It appears that for some voxels close to the surface of the
+MNI152-template the population diffeomorphisms <span class="math notranslate nohighlight">\(ψ_j\)</span> did not fully
+map the template brain onto the respective subject brain. This is to be
+expected.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Sample size at the index of interest: </span><span class="si">{:.0f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">sample_size</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Sample</span> <span class="n">size</span> <span class="n">at</span> <span class="n">the</span> <span class="n">index</span> <span class="n">of</span> <span class="n">interest</span><span class="p">:</span> <span class="mi">63</span>
+</pre></div>
+</div>
+<p>Let us now fit the population model (which is a random effects meta
+regression model in fmristats) to the sample of BOLD effects and their
+respective estimated standard errors:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">popmod</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">sample</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">popmod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>… not all points in the mask are identifiable.
+… points with missing data along subject dimension.
+… number of points to estimate: 902629
+… perform a meta analysis
+</pre></div>
+</div>
+</div>
+<div class="section" id="extract-the-knapp-hartung-adjusted-t-statistics-field">
+<h2>Extract the Knapp-Hartung adjusted t-statistics field<a class="headerlink" href="#extract-the-knapp-hartung-adjusted-t-statistics-field" title="Permalink to this headline">¶</a></h2>
+<p>Extract the Knapp-Hartung adjusted t-statistics field that tests for
+non-zero, task related BOLD effects:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tstatistics</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_tstatistic</span><span class="p">()</span>
 
-<span class="n">picture</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="n">cm</span><span class="o">.</span><span class="n">viridis</span><span class="p">)</span>
+<span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure8_1.png"><img alt="../_images/population-inference-confirmative_figure8_1.png" src="../_images/population-inference-confirmative_figure8_1.png" style="width: 15cm;" /></a>
+<p>Now, plot the respective slice through the t-statistics field that has
+shown the above BOLD effect in the initial subject:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
+<span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure9_1.png"><img alt="../_images/population-inference-confirmative_figure9_1.png" src="../_images/population-inference-confirmative_figure9_1.png" style="width: 15cm;" /></a>
-<p>Fit the population model to the sample of neural activities.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pop</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">subsample</span><span class="p">)</span>
-<span class="n">meta</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>… all voxels in the mask are identifiable.
-… some voxel have missing data along the subject dimension.
-… mask has shape: (91, 109, 91)
-… number of pixels to be fitted: 163431
-… a meta analysis will be performed
-</pre></div>
-</div>
-<p>Extract the Knapp-Hartung adjusted t-statistics field that tests for
-task related neural activity in the population:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tstatistics</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">get_tstatistic</span><span class="p">()</span>
-</pre></div>
-</div>
-<p>Plot:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure12_1.png"><img alt="../_images/population-inference-confirmative_figure12_1.png" src="../_images/population-inference-confirmative_figure12_1.png" style="width: 15cm;" /></a>
-<p>Plot the respective slice in population space:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
-    <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;ko&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="n">index</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;w+&#39;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+<p>The t-statistic at these coordinates is:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </pre></div>
 </div>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.705125720068511</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure13_1.png"><img alt="../_images/population-inference-confirmative_figure13_1.png" src="../_images/population-inference-confirmative_figure13_1.png" style="width: 15cm;" /></a>
 </div>
-<div class="section" id="extract-data-at-index">
-<h2>Extract data at index<a class="headerlink" href="#extract-data-at-index" title="Permalink to this headline">¶</a></h2>
-<p>Extract the meta data from the sample and the fit:</p>
+<div class="section" id="create-a-forest-plot-of-bold-statistics">
+<h2>Create a forest plot of BOLD statistics<a class="headerlink" href="#create-a-forest-plot-of-bold-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Extract the estimated BOLD effects and the respective standard errors of
+the estimated BOLD effects from the sample:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">population_sample</span><span class="o">.</span><span class="n">at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 <span class="n">df</span><span class="o">.</span><span class="n">valid</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;waterloo&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">dm</span> <span class="o">=</span> <span class="n">meta</span><span class="o">.</span><span class="n">at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="n">dm</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
 <span class="n">dm</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s1">&#39;parameter&#39;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="section" id="forest-and-funnel-plot">
-<h2>Forest and funnel plot<a class="headerlink" href="#forest-and-funnel-plot" title="Permalink to this headline">¶</a></h2>
 <p>Define the critical values for the plots:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.stats.distributions</span> <span class="k">import</span> <span class="n">t</span>
 <span class="kn">from</span> <span class="nn">scipy.stats.distributions</span> <span class="k">import</span> <span class="n">norm</span>
 
 <span class="n">crt_subject</span> <span class="o">=</span> <span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">q</span><span class="o">=.</span><span class="mi">95</span><span class="p">)</span>
-<span class="n">crt_population</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">q</span><span class="o">=.</span><span class="mi">95</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;df&#39;</span><span class="p">])</span>
+<span class="n">crt_population</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span><span class="n">q</span><span class="o">=.</span><span class="mi">95</span><span class="p">,</span> <span class="n">df</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;df&#39;</span><span class="p">])</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">crt_subject</span><span class="p">,</span> <span class="n">crt_population</span><span class="p">)</span>
 </pre></div>
@@ -339,23 +298,26 @@ task related neural activity in the population:</p>
 <div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.6448536269514722</span> <span class="mf">1.669804162296528</span>
 </pre></div>
 </div>
-<div class="section" id="forest-plot">
-<h3>Forest plot<a class="headerlink" href="#forest-plot" title="Permalink to this headline">¶</a></h3>
-<p>Forest Plot in ascending order of handiness (left handed on the bottom,
-right handed on the top):</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;yvec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">task</span><span class="p">))</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;reci&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span> <span class="n">df</span><span class="o">.</span><span class="n">stderr</span><span class="o">**</span><span class="mi">2</span>
-
-<span class="n">x</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">]</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">]</span>
+<p>Set some general options for the visualisation:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;xtick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;ytick&#39;</span><span class="p">,</span> <span class="n">labelsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
 
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
 <span class="n">sb</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
-
 <span class="n">palette</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">palettes</span><span class="o">.</span><span class="n">SEABORN_PALETTES</span><span class="p">[</span><span class="s1">&#39;deep&#39;</span><span class="p">]</span>
 
 <span class="n">figw</span> <span class="o">=</span> <span class="mf">5.842</span>
 <span class="n">figh</span> <span class="o">=</span> <span class="mf">8.442</span>
+</pre></div>
+</div>
+<p>Create a forest plot in ascending order of handiness (left handed on the
+bottom, right handed on the top):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">]</span>
+
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;yvec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">task</span><span class="p">))</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;waterloo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">waterloo</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="n">fig</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figw</span><span class="p">,</span><span class="n">figh</span><span class="p">))</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
@@ -369,69 +331,53 @@ right handed on the top):</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">xerr</span><span class="o">=</span><span class="n">crt_population</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Population&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="o">-.</span><span class="mi">5</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Task inferred signal change at $x_1 (ati)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Task related BOLD effect at $x_0$ in ATI&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Waterloo&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">box</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">yvec</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">waterloo</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Meta&quot;</span><span class="p">]</span> <span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure17_1.png"><img alt="../_images/population-inference-confirmative_figure17_1.png" src="../_images/population-inference-confirmative_figure17_1.png" style="width: 15cm;" /></a>
-<p>There was one subject in the sample, who showed an even larger task
-related neural activity at the coordinates.</p>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure15_1.png"><img alt="../_images/population-inference-confirmative_figure15_1.png" src="../_images/population-inference-confirmative_figure15_1.png" style="width: 15cm;" /></a>
+<p>Quite interestingly, there was even one subject in the sample that
+showed an even larger task related BOLD effect than the initial subject
+at theses coordinates.</p>
 </div>
-<div class="section" id="funnel-plot">
-<h3>Funnel plot<a class="headerlink" href="#funnel-plot" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figw</span><span class="p">,</span><span class="n">figh</span><span class="p">))</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">task</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">!=</span><span class="mi">2</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">reci</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">!=</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">xerr</span><span class="o">=</span><span class="n">crt_subject</span><span class="o">*</span><span class="n">df</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">!=</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Sample&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">task</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="n">df</span><span class="o">.</span><span class="n">reci</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span>
-    <span class="n">xerr</span><span class="o">=</span><span class="n">crt_subject</span><span class="o">*</span><span class="n">df</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">id</span><span class="o">==</span><span class="mi">2</span><span class="p">],</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span>
-    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Initial Subject&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="n">palette</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;Task inferred signal change at $x_0$ (ati)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Reciprocal of the Squared Standard Error&#39;</span><span class="p">)</span>
-<span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
-</pre></div>
+<div class="section" id="create-a-funnel-plot-of-bold-statistics">
+<h2>Create a funnel plot of BOLD statistics<a class="headerlink" href="#create-a-funnel-plot-of-bold-statistics" title="Permalink to this headline">¶</a></h2>
+<p>Create a funnel plot with the estimated BOLD effect on the x-axis and
+the reciprocal of the squared standard error on the y-axis:</p>
+<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure18_1.png"><img alt="../_images/population-inference-confirmative_figure18_1.png" src="../_images/population-inference-confirmative_figure18_1.png" style="width: 15cm;" /></a>
 </div>
-<a class="reference internal image-reference" href="../_images/population-inference-confirmative_figure19_1.png"><img alt="../_images/population-inference-confirmative_figure19_1.png" src="../_images/population-inference-confirmative_figure19_1.png" style="width: 15cm;" /></a>
-</div>
-</div>
-<div class="section" id="formal">
-<h2>Formal<a class="headerlink" href="#formal" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="effect">
-<h3>Effect<a class="headerlink" href="#effect" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">]</span>
-<span class="n">s</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">]</span>
+<div class="section" id="formal-testing">
+<h2>Formal testing<a class="headerlink" href="#formal-testing" title="Permalink to this headline">¶</a></h2>
+<p>Any prior knowledge had been removed prior to testing the hypothesis of
+whether there exists a task related BOLD effect at <span class="math notranslate nohighlight">\(x\)</span> in the
+sample. Hence, there is no need to adjust for multiple testing in the
+inference for the population, we there was, well, no multiple testing.</p>
+<p>Point estimate, confidence interval, and p-value of BOLD effect of the
+word generating task at the point <span class="math notranslate nohighlight">\(x\)</span> in the population:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">]</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;stderr&#39;</span><span class="p">]</span>
 
-<span class="c1"># Effect</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-<span class="c1"># 95% confidence interval</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;lower: </span><span class="si">{:.2f}</span><span class="s1">, upper </span><span class="si">{:.2f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">-</span><span class="n">crt_population</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">crt_population</span><span class="o">*</span><span class="n">s</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">Point estimate of the BOLD effect: </span><span class="si">{:.2f}</span><span class="s2"></span>
+<span class="s2">Lower bound of a 95</span><span class="si">% c</span><span class="s2">onfidence interval: </span><span class="si">{:.2f}</span><span class="s2"></span>
+<span class="s2">Upper bound of a 95</span><span class="si">% c</span><span class="s2">onfidence interval: </span><span class="si">{:.2f}</span><span class="s2"></span>
+<span class="s2">p-value for ≠0:                           </span><span class="si">{:.4f}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="o">-</span><span class="n">crt_population</span><span class="o">*</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="o">+</span><span class="n">crt_population</span><span class="o">*</span><span class="n">s</span><span class="p">,</span>
+    <span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;Intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;pvalue&#39;</span><span class="p">]))</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">5.97386597039026</span>
-<span class="n">lower</span><span class="p">:</span> <span class="mf">2.29</span><span class="p">,</span> <span class="n">upper</span> <span class="mf">9.66</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>Point estimate of the BOLD effect: 5.97
+Lower bound of a 95% confidence interval: 2.29
+Upper bound of a 95% confidence interval: 9.66
+p-value for ≠0:                           0.0044
 </pre></div>
 </div>
-</div>
-<div class="section" id="p-value">
-<h3>p-Value<a class="headerlink" href="#p-value" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">dm</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span> <span class="s1">&#39;pvalue&#39;</span><span class="p">])</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.004402267614864508</span>
-</pre></div>
-</div>
-<p><strong>Note:</strong> This is the actual p-value for neural activity at these
-coordinates in standard space: any prior knowledge had been removed
-prior to the fitting. There was no multiple testing.</p>
-</div>
+<p>We may reject the null hypothesis that there exists no BOLD effect at
+<span class="math notranslate nohighlight">\(x\)</span> at <span class="math notranslate nohighlight">\(1\%\)</span> level of significance.</p>
 </div>
 </div>
 
@@ -443,10 +389,10 @@ prior to the fitting. There was no multiple testing.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="population-inference-covariates.html" class="btn btn-neutral float-right" title="Population inference (adjust for covariates)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="population-inference-explorative.html" class="btn btn-neutral float-right" title="Population inference: Exploratory study" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="population-inference-explorative.html" class="btn btn-neutral" title="Population inference (explorative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="population-inference-preliminaries.html" class="btn btn-neutral" title="Population inference: Create a sample for further analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -455,7 +401,7 @@ prior to the fitting. There was no multiple testing.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
 
     </p>
   </div>
@@ -474,21 +420,24 @@ prior to the fitting. There was no multiple testing.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.0.6',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

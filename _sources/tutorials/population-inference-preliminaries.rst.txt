@@ -1,203 +1,82 @@
-Population inference (set-up)
------------------------------
+.. _population_ati:
 
-Preliminaries
-.............
+Population inference: Create a sample for further analysis
+----------------------------------------------------------
 
-If you aim for population inference, you need to relate the brains
-:math:`R_j` of all subjects :math:`j` in your study to each other, i.e.
-you need to chose a representative, say a template brain :math:`M` in
-MNI Standard Space, and fit diffeomorphisms :math:`ψ_j` which map
-:math:`M` to each :math:`R_j`.
+Signal models have been fitted to FMRI session data:
+
+.. code:: shell
+
+    fmrifit -v --stimulus-block letter --window 2 1 1
+
+    fsl4prune -v
+
+The ATI reference field
+.......................
+
+Model based estimation encourages to analyse and report BOLD effects in
+*above template image* (ATI) units. The reason is that FMRI have no
+»natural« unit. If :math:`(α_j(x), x∈M)` is the intercept and
+:math:`(β_j(x), x∈M)` is the estimated task related BOLD effect in an
+FMRI, and if :math:`(μ_x, x∈M)` is an *ATI reference field* in standard
+space :math:`M`, then
 
 .. math::
 
-    ψ_j: M \to R_j.
+    c_jβ_j (x) := c_j(x) ⋅ β_j(x) \quad \text { with } \quad c_j(x) =
+    \frac {μ_x}{α_j(x)}
 
+is the BOLD effect at :math:`x` in *ATI*.
 
-You have created the irritation designs, the FMRI session data for each
-subject, and you have fitted the head movements:
+As shown here_, the statistical analysis of the task related BOLD
+effects benefits (by gaining power without loosing statistical validity)
+when the analysis is performed with the fields :math:`c_jβ_j` and
+**not** with the fields :math:`β_j`. This is in particular true for
+multicentre studies.
 
-.. code:: shell
+.. _here: https://arxiv.org/abs/1809.07232v1
 
-    # Create Irritation Designs
-    mat2irr --protocol sample.pkl -v
+A reasonable choice for the ATI reference field is to chose a field with
+similar curvature as the estimated statistics fields in the sample. As
+this curvature is predominately influenced by the choice of the spatial
+weighting scheme, a canonical choice is to smooth a template in standard
+space by the same spatial weighting that has been used when fitting the
+individual statistic fields.
 
-    # Create Session Designs
-    nii2ses --protocol sample.pkl -v --detect-foreground
-
-    # Fit head movements
-    fmririgid --protocol sample.pkl -v --cycle 42
-
-And you have checked whether the fitted head movement look ok:
-
-.. code:: shell
-
-    # Assessment of head tracking ability
-    ref2plot --protocol sample.pkl -v
-
-    for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
-
-Fit the Population Maps
-.......................
-
-Use ANTS to fit the :math:`ψ_j`:
+Look for the parameter ``scale`` in one of your fits:
 
 .. code:: shell
 
-    ants4pop --protocol sample.pkl -v  --cycle 42
-
-Use FNIRT to fit the :math:`ψ_j`:
+    fmriinfo results/WGT/AGB300/0002/AGB300-0002-WGT-2014-04-24-mni152-ants-pcm.fit
 
 .. code:: shell
 
-    fsl4pop --protocol sample.pkl -v  --cycle 42
+    [...]
+       Hyperparameters:
+            Scale type:         max
+            Factor:            3.00
 
-I had the feeling that -- out of the box -- ANTS provided better fits
-for the :math:`ψ_j` than FNIRT. If you are using the wrapper `fsl4pop`,
-you probably need to manually help FNIRT to find the correct fit. See
-the help of `fsl4pop` for how to use custom warp coefficient files.
+        Resulting in:
+            Mass:            0.9973
+            Scale:             2.30 mm
+            FWHM:              5.42 mm
+            Radius:            6.90 mm
+            Diagonal:         13.80 mm
+    [...]
 
-Fit the Signal Models to the FMRIs (fist level)
-...............................................
-
-Fitting the signal model to the FMRI of each subject.
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl -v \
-        --stimulus-block letter \
-        --vb mni152 --diffeomorphism ants
-
-    fsl4prune --protocol sample.pkl -v --strftime short \
-        --vb-name mni152 --diffeomorphism ants -j 1
-
-*Alternative 1*: fit three subjects only:
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl -v --strftime short \
-        --stimulus-block letter \
-        --cohort AGB300 --id 2 42 84 \
-        --vb mni152 --diffeomorphism ants
-
-    fmriprune --protocol sample.pkl -v --strftime short \
-        --cohort AGB300 --id 2 42 84 \
-        --vb mni152 --diffeomorphism ants
-
-    fsl4prune --protocol sample.pkl -v --strftime short \
-        --cohort AGB300 --id 2 42 84 \
-        --vb-name mni152 --diffeomorphism ants
-
-*Alternative 2*: fit nothing, do a dry run instead (s=skip):
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl -vs --strftime short \
-        --stimulus-block letter \
-        --cohort AGB300 --id 2 \
-        --vb mni152 --diffeomorphism ants
-
-*Alternative 3*: remove orphan log-files (i=ignore-locks, s=skip):
-
-.. code:: shell
-
-    fmrifit --protocol sample.pkl -vis --strftime short \
-        --stimulus-block letter \
-        --vb mni152 --diffeomorphism ants
-
-Create an ATI reference field
-.............................
-
-In case you have FSL installed on your system, you may find various
-templates in
-
-.. code:: shell
-
-    /usr/share/data/fsl-mni152-templates/
-
-The tool `nii2image` can be used to convert various imaging formats to
-fmristats' own file format.
+Then create the corresponding ATI reference field:
 
 .. code:: shell
 
     nii2image --name mni152 \
         /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz \
-        ../data/vbs/vb-template.image
+        vb-template.image
 
-    nii2image --name mni152background \
-        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz \
-        ../data/vbs/vb-background.image
+    fmriati 2.3 vb-template.image vb-ati.image -v
 
-.. code:: shell
-
-    fmriati 2.09 ../data/vbs/vb-template.image ../data/vbs/vb-ati.image -v
-
-Create the sample for the meta analysis
-.......................................
-
-To see the correct order of the positional arguments for ``fmrisample``:
+Create the sample for your study
+................................
 
 .. code:: shell
 
-    fmrisample -h
-
-Create the sample for population inference:
-
-.. code:: shell
-
-    fmrisample -vf --strftime short \
-        population-inference.sample \
-        ../data/vbs/vb-template.image  \
-        ../data/vbs/vb-background.image  \
-        ../data/vbs/vb-ati.image \
-        --protocol sample.pkl \
-        --vb mni152 --diffeomorphism ants
-
-Example
-.......
-
-An example may look as follows:
-
-.. code:: shell
-
-    # Create Irritation Designs
-    mat2irr --protocol sample.pkl -v --strftime short -f
-
-    # Create Session Designs
-    nii2ses --protocol sample.pkl -v --detect-foreground --strftime short
-
-    # Fit head movements
-    fmririgid --protocol sample.pkl -v --strftime short --cycle 42
-
-    # Assessment of head tracking ability
-    ref2plot --protocol sample.pkl -v --strftime short
-
-    for p in figures/WGT/assessments/*0*.pdf; do mupdf $p; done;
-
-    for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
-
-    # In this example, subject 0004 appears to show severe head movments
-    # in cycle 42. We therefore choose a different scan cycle as the
-    # subject's reference space.
-
-    fmririgid --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
-
-    ref2plot --protocol sample.pkl -v --strftime short --cohort AGB300 --id 4
-
-    for p in figures/WGT/assessments/*0004*.pdf; do mupdf $p; done;
-
-    # The quality control plot looks a loot better now.
-
-    # Fit population map
-    ants4pop --protocol sample.pkl -v --strftime short --cycle 42
-
-    # Fit population map
-    ants4pop --protocol sample.pkl -v --strftime short --cycle 82 --cohort AGB300 --id 4 -f
-
-    # Fit signal models in standard space
-
-    fmrifit --protocol sample.pkl -v --strftime short \
-        --stimulus-block letter \
-        --vb mni152 --diffeomorphism ants
-
+    fmrisample -v tutorial.sample --vb-ati-image vb-ati.image

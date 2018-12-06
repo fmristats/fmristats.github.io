@@ -1,91 +1,96 @@
+.. _thresholding:
+
 Thresholding
 ------------
 
-Let us assume a population model has been fitted in MNI standard space
-:math:`M`. As a result, we have obtained an estimate of the
-to-be-expected, task related BOLD signal change in subjects of the
-respective population, namely the field:
+In :ref:`explorative`, we fitted a population model to the FMRI of a
+sample of subjects from a right-handed, healthy population that
+performed a word generating task. As a result, we obtained an estimate
+of the to-be-expected, task related BOLD effect in that population:
 
 .. math::
 
     \left(\hat β(x) : x∈M \right).
 
-We have also obtained an estimate of the variance of :math:`\hat β` at
-each :math:`x∈M`, namely the field:
+And we also obtained an estimate of the standard error of :math:`\hat β`
+at each :math:`x∈M`, namely the field:
 
 .. math::
 
     \Big( s(x) : x∈M \Big).
 
-We are interested in testing the set (or field) of hypothesis
+Now, we are interested in testing the set (or field) of hypothesis:
 
 .. math::
 
     H_0(x): β(x) = 0 \qquad \text{versus} \qquad H_1(x): β(x) > 0
 
-for every :math:`x∈M` and to find areas in the brain, say :math:`S ⊆ M`,
+for every :math:`x∈M` and to find areas in the brain, say :math:`R ⊆ M`,
 which contain the *true* and *biologically relevant* activations. If we
-reject :math:`H_0(x)` at some :math:`x∈M`, we say that »we can expect
-significant activation at :math:`x` in the population«.
+reject :math:`H_0(x)` at some :math:`x∈M`, we may say that »we can
+expect significant BOLD activation at :math:`x` in the population«.
 
-Some notation:
+The set
 
-+---------------------+----------------------+----------------------+------------------------+
-|                     | :math:`H_0` accepted | :math:`H_0` rejected |                Total   |
-+---------------------+----------------------+----------------------+------------------------+
-| :math:`H_0` is true |            :math:`U` |            :math:`V` |            :math:`M_0` |
-+---------------------+----------------------+----------------------+------------------------+
-| :math:`H_0` is false|            :math:`T` |            :math:`S` | :math:`M\setminus M_0` |
-+---------------------+----------------------+----------------------+------------------------+
-| Total               | :math:`R\setminus M` |            :math:`R` |              :math:`M` |
-+---------------------+----------------------+----------------------+------------------------+
+.. math::
 
-The sets :math:`M` and :math:`M_0` are fixed but unknown. The sets
-:math:`U,V,T,S` and consequently also :math:`R` and :math:`R\setminus M`
-are random. We call :math:`R` the *discoveries* in a study, and
-:math:`V` the set of *false positives*. The aim is thus to find a set
-:math:`R` that consists mainly of elements of :math:`S` and that only
-contains a limited number of elements from the set :math:`V` of false
-positives. To find a suitable :math:`R`, one studies the test statistics
-field:
+    R := \{ x ∈ M : \text{we reject $H_0(x)$} \}
+
+is typically called the set of *discoveries* in a study.
+
+Some notation
+.............
+
++---------------------+-------------------------+-------------------------+------------------------+
+|                     | :math:`H_0` is accepted | :math:`H_0` is rejected |                Total   |
++---------------------+-------------------------+-------------------------+------------------------+
+| :math:`H_0` is true |            :math:`U`    |               :math:`V` |            :math:`M_0` |
++---------------------+-------------------------+-------------------------+------------------------+
+| :math:`H_0` is false|            :math:`T`    |               :math:`S` | :math:`M\setminus M_0` |
++---------------------+-------------------------+-------------------------+------------------------+
+| Total               | :math:`R\setminus M`    |               :math:`R` |              :math:`M` |
++---------------------+-------------------------+-------------------------+------------------------+
+
+The set :math:`M` is fixed and known. The set :math:`M_0` is fixed but
+unknown. The sets :math:`U,V,T,S` and consequently also :math:`R` and
+:math:`R\setminus M` are random. We call :math:`R` the *discoveries* in
+a study, and :math:`V` the set of *false positives*. The aim is to find
+criteria that result in a set :math:`R` such that :math:`R` consists
+mainly of elements of :math:`S` but that only contains a very limited
+number of elements from :math:`V`. To find a suitable :math:`R`, one
+studies the test statistics field:
 
 .. math::
 
     \left(t(x) : t(x) = \frac {\hat β(x)}{s(x)}, x∈M \right).
 
-It is custom to define :math:`R` as an *excursion set*, i.e.\ to find a
-suitable cut-off :math:`t_0` and define
+It is custom to define :math:`R` as an *excursion set* of the
+t-statistics field, i.e. to find a suitable cut-off :math:`t_0` and
+to define
 
 .. math::
 
-    R_{≥t_0} := \left(x∈M : t(x) ≥ t_0 \right).
+    R := \left(x∈M : t(x) ≥ t_0 \right).
 
-This chapter goes through different approaches for defining suitable
+This chapter discusses different approaches for defining suitable
 candidates for :math:`t_0`.
 
 Load statistics
 ...............
 
 
+
+
+Load the summary statistics from file and extract the t-test statistics
+field and the task related BOLD effects:
+
+
 .. code:: python
 
-    
     from fmristats import *
-    
-    result = load('interim-results/explorative.mfit')
-
-
-
-
-Extract the t-test statistics and the task related BOLD effect from the
-statistics field:
-
-
-.. code:: python
-
-    
+    result     = load(path_to_population_result)
     tstatistic = result.get_tstatistic()
-    bold = result.get_parameter()
+    bold       = result.get_parameter()
 
 
 
@@ -94,17 +99,28 @@ Strategies for thresholding
 ...........................
 
 Nistats_ has some functionality that may help in detecting areas with
-potentially relevant activation. (It is easy to export a fmristats'
-*Image*-object to a *Niilike*-object that Nistats_ can understand.)
+potentially relevant BOLD activation in an image.
 
 .. _Nistats: https://nistats.github.io/
 
 
 .. code:: python
 
-    
-    from fmristats.nifti import image2nii
     from nistats.thresholding import map_threshold
+
+
+
+
+
+
+
+It is easy enough to export a fmristats' ``Image``-object to a
+``Niilike``-object that Nistats_ can understand:
+
+
+.. code:: python
+
+    from fmristats.nifti import image2nii
     tnii = image2nii(tstatistic, nan_to_zero=True)
     
     # control the false positive rate:
@@ -124,7 +140,6 @@ Let us have a look at the estimated thresholds:
 
 .. code:: python
 
-    
     print("""
     Threshold (controlling FPR) : {:.2f}
     Threshold (Bonferonni)      : {:.2f}
@@ -136,8 +151,8 @@ Let us have a look at the estimated thresholds:
 
     
     Threshold (controlling FPR) : 1.64
-    Threshold (Bonferonni)      : 4.97
-    Threshold (controlling FDR) : 2.63
+    Threshold (Bonferonni)      : 4.99
+    Threshold (controlling FDR) : 2.62
     
 
 
@@ -210,15 +225,14 @@ this example is:
 .. code::
 
     
-            Resolution (left to right):         2.00 mm
-            Resolution (posterior to anterior): 2.00 mm
-            Resolution (inferior to superior):  2.00 mm
-            Diagonal of one voxel:              3.46 mm
-            Volume of one voxel:                8.00 mm^3
-            Aspect 0 on 1:                      1.00
-            Aspect 0 on 2:                      1.00
-            Aspect 1 on 2:                      1.00
-            Rigid transformation: False
+            Resolution (left to right):          2.00 mm
+            Resolution (posterior to anterior):  2.00 mm
+            Resolution (inferior to superior):   2.00 mm
+            Diagonal of one voxel:               3.46 mm
+            Volume of one voxel:                 8.00 mm^3
+            Aspect 0 on 1:                       1.00
+            Aspect 0 on 2:                       1.00
+            Aspect 1 on 2:                       1.00
     
 
 
@@ -248,11 +262,11 @@ resolution of the result field:
 
 .. code::
 
-    Threshold 1: 4.97
-    Threshold 2: 4.55
-    Threshold 3: 4.29
-    Threshold 4: 4.10
-    Threshold 5: 3.94
+    Threshold 1: 4.99
+    Threshold 2: 4.57
+    Threshold 3: 4.31
+    Threshold 4: 4.11
+    Threshold 5: 3.96
     
 
 
@@ -311,10 +325,10 @@ feeding the method a coarser image:
 
 .. code::
 
-    Threshold 1: 2.63
-    Threshold 2: 2.63
-    Threshold 3: 2.65
-    Threshold 4: 2.64
+    Threshold 1: 2.62
+    Threshold 2: 2.62
+    Threshold 3: 2.63
+    Threshold 4: 2.63
     Threshold 5: 2.65
     
 
@@ -344,10 +358,10 @@ The FDR is usually controlled at :math:`1\%` and not :math:`5\%`.
 .. code:: python
 
     
-    level     = 0.01
-    threshold = fdr_threshold(tstatistic.ravel(), level)
+    level         = 0.01
+    threshold     = fdr_threshold(tstatistic.ravel(), level)
     active_volume = tstatistic.mask(tstatistic.data > threshold, inplace=False).volume()
-    null_volume = level*active_volume
+    null_volume   = level*active_volume
     
     components, labels = tstatistic.components(threshold)
     
@@ -363,20 +377,19 @@ The FDR is usually controlled at :math:`1\%` and not :math:`5\%`.
 .. code::
 
     
-    Volume claimed active:                           62352.00 mm^3
-    Upper bound of falsely discovered volume (FDV):    623.52 mm^3
+    Volume claimed active:                           70000.00 mm^3
+    Upper bound of falsely discovered volume (FDV):    700.00 mm^3
     Upper bound of false discovery rate (FDR):           1.00 %
-    Bonferonni-Hochberg threshold:                       3.28
-    Components in brain claimed active:                    96
+    Bonferonni-Hochberg threshold:                       3.27
+    Components in brain claimed active:                    97
     
 
 
 
-
-Or let us chose to control the FDR at a level of :math:`0.01` and
-additionally force that any area claimed as active has a minimum extend
-of :math:`100 \text{mm}^3` (this corresponds roughly to a ball with
-radius :math:`2.88 \text{mm}`):
+We may also chose to control the FDR at :math:`1\%` and additionally
+force that any area claimed as active must have a minimum extend of
+:math:`100 \text{mm}^3` (this corresponds roughly to a ball with radius
+:math:`2.88 \text{mm}`):
 
 
 .. code:: python
@@ -386,7 +399,7 @@ radius :math:`2.88 \text{mm}`):
     components, labels = tstatistic.components(threshold, component_size=100)
     
     active_volume = components.volume()
-    null_volume = level*active_volume
+    null_volume   = level*active_volume
     
     print("""
     Volume claimed active:                          {:>9.2f} mm^3
@@ -400,11 +413,11 @@ radius :math:`2.88 \text{mm}`):
 .. code::
 
     
-    Volume claimed active:                           60680.00 mm^3
-    Upper bound of falsely discovered volume (FDV):    606.80 mm^3
+    Volume claimed active:                           68184.00 mm^3
+    Upper bound of falsely discovered volume (FDV):    681.84 mm^3
     Upper bound of false discovery rate (FDR):           1.00 %
-    Bonferonni-Hochberg threshold:                       3.28
-    Components in brain claimed active:                    24
+    Bonferonni-Hochberg threshold:                       3.27
+    Components in brain claimed active:                    25
     
 
 
@@ -417,7 +430,6 @@ Plotting fields above a threshold
 
     import numpy as np
     import matplotlib.pylab as pt
-    import matplotlib.cm as cm
     from fmristats.plot import picture
 
 
@@ -431,13 +443,13 @@ The t-statistics field:
     picture(tstatistic, interpolation='bilinear')
 
 
-.. image:: figures/thresholding_figure12_1.png
+.. image:: figures/thresholding_figure14_1.png
    :width: 15 cm
 
 
 
 The t-statistics field with some transparency on-top of the
-MNI-template:
+MNI template:
 
 
 .. code:: python
@@ -447,14 +459,15 @@ MNI-template:
         background=result.model.sample.vb)
 
 
-.. image:: figures/thresholding_figure13_1.png
+.. image:: figures/thresholding_figure15_1.png
    :width: 15 cm
 
 
 
-The bold effect field in ati-units on-top of the MNI-template in areas
-at which the t-tstatistic field lies above the FDR-controlled threshold
-and that have a minimum extent of :math:`100 \text{mm}^3`.
+The bold effect field in ATI (in units *above the template image*)
+on-top of the MNI template in areas at which the t-tstatistic field lies
+above the FDR-controlled threshold and that have a minimum extent of
+:math:`100 \text{mm}^3`:
 
 
 .. code:: python
@@ -465,7 +478,7 @@ and that have a minimum extent of :math:`100 \text{mm}^3`.
         background=result.model.sample.vb)
 
 
-.. image:: figures/thresholding_figure14_1.png
+.. image:: figures/thresholding_figure16_1.png
    :width: 15 cm
 
 
@@ -475,10 +488,10 @@ Effects, coordinates, locations
 
 Thresholding a (continuous) field at a specified cut-off results in
 areas above the threshold which are path-wise connected components. Let
-us now extract (i) the highest t-statistics peak in each of the these
-components, (ii) the  coordinates of each peak in MNI standard space,
-(iii) the BOLD effects, and (iv) the structural region of the brain that
-each of these peaks belong to.
+us now extract (i) the highest t-statistics peak in each component, (ii)
+the  coordinates of each peak in MNI standard space, (iii) the BOLD
+effect at each peak, and (iv) the structural region to which each of the
+peak belongs.
 
 
 .. code:: python
@@ -524,28 +537,29 @@ Put everything together in a nice data frame:
            i     j     k     x     y     z       BOLD  t_statistic
     0   51.0  70.0  34.0 -12.0  14.0  -4.0  19.992060    11.610399
     1   37.0  70.0  33.0  16.0  14.0  -6.0  20.909341    10.597062
-    2   31.0  34.0  22.0  28.0 -58.0 -28.0  13.017904     7.868119
-    3   65.0  77.0  35.0 -40.0  28.0  -2.0  13.077190     7.846554
-    4   50.0  23.0  38.0 -10.0 -80.0   4.0  10.078226     7.288186
-    5   69.0  37.0  27.0 -48.0 -52.0 -18.0   9.388852     7.125237
-    6   48.0  72.0  58.0  -6.0  18.0  44.0  10.285229     6.775694
-    7   38.0  25.0  14.0  14.0 -76.0 -44.0  10.502944     6.064055
+    2   29.0  33.0   8.0  32.0 -60.0 -56.0  21.198355     8.877177
+    3   31.0  34.0  22.0  28.0 -58.0 -28.0  13.017904     7.868119
+    4   65.0  77.0  35.0 -40.0  28.0  -2.0  13.077190     7.846554
+    5   50.0  23.0  38.0 -10.0 -80.0   4.0  10.078226     7.288186
+    6   69.0  37.0  27.0 -48.0 -52.0 -18.0   9.388852     7.125237
+    7   48.0  72.0  58.0  -6.0  18.0  44.0  10.285229     6.775694
     8   61.0  56.0  25.0 -32.0 -14.0 -22.0   7.341440     5.712933
     9   28.0  75.0  33.0  34.0  24.0  -6.0   8.100019     5.432309
-    10  68.0  68.0  31.0 -46.0  10.0 -10.0   7.165230     4.718494
-    11  75.0  47.0  34.0 -60.0 -32.0  -4.0   6.966742     4.588513
-    12  60.0  31.0  54.0 -30.0 -64.0  36.0   9.316358     4.497510
-    13  61.0  59.0  15.0 -32.0  -8.0 -42.0   9.848705     4.442247
-    14  46.0  90.0  27.0  -2.0  54.0 -18.0   8.877041     4.400275
-    15  41.0  24.0  19.0   8.0 -78.0 -34.0   8.999326     4.288485
-    16  37.0  36.0  39.0  16.0 -54.0   6.0   8.236626     4.231748
-    17  37.0  57.0  35.0  16.0 -12.0  -2.0   6.516204     4.038171
-    18  54.0  34.0  27.0 -18.0 -58.0 -18.0   6.354745     4.032904
-    19  48.0  82.0  26.0  -6.0  38.0 -20.0   9.863806     4.011300
-    20  27.0  53.0  48.0  36.0 -20.0  24.0   5.040805     3.999138
-    21  42.0  53.0  29.0   6.0 -20.0 -14.0   9.220619     3.993770
-    22  19.0  50.0  33.0  52.0 -26.0  -6.0   6.093332     3.918589
-    23  46.0  49.0  23.0  -2.0 -28.0 -26.0   8.933851     3.746942
+    10  42.0  56.0  31.0   6.0 -14.0 -10.0  13.418989     4.963525
+    11  68.0  68.0  31.0 -46.0  10.0 -10.0   7.165230     4.718494
+    12  75.0  47.0  34.0 -60.0 -32.0  -4.0   6.966742     4.588513
+    13  36.0  37.0  39.0  18.0 -52.0   6.0   7.328836     4.531171
+    14  60.0  31.0  54.0 -30.0 -64.0  36.0   9.316358     4.497510
+    15  61.0  59.0  15.0 -32.0  -8.0 -42.0   9.848705     4.442247
+    16  46.0  90.0  27.0  -2.0  54.0 -18.0   8.877041     4.400275
+    17  41.0  24.0  19.0   8.0 -78.0 -34.0   8.999326     4.288485
+    18  36.0  51.0  28.0  18.0 -24.0 -16.0  10.201032     4.171051
+    19  37.0  57.0  35.0  16.0 -12.0  -2.0   6.516204     4.038171
+    20  54.0  34.0  27.0 -18.0 -58.0 -18.0   6.354745     4.032904
+    21  48.0  82.0  26.0  -6.0  38.0 -20.0   9.863806     4.011300
+    22  27.0  53.0  48.0  36.0 -20.0  24.0   5.040805     3.999138
+    23  19.0  50.0  33.0  52.0 -26.0  -6.0   6.093332     3.918589
+    24  46.0  49.0  23.0  -2.0 -28.0 -26.0   8.933851     3.746942
     
 
 
@@ -570,47 +584,47 @@ Find the respective position of the coordinates in MNI standard space.
 
 .. code::
 
-                                    location       BOLD  t_statistic
-    0                            78% Caudate  19.992060    11.610399
-    1                71% Putamen, 6% Caudate  20.909341    10.597062
-    2                        100% Cerebellum  13.017904     7.868119
-    3                       58% Frontal Lobe  13.077190     7.846554
-    4                     79% Occipital Lobe  10.078226     7.288186
-    5                      88% Temporal Lobe   9.388852     7.125237
-    6                       91% Frontal Lobe  10.285229     6.775694
-    7                        100% Cerebellum  10.502944     6.064055
-    8                      89% Temporal Lobe   7.341440     5.712933
-    9            66% Insula, 9% Frontal Lobe   8.100019     5.432309
-    10          29% Temporal Lobe, 5% Insula   7.165230     4.718494
-    11                     91% Temporal Lobe   6.966742     4.588513
-    12                     91% Parietal Lobe   9.316358     4.497510
-    13                     76% Temporal Lobe   9.848705     4.442247
-    14                      48% Frontal Lobe   8.877041     4.400275
-    15                        96% Cerebellum   8.999326     4.288485
-    16  67% Parietal Lobe, 7% Occipital Lobe   8.236626     4.231748
-    17                          32% Thalamus   6.516204     4.038171
-    18                        97% Cerebellum   6.354745     4.032904
-    19                      46% Frontal Lobe   9.863806     4.011300
-    20                      7% Parietal Lobe   5.040805     3.999138
-    21                       No label found!   9.220619     3.993770
-    22                     90% Temporal Lobe   6.093332     3.918589
-    23                       No label found!   8.933851     3.746942
+                                     location       BOLD  t_statistic
+    0                             78% Caudate  19.992060    11.610399
+    1                 71% Putamen, 6% Caudate  20.909341    10.597062
+    2                         100% Cerebellum  21.198355     8.877177
+    3                         100% Cerebellum  13.017904     7.868119
+    4                        58% Frontal Lobe  13.077190     7.846554
+    5                      79% Occipital Lobe  10.078226     7.288186
+    6                       88% Temporal Lobe   9.388852     7.125237
+    7                        91% Frontal Lobe  10.285229     6.775694
+    8                       89% Temporal Lobe   7.341440     5.712933
+    9             66% Insula, 9% Frontal Lobe   8.100019     5.432309
+    10                        No label found!  13.418989     4.963525
+    11           29% Temporal Lobe, 5% Insula   7.165230     4.718494
+    12                      91% Temporal Lobe   6.966742     4.588513
+    13  51% Parietal Lobe, 11% Occipital Lobe   7.328836     4.531171
+    14                      91% Parietal Lobe   9.316358     4.497510
+    15                      76% Temporal Lobe   9.848705     4.442247
+    16                       48% Frontal Lobe   8.877041     4.400275
+    17                         96% Cerebellum   8.999326     4.288485
+    18                       3% Temporal Lobe  10.201032     4.171051
+    19                           32% Thalamus   6.516204     4.038171
+    20                         97% Cerebellum   6.354745     4.032904
+    21                       46% Frontal Lobe   9.863806     4.011300
+    22                       7% Parietal Lobe   5.040805     3.999138
+    23                      90% Temporal Lobe   6.093332     3.918589
+    24                        No label found!   8.933851     3.746942
     
 
 
 
-Volcanoes
-.........
+Introducing: the FMRI fountain
+..............................
 
 In many high-throughput sciences it has become customary to visualise
 potential discoveries in the form of volcano plots. A volcano plot shows
 the observed effects (as a surrogate for the biological significance) on
 the x-axis and a transformation of the respective p-values of the
-effects (namely :math:`-\log_{10}(p)` as a surrogate for statistical
-significance) on the y-axis. Let us create such a plot for the peaks of
-the t-statistics field. Note that as we are only looking »into one
-direction«, the plot will look more like a fountain rather than a
-volcano.
+effects (as a surrogate for statistical significance) on the y-axis. Let
+us create such a plot for the peaks of the t-statistics field. Note that
+as we are only looking »into one direction«, the plot will look more
+like a *fountain* rather than a volcano.
 
 The following plot shows the estimated, task related BOLD effect of all
 peaks in the entire t-statistic field in ATI units on the x-axis, and
@@ -644,7 +658,6 @@ coloured.
     fig, ax = pt.subplots(figsize=(8,8))
     ax.axhline(fdrline, ls='--', c='k', lw=.9)
     ax.scatter(all_bvalues, all_pt, marker='.', c='k')
-    ax.scatter(df.BOLD, df.pt, marker='*', c='k')
     
     # highest peak in each connected component
     for entry in df.itertuples():
@@ -662,10 +675,16 @@ coloured.
             horizontalalignment='right', verticalalignment='bottom')
 
 
-.. image:: figures/thresholding_figure18_1.png
+.. image:: figures/thresholding_figure20_1.png
    :width: 15 cm
 
 
 
 In particular the exposed position of the top right discoveries suggest
 high reliability.
+
+We also see in the plot that there is a peak in the brain that shows a
+strong BOLD effect with high suggested statistical significance that
+either lies within a component that is smaller than our originally,
+forced :math:`100 \text{mm}^3` threshold or within a component with a
+more prominent peak.

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Subject inference (at one coordinate) &mdash; fmristats 0.0.6 documentation</title>
+  <title>Subject analysis: Inference at a single coordinate &mdash; fmristats 0.1.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Thresholding" href="thresholding.html" />
-    <link rel="prev" title="Population inference (adjust for covariates)" href="population-inference-covariates.html" /> 
+    <link rel="next" title="Population inference: Create a sample for further analysis" href="population-inference-preliminaries.html" />
+    <link rel="prev" title="Subject analysis: Prune a statistics field from non-brain areas" href="subject-remove-non-brain-areas.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0
+                0.1
               </div>
             
           
@@ -83,27 +83,22 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference (adjust for covariates)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Subject inference (at one coordinate)</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Subject analysis: Inference at a single coordinate</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#create-the-model">Create the model</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#query-information">Query information</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#fit-the-model">Fit the model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#remove-non-brain-areas-from-the-parameter-fields-prune">Remove non-brain areas from the parameter fields (prune)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#find-the-highest-peak-of-neuronal-activity">Find the highest peak of neuronal activity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#scatter-plot-of-fmri-data">Scatter plot of FMRI data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#fit-different-models-to-the-data-at-these-coordinates">Fit different models to the data at these coordinates</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#model-1-task-block">Model 1: task/block</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#model-2-time-task">Model 2: time+task</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#model-3-bs-time-df-12">Model 3: bs(time, df=12)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#select-the-highest-peak-in-the-t-field">Select the highest peak in the t-field</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-scatter-plot-of-fmri-data-around-a-coordinate">Create a scatter plot of FMRI data around a coordinate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fit-different-models-to-the-data-at-the-coordinate">Fit different models to the data at the coordinate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-1-fully-saturated-and-nested-task-block-design">Model 1: fully saturated and nested task/block design</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-2-linear-in-time-and-task">Model 2: linear in time and task</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#model-3-b-spline-model-with-12-degrees-of-freedom">Model 3: b-spline model with 12 degrees of freedom</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#plot-the-fitted-regression-surfaces">Plot the fitted regression surfaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#durbin-watson">Durbin-Watson</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#formal-testing">Formal testing</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#effect-strength">Effect strength</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#test-statistic">Test statistic</a></li>
@@ -112,19 +107,13 @@
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -173,7 +162,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Subject inference (at one coordinate)</li>
+      <li>Subject analysis: Inference at a single coordinate</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -192,33 +181,19 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="subject-inference-at-one-coordinate">
-<h1>Subject inference (at one coordinate)<a class="headerlink" href="#subject-inference-at-one-coordinate" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="subject-analysis-inference-at-a-single-coordinate">
+<span id="subject-inference"></span><h1>Subject analysis: Inference at a single coordinate<a class="headerlink" href="#subject-analysis-inference-at-a-single-coordinate" title="Permalink to this headline">¶</a></h1>
 <p>A signal model has been fitted to FMRI session data:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> \
-    <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> \
-    <span class="o">--</span><span class="n">paradigm</span> <span class="n">WGT</span> \
-    <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">-</span><span class="n">s</span>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span>
+
+<span class="n">fsl4prune</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p>Or, say in MNI standard space:</p>
-<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">sample</span><span class="o">.</span><span class="n">pkl</span> <span class="o">-</span><span class="n">v</span> \
-    <span class="o">--</span><span class="n">cohort</span> <span class="n">AGB300</span> \
-    <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span> \
-    <span class="o">--</span><span class="n">paradigm</span> <span class="n">WGT</span> \
-    <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span> \
-    <span class="o">--</span><span class="n">vb</span> <span class="n">mni152</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">ants</span> \
-    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span>
-</pre></div>
-</div>
-<p>This is indeed the command line equivalent to the following python code:</p>
+<p>The Python interface will usually give you some further flexibility.</p>
 <div class="section" id="create-the-model">
 <h2>Create the model<a class="headerlink" href="#create-the-model" title="Permalink to this headline">¶</a></h2>
-<p>Load the data.</p>
+<p>Load the FMRI data, the head movements, and the population map from disk:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
-<span class="kn">from</span> <span class="nn">fmristats.pmap</span> <span class="k">import</span> <span class="n">pmap_reference</span>
 
 <span class="c1"># the FMRI data</span>
 <span class="n">session</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_session</span><span class="p">)</span>
@@ -226,35 +201,39 @@
 <span class="c1"># the fitted head movements (reference maps)</span>
 <span class="n">reference_maps</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_reference_maps</span><span class="p">)</span>
 
-<span class="c1"># set the standard space equal to the mean position of the subject in</span>
-<span class="c1"># the scanner and the diffeomorphism to the identity.</span>
-<span class="n">population_map</span> <span class="o">=</span> <span class="n">pmap_reference</span><span class="p">(</span><span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mf">2.</span><span class="p">)</span>
+<span class="c1"># smooth out the movement estimates a little</span>
+<span class="n">reference_maps</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">reference_maps</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">reference_maps</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="c1"># alternatively load a diffeomorphism from disk</span>
+<span class="c1"># load a diffeomorphism from disk</span>
 <span class="n">population_map</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="n">path_to_population_map</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Create a signal model instance</p>
+<p>Create the model: Set the stimulus design in the model, set the
+MRI-observations, and set the only(!) hyperparameter of the
+MB-estimator, namely the curvature of the spatial weighting kernel.</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">SignalModel</span><span class="p">(</span>
     <span class="n">session</span><span class="o">=</span><span class="n">session</span><span class="p">,</span>
     <span class="n">reference_maps</span><span class="o">=</span><span class="n">reference_maps</span><span class="p">,</span>
     <span class="n">population_map</span><span class="o">=</span><span class="n">population_map</span><span class="p">)</span>
 
-<span class="c1"># create the design matrix of subject conditioning</span>
-<span class="n">model</span><span class="o">.</span><span class="n">create_irritation_design</span><span class="p">(</span>
+<span class="n">model</span><span class="o">.</span><span class="n">set_stimulus_design</span><span class="p">(</span>
         <span class="n">s</span><span class="o">=</span><span class="s1">&#39;letter&#39;</span><span class="p">,</span>
         <span class="n">c</span><span class="o">=</span><span class="s1">&#39;control&#39;</span><span class="p">,</span>
         <span class="n">offset</span><span class="o">=</span><span class="mf">5.242</span><span class="p">,</span>
         <span class="n">preset</span><span class="o">=</span><span class="mf">1.42</span><span class="p">)</span>
 
-<span class="c1"># create the data matrix, setting a burn in of 4 scan cycles</span>
-<span class="n">model</span><span class="o">.</span><span class="n">create_data_matrix</span><span class="p">(</span><span class="n">burn_in</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># discard the data of the first four scan cycles</span>
+<span class="n">model</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">burn_in</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 
-<span class="c1"># set the FWHM of the weighting scheme to the default value</span>
+<span class="c1"># set the width of the Gaussian kernel that is used for spatial</span>
+<span class="c1"># weighting</span>
 <span class="n">model</span><span class="o">.</span><span class="n">set_hyperparameters</span><span class="p">(</span><span class="s1">&#39;max&#39;</span><span class="p">)</span>
-
-<span class="c1"># save the model to disk (if you like)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;interim-results/subject.model&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save the model to disk (if you like):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;subject.model&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -262,202 +241,102 @@
 <h2>Query information<a class="headerlink" href="#query-information" title="Permalink to this headline">¶</a></h2>
 <p>Get some information about the FMRI data:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">reference_maps</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">reference_maps</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Resolution</span> <span class="p">(</span><span class="n">left</span> <span class="n">to</span> <span class="n">right</span><span class="p">):</span>         <span class="mf">3.00</span> <span class="n">mm</span>
-<span class="n">Resolution</span> <span class="p">(</span><span class="n">posterior</span> <span class="n">to</span> <span class="n">anterior</span><span class="p">):</span> <span class="mf">3.00</span> <span class="n">mm</span>
-<span class="n">Resolution</span> <span class="p">(</span><span class="n">inferior</span> <span class="n">to</span> <span class="n">superior</span><span class="p">):</span>  <span class="mf">4.60</span> <span class="n">mm</span>
-<span class="n">Diagonal</span> <span class="n">of</span> <span class="n">one</span> <span class="n">voxel</span><span class="p">:</span>              <span class="mf">6.26</span> <span class="n">mm</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Resolution</span> <span class="p">(</span><span class="n">left</span> <span class="n">to</span> <span class="n">right</span><span class="p">):</span>          <span class="mf">3.00</span> <span class="n">mm</span>
+<span class="n">Resolution</span> <span class="p">(</span><span class="n">posterior</span> <span class="n">to</span> <span class="n">anterior</span><span class="p">):</span>  <span class="mf">3.00</span> <span class="n">mm</span>
+<span class="n">Resolution</span> <span class="p">(</span><span class="n">inferior</span> <span class="n">to</span> <span class="n">superior</span><span class="p">):</span>   <span class="mf">4.60</span> <span class="n">mm</span>
+<span class="n">Diagonal</span> <span class="n">of</span> <span class="n">one</span> <span class="n">voxel</span><span class="p">:</span>               <span class="mf">6.26</span> <span class="n">mm</span>
 <span class="n">Volume</span> <span class="n">of</span> <span class="n">one</span> <span class="n">voxel</span><span class="p">:</span>                <span class="mf">41.40</span> <span class="n">mm</span><span class="o">^</span><span class="mi">3</span>
-<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">1</span><span class="p">:</span>                      <span class="mf">1.00</span>
-<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                      <span class="mf">0.65</span>
-<span class="n">Aspect</span> <span class="mi">1</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                      <span class="mf">0.65</span>
-<span class="n">Rigid</span> <span class="n">transformation</span><span class="p">:</span> <span class="kc">False</span>
+<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">1</span><span class="p">:</span>                       <span class="mf">1.00</span>
+<span class="n">Aspect</span> <span class="mi">0</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                       <span class="mf">0.65</span>
+<span class="n">Aspect</span> <span class="mi">1</span> <span class="n">on</span> <span class="mi">2</span><span class="p">:</span>                       <span class="mf">0.65</span>
+
+<span class="n">EPI</span> <span class="n">code</span><span class="p">:</span> <span class="mi">3</span>
 
 <span class="n">Scans</span><span class="p">:</span>        <span class="mi">6900</span>
 <span class="n">Valid</span><span class="p">:</span>        <span class="mi">6900</span>
 <span class="n">Outlying</span><span class="p">:</span>        <span class="mi">0</span> <span class="p">(</span><span class="mf">0.00</span><span class="o">%</span><span class="p">)</span>
+
 <span class="n">Scan</span> <span class="n">cycles</span><span class="p">:</span>   <span class="mi">230</span>
 <span class="n">Valid</span><span class="p">:</span>         <span class="mi">230</span>
 <span class="n">Outlying</span><span class="p">:</span>        <span class="mi">0</span> <span class="p">(</span><span class="mf">0.00</span><span class="o">%</span><span class="p">)</span>
-
-
-<span class="n">EPI</span> <span class="n">code</span><span class="p">:</span> <span class="mi">3</span>
 </pre></div>
 </div>
 <p>Get some information about the model:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Hyperparameters</span>
-<span class="o">---------------</span>
-<span class="n">Scale</span> <span class="nb">type</span><span class="p">:</span>   <span class="nb">max</span>
-<span class="n">Scale</span><span class="p">:</span>        <span class="mf">2.30</span> <span class="n">mm</span>
-<span class="n">Factor</span><span class="p">:</span>       <span class="mf">3.00</span>
-
-<span class="n">Resulting</span> <span class="ow">in</span><span class="p">:</span>
-    <span class="n">Mass</span><span class="p">:</span>         <span class="mf">0.99730</span>
-    <span class="n">FWHM</span><span class="p">:</span>         <span class="mf">5.42</span> <span class="n">mm</span>
-    <span class="n">Radius</span><span class="p">:</span>       <span class="mf">6.90</span> <span class="n">mm</span>
-    <span class="n">Diagonal</span><span class="p">:</span>     <span class="mf">13.80</span> <span class="n">mm</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">ffa80f5f4bc1</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;model&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="fit-the-model">
 <h2>Fit the model<a class="headerlink" href="#fit-the-model" title="Permalink to this headline">¶</a></h2>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-
-<span class="c1"># save the result to disk (if you like)</span>
-<span class="n">result</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Plot the fields.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">pt</span>
-<span class="kn">import</span> <span class="nn">matplotlib.cm</span> <span class="k">as</span> <span class="nn">cm</span>
-<span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span>
-
-<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
+<p>Save the result to disk (if you like):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s1">&#39;subject.fit&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<p>Prune the statistics field from non-brain areas. You are expected to do
+his manually, as fmristats will usually avoid deleting data:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure10_1.png"><img alt="../_images/subject-inference-at-one-point_figure10_1.png" src="../_images/subject-inference-at-one-point_figure10_1.png" style="width: 15cm;" /></a>
-<p>The effect field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure11_1.png"><img alt="../_images/subject-inference-at-one-point_figure11_1.png" src="../_images/subject-inference-at-one-point_figure11_1.png" style="width: 15cm;" /></a>
-<p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure12_1.png"><img alt="../_images/subject-inference-at-one-point_figure12_1.png" src="../_images/subject-inference-at-one-point_figure12_1.png" style="width: 15cm;" /></a>
-</div>
-<div class="section" id="remove-non-brain-areas-from-the-parameter-fields-prune">
-<h2>Remove non-brain areas from the parameter fields (prune)<a class="headerlink" href="#remove-non-brain-areas-from-the-parameter-fields-prune" title="Permalink to this headline">¶</a></h2>
-<p>Set a threshold for the minimum number of observations that should be
-available for fitting. E.g. set this number to a proportion of the
-maximum available sample size.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gf</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;df&#39;</span><span class="p">)</span>
-<span class="n">proportion_df</span> <span class="o">=</span> <span class="o">.</span><span class="mi">6</span>
-<span class="n">threshold_df</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">proportion_df</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">gf</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Lower threshold for the degrees of freedom: </span><span class="si">{:d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">threshold_df</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Apply the threshold:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">gf</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;=</span> <span class="n">threshold_df</span><span class="p">)</span>
-
-<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure15_1.png"><img alt="../_images/subject-inference-at-one-point_figure15_1.png" src="../_images/subject-inference-at-one-point_figure15_1.png" style="width: 15cm;" /></a>
-<p>The effect field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure16_1.png"><img alt="../_images/subject-inference-at-one-point_figure16_1.png" src="../_images/subject-inference-at-one-point_figure16_1.png" style="width: 15cm;" /></a>
-<p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure17_1.png"><img alt="../_images/subject-inference-at-one-point_figure17_1.png" src="../_images/subject-inference-at-one-point_figure17_1.png" style="width: 15cm;" /></a>
-<p>If you like, also apply BET on the intercept.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats.fsl</span> <span class="k">import</span> <span class="n">bet</span>
-
-<span class="n">template</span> <span class="o">=</span> <span class="n">bet</span><span class="p">(</span>
-        <span class="n">intercept</span> <span class="o">=</span> <span class="n">a0</span><span class="p">,</span>
-        <span class="n">intercept_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept.nii.gz&#39;</span><span class="p">,</span>
-        <span class="n">mask_file</span> <span class="o">=</span> <span class="s1">&#39;interim-results/intercept-mask.nii.gz&#39;</span><span class="p">,</span>
-        <span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;fsl5.0-bet&#39;</span><span class="p">,</span>
-        <span class="n">verbose</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fsl5</span><span class="o">.</span><span class="mi">0</span><span class="o">-</span><span class="n">bet</span>
-  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
-  <span class="n">interim</span><span class="o">-</span><span class="n">results</span><span class="o">/</span><span class="n">intercept</span><span class="o">-</span><span class="n">mask</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span>
-  <span class="o">-</span><span class="n">R</span>
-</pre></div>
-</div>
-<p>Apply the mask:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span><span class="o">.</span><span class="n">mask</span><span class="p">(</span><span class="n">template</span><span class="o">.</span><span class="n">get_mask</span><span class="p">())</span>
-
-<span class="n">a0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;intercept&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">b0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span><span class="s1">&#39;point&#39;</span><span class="p">)</span>
-<span class="n">t0</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The intercept:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">a0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure20_1.png"><img alt="../_images/subject-inference-at-one-point_figure20_1.png" src="../_images/subject-inference-at-one-point_figure20_1.png" style="width: 15cm;" /></a>
-<p>The effect field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">b0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure21_1.png"><img alt="../_images/subject-inference-at-one-point_figure21_1.png" src="../_images/subject-inference-at-one-point_figure21_1.png" style="width: 15cm;" /></a>
-<p>The pattern of neuronal activity:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure22_1.png"><img alt="../_images/subject-inference-at-one-point_figure22_1.png" src="../_images/subject-inference-at-one-point_figure22_1.png" style="width: 15cm;" /></a>
-</div>
-<div class="section" id="find-the-highest-peak-of-neuronal-activity">
-<h2>Find the highest peak of neuronal activity<a class="headerlink" href="#find-the-highest-peak-of-neuronal-activity" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="select-the-highest-peak-in-the-t-field">
+<h2>Select the highest peak in the t-field<a class="headerlink" href="#select-the-highest-peak-in-the-t-field" title="Permalink to this headline">¶</a></h2>
 <p>Select the highest peak in the t-statistics field:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">peak</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanargmax</span><span class="p">(</span><span class="n">t0</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
-<span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">peak</span><span class="p">,</span> <span class="n">t0</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tstatistics</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;tstatistic&#39;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+<span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unravel_index</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanargmax</span><span class="p">(</span><span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="p">),</span> <span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="n">coordinate</span> <span class="o">=</span> <span class="n">tstatistics</span><span class="o">.</span><span class="n">apply_to_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    index in the image :          </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">    coordinate in standard space: </span><span class="si">{}</span><span class="s2"></span>
+<span class="s2">    hight of the peak:            </span><span class="si">{:.2f}</span><span class="s2">&quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+        <span class="n">index</span><span class="p">,</span> <span class="n">coordinate</span><span class="p">,</span> <span class="n">tstatistics</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]))</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">index</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">image</span> <span class="p">:</span>          <span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">coordinate</span> <span class="ow">in</span> <span class="n">standard</span> <span class="n">space</span><span class="p">:</span> <span class="p">[</span> <span class="mf">12.</span> <span class="o">-</span><span class="mf">80.</span>   <span class="mf">8.</span><span class="p">]</span>
+<span class="n">hight</span> <span class="n">of</span> <span class="n">the</span> <span class="n">peak</span><span class="p">:</span>            <span class="mf">7.64</span>
 </pre></div>
 </div>
-<p>Plot the respective slice:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">picture</span><span class="p">(</span><span class="n">t0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
+<p>Plot the respective horizontal slice that goes through the above peak:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats.plot</span> <span class="k">import</span> <span class="n">picture</span>
+
+<span class="n">picture</span><span class="p">(</span><span class="n">tstatistics</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,[</span><span class="n">index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span>
     <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">,</span> <span class="n">mark_peak</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">t0</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">7.9078320395958235</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure24_1.png"><img alt="../_images/subject-inference-at-one-point_figure24_1.png" src="../_images/subject-inference-at-one-point_figure24_1.png" style="width: 15cm;" /></a>
-<p>Find the coordinates of the peak in standard space:</p>
+<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure13_1.png"><img alt="../_images/subject-inference-at-one-point_figure13_1.png" src="../_images/subject-inference-at-one-point_figure13_1.png" style="width: 15cm;" /></a>
+<p>Find out the name of standard space, so that you may use a query tool to
+find the region to which this coordinate belongs:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">population_map</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span>
-
-<span class="n">coordinate</span> <span class="o">=</span> <span class="n">t0</span><span class="o">.</span><span class="n">apply_to_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">coordinate</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Population</span> <span class="nb">map</span>
-        <span class="o">--------------</span>
-        <span class="n">name</span><span class="p">:</span>          <span class="n">ants</span>
-        <span class="n">vb</span><span class="p">:</span>            <span class="n">MNI152_T1_2mm_brain</span>
-        <span class="n">nb</span><span class="p">:</span>            <span class="n">AGB300</span><span class="o">-</span><span class="mi">0002</span><span class="o">-</span><span class="n">WGT</span>
-        <span class="n">vb_background</span><span class="p">:</span> <span class="n">MNI152_T1_2mm</span>
-        <span class="n">nb_background</span><span class="p">:</span> <span class="o">--</span>
-        <span class="n">vb_estimate</span><span class="p">:</span>   <span class="n">vb_estimate</span>
-        <span class="n">nb_estimate</span><span class="p">:</span>   <span class="n">nb_estimate</span>
-        <span class="n">vb_mask</span><span class="p">:</span>       <span class="o">--</span>
-        <span class="n">nb_mask</span><span class="p">:</span>       <span class="o">--</span>
-        <span class="n">vb_ati</span><span class="p">:</span>        <span class="o">--</span>
-<span class="p">[</span> <span class="mf">12.</span> <span class="o">-</span><span class="mf">80.</span>   <span class="mf">8.</span><span class="p">]</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Population</span> <span class="nb">map</span>
+<span class="o">--------------</span>
+<span class="n">diffeomorphism</span><span class="p">:</span> <span class="n">ants</span>
+<span class="n">vb</span><span class="p">:</span>             <span class="n">mni152</span>
+<span class="n">nb</span><span class="p">:</span>             <span class="n">AGB300</span><span class="o">-</span><span class="mi">0002</span><span class="o">-</span><span class="n">WGT</span><span class="o">-</span><span class="mi">42</span>
+<span class="n">vb_background</span><span class="p">:</span>  <span class="n">mni152</span><span class="o">-</span><span class="n">t1</span>
+<span class="n">nb_background</span><span class="p">:</span>  <span class="o">--</span>
+<span class="n">vb_estimate</span><span class="p">:</span>    <span class="n">vb_estimate_ants</span>
+<span class="n">nb_estimate</span><span class="p">:</span>    <span class="n">nb_estimate_ants</span>
+<span class="n">vb_mask</span><span class="p">:</span>        <span class="o">--</span>
+<span class="n">nb_mask</span><span class="p">:</span>        <span class="o">--</span>
+<span class="n">vb_ati</span><span class="p">:</span>         <span class="o">--</span>
 </pre></div>
 </div>
 <p>Use the <code class="docutils literal notranslate"><span class="pre">atlasquery</span></code> tool from the FSL project to see to which
@@ -468,30 +347,50 @@ structure these coordinates belong:</p>
 </pre></div>
 </div>
 </div>
-<div class="section" id="scatter-plot-of-fmri-data">
-<h2>Scatter plot of FMRI data<a class="headerlink" href="#scatter-plot-of-fmri-data" title="Permalink to this headline">¶</a></h2>
-<p>Extract the data at the index.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">data_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-<span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
-<span class="n">data</span><span class="o">.</span><span class="n">shape</span>
+<div class="section" id="create-a-scatter-plot-of-fmri-data-around-a-coordinate">
+<h2>Create a scatter plot of FMRI data around a coordinate<a class="headerlink" href="#create-a-scatter-plot-of-fmri-data-around-a-coordinate" title="Permalink to this headline">¶</a></h2>
+<p>Extract the data at the index:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">data_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">c527cbf14634</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">data</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">data_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="mi">3</span><span class="p">:]</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;model&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
+</div>
+<p>Some information about the number of blocks and block labels of the
+stimulus design:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Task labels</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Task labels:               </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">task</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
 
 <span class="c1"># Block labels and number of blocks</span>
-<span class="n">data</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="n">data</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">size</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of blocks: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Block labels:              </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">unique</span><span class="p">()))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of blocks per task: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">block</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 
-<span class="c1"># Cycles which are within task blocks and their total number</span>
-<span class="n">data</span><span class="o">.</span><span class="n">cycle</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
-<span class="n">data</span><span class="o">.</span><span class="n">cycle</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span><span class="o">.</span><span class="n">size</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of slices: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">cycle</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
+<span class="c1"># Scan cycles within task blocks and their total number</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Number of scan cycles:     </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">cycle</span><span class="o">.</span><span class="n">unique</span><span class="p">())))</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Number</span> <span class="n">of</span> <span class="n">blocks</span><span class="p">:</span> <span class="mi">8</span>
-<span class="n">Number</span> <span class="n">of</span> <span class="n">slices</span><span class="p">:</span> <span class="mi">94</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">2</span><span class="n">cc65dee225a</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+      <span class="mi">1</span> <span class="c1"># Task labels</span>
+<span class="o">----&gt;</span> <span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Task labels:</span>
+<span class="p">{}</span><span class="s1">&#39;.format(data.task.unique()))</span>
+      <span class="mi">3</span>
+      <span class="mi">4</span> <span class="c1"># Block labels and number of blocks</span>
+      <span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Block labels:</span>
+<span class="p">{}</span><span class="s1">&#39;.format(data.block.unique()))</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;data&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
-<p>Define a scale <span class="math notranslate nohighlight">\(w\)</span> for the weights for visualisation and order
-the observations by time.</p>
+<p>For visualisation, define a suitable scale for the scatters in relation
+to their distance to <span class="math notranslate nohighlight">\(x\)</span>, and order the MRI-observations by time
+of acquisition:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
 <span class="n">elem</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span><span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
@@ -500,70 +399,124 @@ the observations by time.</p>
 <span class="n">w</span> <span class="o">=</span> <span class="o">.</span><span class="mi">87</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">w</span><span class="o">+</span><span class="mf">1.069</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Define plotting parameters.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
-<span class="n">sb</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">([</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">,</span> <span class="s1">&#39;seaborn-colorblind&#39;</span><span class="p">])</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">1</span><span class="n">ca6bb202c48</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span> <span class="o">-</span> <span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+      <span class="mi">2</span> <span class="n">elem</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">count</span> <span class="o">=</span>
+<span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span><span class="n">return_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+      <span class="mi">3</span>
+      <span class="mi">4</span> <span class="n">w</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">weight</span>
+      <span class="mi">5</span> <span class="n">w</span> <span class="o">=</span> <span class="p">(</span><span class="n">w</span><span class="o">-</span><span class="n">w</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">/</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">-</span><span class="n">w</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;data&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
-<p>Time series plot.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+<p>Create the scatter plot (click the image to enlarge):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">pt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sb</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;whitegrid&#39;</span><span class="p">)</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">([</span><span class="s1">&#39;seaborn-whitegrid&#39;</span><span class="p">,</span> <span class="s1">&#39;seaborn-colorblind&#39;</span><span class="p">])</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MR Signal&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 <span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure29_1.png"><img alt="../_images/subject-inference-at-one-point_figure29_1.png" src="../_images/subject-inference-at-one-point_figure29_1.png" style="width: 15cm;" /></a>
-<p>(Click image to enlarge.)</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">9</span><span class="n">cdfea7cd4f0</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+      <span class="mi">5</span>
+      <span class="mi">6</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+<span class="o">----&gt;</span> <span class="mi">7</span> <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+      <span class="mi">8</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;MR Signal&#39;</span><span class="p">)</span>
+      <span class="mi">9</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;data&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
 </div>
-<div class="section" id="fit-different-models-to-the-data-at-these-coordinates">
-<h2>Fit different models to the data at these coordinates<a class="headerlink" href="#fit-different-models-to-the-data-at-these-coordinates" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="model-1-task-block">
-<h3>Model 1: task/block<a class="headerlink" href="#model-1-task-block" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model1</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
-<span class="n">fit1</span> <span class="o">=</span> <span class="n">model1</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure18_1.png"><img alt="../_images/subject-inference-at-one-point_figure18_1.png" src="../_images/subject-inference-at-one-point_figure18_1.png" style="width: 15cm;" /></a>
+</div>
+<div class="section" id="fit-different-models-to-the-data-at-the-coordinate">
+<h2>Fit different models to the data at the coordinate<a class="headerlink" href="#fit-different-models-to-the-data-at-the-coordinate" title="Permalink to this headline">¶</a></h2>
+<p>fmristats is very flexible when it comes to defining models for your
+FMRI data. In deed, you have the full power of <a class="reference external" href="https://patsy.readthedocs.io/en/latest/">patsy</a> at your disposal.</p>
+<div class="section" id="model-1-fully-saturated-and-nested-task-block-design">
+<h3>Model 1: fully saturated and nested task/block design<a class="headerlink" href="#model-1-fully-saturated-and-nested-task-block-design" title="Permalink to this headline">¶</a></h3>
+<p>This is a very parsimonious and robust model for FMRI and it is the
+default as well as the generally recommended model when using fmristats.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit1</span><span class="p">,</span> <span class="n">model1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~C(task)/C(block, Sum)&#39;</span><span class="p">)</span>
+
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;w1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">wresid</span>
 <span class="n">predict1</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
 </pre></div>
 </div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">bda2729de7d1</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">fit1</span><span class="p">,</span> <span class="n">model1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+      <span class="mi">2</span>     <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~C(task)/C(block, Sum)&#39;</span><span class="p">)</span>
+      <span class="mi">3</span>
+      <span class="mi">4</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+      <span class="mi">5</span> <span class="n">predict1</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;model&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
 </div>
-<div class="section" id="model-2-time-task">
-<h3>Model 2: time+task<a class="headerlink" href="#model-2-time-task" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model2</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;y~time+C(task)&#39;</span><span class="p">)</span>
-<span class="n">fit2</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+</div>
+<div class="section" id="model-2-linear-in-time-and-task">
+<h3>Model 2: linear in time and task<a class="headerlink" href="#model-2-linear-in-time-and-task" title="Permalink to this headline">¶</a></h3>
+<p>This appears to be a common model. Note, however, that the model is
+unable to account for nested effects which typically will increase the
+residual mean squared error of the fit, thus, reducing your power.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit2</span><span class="p">,</span> <span class="n">model2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~time+C(task)&#39;</span><span class="p">)</span>
+
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit2</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;w2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit2</span><span class="o">.</span><span class="n">wresid</span>
 <span class="n">predict2</span> <span class="o">=</span> <span class="n">fit2</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
-
-<span class="n">t</span> <span class="o">=</span> <span class="n">model2</span><span class="o">.</span><span class="n">exog</span><span class="p">[:,</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">t</span> <span class="o">=</span> <span class="n">t</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
-
-<span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span> <span class="o">==</span> <span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kc">True</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">e0a8f343a3ed</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">fit2</span><span class="p">,</span> <span class="n">model2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+      <span class="mi">2</span>     <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~time+C(task)&#39;</span><span class="p">)</span>
+      <span class="mi">3</span>
+      <span class="mi">4</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit2</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+      <span class="mi">5</span> <span class="n">predict2</span> <span class="o">=</span> <span class="n">fit2</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;model&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="model-3-bs-time-df-12">
-<h3>Model 3: bs(time, df=12)<a class="headerlink" href="#model-3-bs-time-df-12" title="Permalink to this headline">¶</a></h3>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model3</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">model_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span><span class="n">formula</span><span class="o">=</span><span class="s1">&#39;y~bs(time,df=12)+C(task)&#39;</span><span class="p">)</span>
-<span class="n">fit3</span> <span class="o">=</span> <span class="n">model3</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<div class="section" id="model-3-b-spline-model-with-12-degrees-of-freedom">
+<h3>Model 3: b-spline model with 12 degrees of freedom<a class="headerlink" href="#model-3-b-spline-model-with-12-degrees-of-freedom" title="Permalink to this headline">¶</a></h3>
+<p>This model is insanely flexible and may be used as an example to show
+the effects of over-fitting.</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fit3</span><span class="p">,</span> <span class="n">model3</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~bs(time,df=12)+C(task)&#39;</span><span class="p">)</span>
+
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit3</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
-<span class="n">data</span><span class="p">[</span><span class="s1">&#39;w3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit3</span><span class="o">.</span><span class="n">wresid</span>
 <span class="n">predict3</span> <span class="o">=</span> <span class="n">fit3</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">45</span><span class="n">bf433e3bd3</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">fit3</span><span class="p">,</span> <span class="n">model3</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit_at_index</span><span class="p">(</span><span class="n">index</span><span class="p">,</span>
+      <span class="mi">2</span>     <span class="n">formula</span><span class="o">=</span><span class="s1">&#39;signal~bs(time,df=12)+C(task)&#39;</span><span class="p">)</span>
+      <span class="mi">3</span>
+      <span class="mi">4</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;y3&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit3</span><span class="o">.</span><span class="n">predict</span><span class="p">()</span>
+      <span class="mi">5</span> <span class="n">predict3</span> <span class="o">=</span> <span class="n">fit3</span><span class="o">.</span><span class="n">predict</span><span class="p">()[</span><span class="n">idx</span><span class="p">]</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;model&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="plot-the-fitted-regression-surfaces">
 <h2>Plot the fitted regression surfaces<a class="headerlink" href="#plot-the-fitted-regression-surfaces" title="Permalink to this headline">¶</a></h2>
-<p>Create a plot of the fitted regression surfaces.</p>
+<p>Plot of the fitted regression surfaces (click image to enlarge):</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">current_palette</span> <span class="o">=</span> <span class="n">sb</span><span class="o">.</span><span class="n">color_palette</span><span class="p">()</span>
-<span class="c1">#sb.palplot(current_palette)</span>
 <span class="n">c1</span> <span class="o">=</span> <span class="n">current_palette</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">c2</span> <span class="o">=</span> <span class="n">current_palette</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 <span class="n">c3</span> <span class="o">=</span> <span class="n">current_palette</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
@@ -578,12 +531,9 @@ the observations by time.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
 <span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
 <span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure33_1.png"><img alt="../_images/subject-inference-at-one-point_figure33_1.png" src="../_images/subject-inference-at-one-point_figure33_1.png" style="width: 15cm;" /></a>
-<p>(Click image to enlarge.)</p>
-<p>Add block labels.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">positions</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1">#Add block labels:</span>
+<span class="n">positions</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="n">positions</span> <span class="o">=</span> <span class="n">positions</span><span class="p">[[</span><span class="s1">&#39;time&#39;</span><span class="p">,</span><span class="s1">&#39;y1&#39;</span><span class="p">,</span><span class="s1">&#39;y2&#39;</span><span class="p">,</span><span class="s1">&#39;y3&#39;</span><span class="p">]]</span>
 <span class="n">positions</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">positions</span><span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="s1">&#39;block&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -602,18 +552,6 @@ the observations by time.</p>
 <span class="n">a</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 <span class="n">b</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span>
 
-<span class="n">pt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="c1">#, label=&#39;mean signal in A&#39;)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="c1">#, label=&#39;mean signal in B&#39;)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict1</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c1</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;task/block&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict2</span><span class="p">,</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c2</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;task+time&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict3</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c3</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">9</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;task+bs(time,df=12)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Expected Signal as Predicted by Model&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
-<span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">positions</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">task</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span>
         <span class="n">label</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$B_</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">block</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
@@ -622,32 +560,62 @@ the observations by time.</p>
     <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">time</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">value</span><span class="o">+.</span><span class="mi">5</span><span class="p">))</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure34_1.png"><img alt="../_images/subject-inference-at-one-point_figure34_1.png" src="../_images/subject-inference-at-one-point_figure34_1.png" style="width: 15cm;" /></a>
-<p>(Click image to enlarge.)</p>
-</div>
-<div class="section" id="durbin-watson">
-<h2>Durbin-Watson<a class="headerlink" href="#durbin-watson" title="Permalink to this headline">¶</a></h2>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dw</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_field</span><span class="p">(</span><span class="s1">&#39;durbin_watson&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Durbin-Watson at the coordinates of the peak:</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dw</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
-</pre></div>
-</div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.9064023355229434</span>
-</pre></div>
-</div>
-<p>Plot.</p>
-<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sb</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
-<span class="n">pt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">([</span><span class="s1">&#39;seaborn-white&#39;</span><span class="p">,</span> <span class="s1">&#39;seaborn-colorblind&#39;</span><span class="p">])</span>
+<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure22_1.png"><img alt="../_images/subject-inference-at-one-point_figure22_1.png" src="../_images/subject-inference-at-one-point_figure22_1.png" style="width: 15cm;" /></a>
+<p>You may also combine the two plots (click image to enlarge):</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">figw</span> <span class="o">=</span> <span class="mf">11.842</span>
+<span class="n">figh</span> <span class="o">=</span> <span class="mf">5.442</span>
 
-<span class="n">dw</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">dw</span><span class="o">.</span><span class="n">data</span> <span class="o">-</span> <span class="mi">2</span>
+<span class="n">figw</span> <span class="o">=</span> <span class="mf">11.842</span>
+<span class="n">figh</span> <span class="o">=</span> <span class="mf">7.442</span>
 
-<span class="n">picture</span><span class="p">(</span><span class="n">dw</span><span class="p">,</span><span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;bilinear&#39;</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">fit1</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">a</span>
+
+<span class="n">left</span>       <span class="o">=</span> <span class="mf">0.1</span>
+<span class="n">right</span>      <span class="o">=</span> <span class="mf">0.95</span>
+<span class="n">maintop</span>    <span class="o">=</span> <span class="mf">0.99</span>
+<span class="n">mainbottom</span> <span class="o">=</span> <span class="mf">0.38</span>
+<span class="n">meantop</span>    <span class="o">=</span> <span class="mf">0.36</span>
+<span class="n">meanbottom</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+<span class="n">pt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="n">figw</span><span class="p">,</span><span class="n">figh</span><span class="p">))</span>
+
+<span class="c1"># The top figure:</span>
+<span class="n">main_ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="n">left</span><span class="p">,</span><span class="n">mainbottom</span><span class="p">,</span><span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="p">,</span><span class="n">maintop</span><span class="o">-</span><span class="n">mainbottom</span><span class="p">])</span>
+<span class="n">mean_ax</span> <span class="o">=</span> <span class="n">pt</span><span class="o">.</span><span class="n">axes</span><span class="p">([</span><span class="n">left</span><span class="p">,</span><span class="n">meanbottom</span><span class="p">,</span><span class="n">right</span><span class="o">-</span><span class="n">left</span><span class="p">,</span><span class="n">meantop</span><span class="o">-</span><span class="n">meanbottom</span><span class="p">],</span>
+    <span class="n">sharex</span><span class="o">=</span><span class="n">main_ax</span><span class="p">)</span>
+<span class="n">main_ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">time</span><span class="p">,</span><span class="n">data</span><span class="o">.</span><span class="n">signal</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span><span class="n">s</span><span class="o">=</span><span class="n">w</span><span class="p">,</span><span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">main_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Observed MR Signal&#39;</span><span class="p">)</span>
+<span class="n">main_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict1</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c1</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;task/block&#39;</span><span class="p">)</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">setp</span><span class="p">(</span><span class="n">main_ax</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">(),</span><span class="n">visible</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># The bottom figure:</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="c1">#, label=&#39;mean signal in A&#39;)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span><span class="c1">#, label=&#39;mean signal in B&#39;)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict1</span><span class="p">,</span><span class="s1">&#39;-&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c1</span><span class="p">,</span><span class="n">lw</span><span class="o">=</span><span class="mf">1.2</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;task/block [fully saturated]&#39;</span><span class="p">)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict2</span><span class="p">,</span><span class="s1">&#39;--&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c2</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;task+time [linear in time]&#39;</span><span class="p">)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span><span class="n">predict3</span><span class="p">,</span><span class="s1">&#39;:&#39;</span><span class="p">,</span><span class="n">c</span><span class="o">=</span><span class="n">c3</span><span class="p">,</span><span class="n">lw</span><span class="o">=.</span><span class="mi">8</span><span class="p">,</span>
+        <span class="n">label</span><span class="o">=</span><span class="s1">&#39;task+bs(time,df=12) [high temporal flexibility]&#39;</span><span class="p">)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Estimated Mean</span><span class="se">\n</span><span class="s1">by Model&#39;</span><span class="p">)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Time (s)&#39;</span><span class="p">)</span>
+<span class="n">mean_ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.43</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1">#Add block labels:</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">positions</span><span class="o">.</span><span class="n">itertuples</span><span class="p">():</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">task</span><span class="p">,</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$B_</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">block</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;$A_</span><span class="si">{}</span><span class="s1">$&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">block</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">mean_ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">time</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="o">.</span><span class="n">value</span><span class="o">+</span><span class="mf">1.8</span><span class="p">))</span>
+<span class="n">sb</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>
+
+<span class="c1"># Save the plot to disk:</span>
+<span class="n">pt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">scatter_plot</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../_images/subject-inference-at-one-point_figure38_1.png"><img alt="../_images/subject-inference-at-one-point_figure38_1.png" src="../_images/subject-inference-at-one-point_figure38_1.png" style="width: 15cm;" /></a>
-<p>Distribution looks very symmetric with no clear systematic.</p>
 </div>
 <div class="section" id="formal-testing">
 <h2>Formal testing<a class="headerlink" href="#formal-testing" title="Permalink to this headline">¶</a></h2>
@@ -659,9 +627,13 @@ the observations by time.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">15.031309466476994</span>
-<span class="mf">15.045584340232338</span>
-<span class="mf">14.81308071825201</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">47</span><span class="n">fdde1931d2</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit1</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">params</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fit1&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
 </div>
@@ -672,9 +644,13 @@ the observations by time.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">7.682368014451706</span>
-<span class="mf">7.570981561542083</span>
-<span class="mf">4.898837402953446</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">e720ccecbafe</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit1</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">tvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fit1&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
 </div>
@@ -685,28 +661,48 @@ the observations by time.</p>
 <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">2.0436364772462996e-14</span>
-<span class="mf">4.770567259102657e-14</span>
-<span class="mf">1.0102904574328985e-06</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">b66c23901cb5</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit1</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">2</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+      <span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fit1&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
-<p>Test whether time is an influential factor at this coordinate.</p>
+<p>Test whether time is an influential factor in model 2 at this
+coordinate:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-
-<span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">params</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">cbc3ead6feb4</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit2</span><span class="o">.</span><span class="n">pvalues</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fit2&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
+</pre></div>
+</div>
+<p>Test whether time is an influential factor in model 2 at this
+coordinate:</p>
+<div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">params</span><span class="p">))</span>
 <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">:,:]</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">f_test</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.7833649721827338</span>
-<span class="o">&lt;</span><span class="n">F</span> <span class="n">test</span><span class="p">:</span> <span class="n">F</span><span class="o">=</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.96084842</span><span class="p">]]),</span> <span class="n">p</span><span class="o">=</span><span class="mf">0.023899320282703664</span><span class="p">,</span>
-<span class="n">df_denom</span><span class="o">=</span><span class="mi">3310</span><span class="p">,</span> <span class="n">df_num</span><span class="o">=</span><span class="mi">12</span><span class="o">&gt;</span>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">---------------------------------------------------------------------------</span><span class="ne">NameError</span>
+<span class="n">Traceback</span> <span class="p">(</span><span class="n">most</span> <span class="n">recent</span> <span class="n">call</span> <span class="n">last</span><span class="p">)</span><span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">11172</span><span class="n">a5a7815</span><span class="o">&gt;</span> <span class="ow">in</span>
+<span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span><span class="p">()</span>
+<span class="o">----&gt;</span> <span class="mi">1</span> <span class="n">R</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">identity</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">params</span><span class="p">))</span>
+      <span class="mi">2</span> <span class="n">R</span> <span class="o">=</span> <span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">:,:]</span>
+      <span class="mi">3</span> <span class="nb">print</span><span class="p">(</span><span class="n">fit3</span><span class="o">.</span><span class="n">f_test</span><span class="p">(</span><span class="n">R</span><span class="p">))</span>
+<span class="ne">NameError</span><span class="p">:</span> <span class="n">name</span> <span class="s1">&#39;fit3&#39;</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">defined</span>
 </pre></div>
 </div>
-<p>Note that all p-values need to be adjusted for multiple testing. It can
-safely be argued that time has no significant influence. Data suggest no
-temporal signal fluctuation. Note that if there were, the non-parametric
-time dimension of model 1 would be able to handle it.</p>
+<p>It can safely be argued that time has no significant influence, and that
+the data suggest no temporal signal fluctuation at <span class="math notranslate nohighlight">\(x\)</span>. Note that
+even if there were, the non-parametric time dimension of model 1 would
+still be able to handle it.</p>
+<p>All p-values need to be adjusted for multiple testing.</p>
 </div>
 </div>
 </div>
@@ -719,10 +715,10 @@ time dimension of model 1 would be able to handle it.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="thresholding.html" class="btn btn-neutral float-right" title="Thresholding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="population-inference-preliminaries.html" class="btn btn-neutral float-right" title="Population inference: Create a sample for further analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="population-inference-covariates.html" class="btn btn-neutral" title="Population inference (adjust for covariates)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="subject-remove-non-brain-areas.html" class="btn btn-neutral" title="Subject analysis: Prune a statistics field from non-brain areas" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -731,7 +727,7 @@ time dimension of model 1 would be able to handle it.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
 
     </p>
   </div>
@@ -750,21 +746,24 @@ time dimension of model 1 would be able to handle it.</p>
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.0.6',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

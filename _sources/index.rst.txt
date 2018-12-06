@@ -1,35 +1,62 @@
 Modelling the data and not the images in FMRI
 =============================================
 
-Current approaches to the analysis of functional magnetic resonance
-imaging (FMRI) data apply various preprocessing steps to the original
-FMRI. These preprocessings lead to a general underestimation of residual
-variance in the downstream analysis. This negatively impacts the type I
-error of statistical tests and increases the risk for reporting false
-positive results.
+.. important::
 
-This is the first statistical software tool which implements the *model
-based* (MB) estimator for FMRI data models. It is a new and original
-method for the statistical analysis of FMRI of brain scans. MB
-estimation combines all preprocessing steps of the standard approaches
-into one single modelling step. Without altering the original 4D-image,
-the method results in smooth fits of the underlying parameter fields.
-More importantly, the method yields a trustworthy estimate of the
-uncertainty in BOLD effect estimation.
+    **Everything new in 0.1.0:** Well, not everything but well enough to
+    justify a version increase.
 
-The availability of these uncertainty fields allows to model FMRI
-studies by random effects meta regression models, acknowledging that
-individual subjects are random entities, and that the certainty at which
-the actual BOLD effect in an individual can be estimated from an FMRI
-varies across the brain and between the subjects.
+    * Most importantly, fmristats is a lot faster than before. You may
+      now expect the calculations to be finished in around 4h.
+
+    * The API now consistently builds around the *study instance* that
+      has been introduced in 0.0.4. This makes the whole user interface
+      much more streamlined and, well, consistent. To get an idea of the
+      changes, please have a look at the :ref:`getting-started` and
+      :ref:`study-interface` chapters.
+
+    * Last but not least, the documentation has been polished a lot.
+
+    Unfortunately, version 0.1.0 is *not* backwards compatible with
+    versions <0.1.0. Please upgrade to the most recent version.
+
+What is it?
+...........
+
+This is the first statistical software tool which implements the `model
+based`_ (MB) estimator for functional magnetic resonance imaging (FMRI)
+data models. It is a new and original method for the statistical
+analysis of FMRI of brain scans. MB estimation combines all
+preprocessing steps of standard approaches into one modelling step.
+Without altering the original 4D-image, the method results in smooth
+fits of the underlying parameter fields. More importantly, the method
+yields a trustworthy estimate of the uncertainty in BOLD effect
+estimation.
+
+Why should I care?
+..................
+
+Current approaches to the analysis of FMRI data apply various
+preprocessing steps to the original FMRI. These preprocessings lead to a
+general underestimation of residual variance in the downstream analysis.
+This negatively impacts the type I error of statistical tests and
+increases the risk for reporting false positive results.
+
+In contrast to standard approaches, MB estimation yields sound
+statistical estimates for the uncertainty in BOLD effect estimation. The
+availability of these uncertainty fields allows to model FMRI studies by
+random effects meta regression models, acknowledging that individual
+subjects are random entities, and that the certainty at which the
+individual BOLD effect can be estimated from an FMRI varies across the
+brain and between subjects.
 
 .. note::
 
     Please note that this is not the MATLAB program fmristat_ nor is it
-    a reimplementation of the software. fmristat_ (also part of niak_)
-    remains the reference implementation of Keith Worsley's methods_.
-    This software contains instead an implementation of Möbius' MB
-    estimator.
+    a reimplementation of the software. fmristat_ (now also part of
+    niak_) remains the reference implementation of Keith Worsley's
+    methods_. Instead, this software contains an implementation of
+    Möbius' `MB estimator`_.
 
 .. _fmristat: http://www.math.mcgill.ca/keith/fmristat/
 
@@ -37,98 +64,87 @@ varies across the brain and between the subjects.
 
 .. _methods: https://www.sciencedirect.com/science/article/pii/S1053811901909334
 
-MB estimation allows to process and report BOLD effects in ati units. In
-particular multicentre studies gain power by its use.
+MB estimation also encourages to process and report BOLD effects in ATI
+units. In particular multicentre studies gain power by its use. For more
+details, have a look at the chapter :ref:`population_ati`.
 
-How to cite this software
--------------------------
+How to cite estimator and software
+----------------------------------
 
-Current `reference publication`_ for the MB estimator is:
+`Reference publication`_ for the MB estimator is:
+
+..
 
     Thomas W. D. Möbius (2018) `Modelling the data and not the images in
     FMRI`_, ArXiv e-prints, arXiv:1809.07232
 
-.. _`Modelling the data and not the images in FMRI`: https://arxiv.org/abs/1809.07232v1
-
-.. _`reference publication`: https://arxiv.org/abs/1809.07232v1
-
-The `Harvard UoB format`_ suggests to cite the software itself in this
-form:
-
     Thomas W. D. Möbius (2018) fmristats: Modelling the data and not the
-    images in FMRI (Version 0.0.6) [Computer program]. Available at
+    images in FMRI (0.1.0) [Computer program]. Available at
     http://fmristats.github.io/
 
-In case you are using BibTeX:
+.. _`Modelling the data and not the images in FMRI`: https://arxiv.org/abs/1809.07232v1
 
-.. code:: bibtex
+.. _`model based`: https://arxiv.org/abs/1809.07232v1
 
-    @article{Moebius:2018,
-        title   = {Modelling the data and not the images in FMRI},
-        author  = {Thomas Wilhelm Dieter Möbius},
-        journal = {ArXiv e-prints, arXiv:1809.07232},
-        year    = 2018,
-        month   = 9,
-        url     = {https://arxiv.org/abs/1809.07232},
-    }
+.. _`MB estimator`: https://arxiv.org/abs/1809.07232v1
 
-    @misc{fmristats:0.0.6,
-        title   = {fmristats: Modelling the data and not the images in FMRI
-            (Version 0.0.6) [Computer program]},
-        author  = {Thomas Wilhelm Dieter Möbius},
-        year    = 2018,
-        month   = 11,
-        url     = {https://fmristats.github.io/},
-    }
+.. _`Reference publication`: https://arxiv.org/pdf/1809.07232v1.pdf
 
-Thank you for using and citing this software.
-
-.. _`Harvard UoB format`: http://lrweb.beds.ac.uk/guides/a-guide-to-referencing/cite_computer_program
+Thank you for using and citing this software (BibTeX:
+:download:`references.bib`).
 
 Installation
 ------------
 
-An easy way to install fmristats is to install Anaconda3_, a cross platform
-distribution for data analysis and scientific computing, and then using pip_,
-the "PyPA recommended tool for installing Python packages", to install
-fmristats itself.
+An easy way to install fmristats is to first install Anaconda3_ and then
+to use pip_ to install fmristats itself. Anaconda3_ is a cross platform
+distribution for data analysis and scientific computing. pip_ is the
+"PyPA recommended tool for installing Python packages".
+
+After installation of Anaconda3_ run:
 
 .. code:: shell
 
-    % pip install fmristats
+    conda install pip numba numpy scipy matplotlib \
+        scikit-learn scikit-image \
+        pandas statsmodels seaborn
+
+    pip install fmristats
 
 That's it. You should be good to go.
+
+If you are planing to use the fmristats wrappers to FSL_ and ANTS_,
+please make sure that the respective command line tools are within your
+PATH.
 
 .. _Anaconda3: https://docs.anaconda.com/anaconda/install/
 
 .. _pip: https://pypi.python.org/pypi/pip/
 
+.. _FSL: https://fsl.fmrib.ox.ac.uk/fsl/fslwiki/
+
+.. _ANTS: http://stnava.github.io/ANTs/
+
 Tutorials
 ---------
 
-Tutorials discussing various parts of fmristats; expect this list to grow.
+Tutorials discussing various parts of fmristats; expect this list to
+grow.
 
 .. toctree::
    :maxdepth: 2
 
-   tutorials/very-quick-start
-   tutorials/quick-start
-   tutorials/population-inference-preliminaries
-   tutorials/population-inference-explorative
-   tutorials/population-inference-confirmative
-   tutorials/population-inference-covariates
+   tutorials/getting-started
+   tutorials/study-interface
+   tutorials/subject-remove-non-brain-areas
    tutorials/subject-inference-at-one-point
+   tutorials/population-inference-preliminaries
+   tutorials/population-inference-confirmative
+   tutorials/population-inference-explorative
+   tutorials/population-inference-covariates
    tutorials/thresholding
    tutorials/run-on-server
    tutorials/notes
-
-Command line interface
-----------------------
-
-.. toctree::
-   :maxdepth: 2
-
-   cli
 
 Python interface
 ----------------

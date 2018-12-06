@@ -1,0 +1,657 @@
+.. _study-interface:
+
+Analysing multiple subjects
+---------------------------
+
+fmristats provides a variety of command line tools which allow access to
+most of its functionality.
+
+Before you start, a small but important warning: more »traditional«
+approaches to FMRI data analysis recommend or encourage user to first
+spatially smooth data prior to the statistical data analysis and to
+apply motion or slice timing corrections. In fmristats, spatial
+smoothing is an integral part of the model fitting process itself. When
+using fmristats:
+
+.. warning::
+
+    * DO NOT alter your images.
+    * DO NOT perform any kind of motion correction.
+    * DO NOT correct for slice timing differences.
+    * DO NOT smooth your data.
+
+    Your statistical analysis will benefit, you will gain power, and you
+    will be rewarded with valid statistical tests.
+
+Introduction
+............
+
+At the beginning of the :ref:`getting-started`-chapter, we had created a
+single subject study for the subject number *42* in a study called `foo`:
+
+.. code:: shell
+
+    fmristudy -v -o foo.study \
+        --cohort foo \
+        --id 42 \
+        --datetime 2015-11-01-1354 \
+        --paradigm HFM \
+        --single-subject my-subject
+
+This created a default file layout for all files that fmristats may
+create or may expect as input: You can see the file layout that has been
+created by increasing the verbosity of ``fmriinfo``:
+
+.. code:: shell
+
+    fmriinfo -v foo.study
+
+.. code::
+
+    File layout:
+    ------------
+    stimulus       : my-subject.stimulus
+    session        : my-subject.session
+    reference_maps : my-subject.rigids
+    population_map : my-subject.popmap
+    result         : my-subject.fit
+
+Whenever the in- or output of any files or filenames match this template
+you may simply omit the respective argument in any fmristats command
+line tool. For example, instead of writing:
+
+.. code:: shell
+
+    fmrifit -v \
+        --fit            my-subject.fit \
+        --session        my-subject.session \
+        --reference-maps my-subject.rigids \
+        --population-map my-subject.popmap \
+        --window-radius 2 1 1 \
+        --stimulus-block faces \
+        --control-block shapes
+
+You may simply write:
+
+.. code:: shell
+
+    fmrifit -v --study foo.study \
+        --window-radius 2 1 1 \
+        --stimulus-block faces \
+        --control-block shapes
+
+If the file ``foo.study`` is in your current directory, you may even
+omit the ``--study`` argument:
+
+.. code:: shell
+
+    fmrifit -v \
+        --window-radius 2 1 1 \
+        --stimulus-block faces \
+        --control-block shapes
+
+At the end of the :ref:`getting-started`-chapter, we had created a
+single subject study for the subject number *23* in a study called `bar`:
+
+.. code:: shell
+
+    fmristudy -v -o bar.study \
+        --cohort bar \
+        --id 23 \
+        --datetime 2017-04-29-0933 \
+        --paradigm HFM \
+        --single-subject yes
+
+Instead of providing ``fmristudy`` with a string to
+``--single-subject``, we had simply written »yes« to the option. This
+created the file templates:
+
+.. code:: shell
+
+    fmriinfo -v bar.study
+
+.. code::
+
+    File layout:
+    ------------
+    stimulus       : {cohort}-{id:04d}-{paradigm}-{date}.stimulus
+    session        : {cohort}-{id:04d}-{paradigm}-{date}.session
+    reference_maps : {cohort}-{id:04d}-{paradigm}-{date}-{rigids}.rigids
+    population_map : {cohort}-{id:04d}-{paradigm}-{date}-{space}-{psi}.popmap
+    result         : {cohort}-{id:04d}-{paradigm}-{date}-{space}-{psi}-{rigids}.fit
+
+And at the end of the analysis, our directory contained the files:
+
+.. code::
+
+    bar-0023-HFM-2017-04-29-0933-mni152-ants-pcm.fit
+    bar-0023-HFM-2017-04-29-0933-mni152-ants.popmap
+    bar-0023-HFM-2017-04-29-0933-pcm.rigids
+    bar-0023-HFM-2017-04-29-0933.session
+    bar-0023-HFM-2017-04-29-0933.stimulus
+
+As you can see, templates my be as complex or as simple as you like. You
+may modify the templates too your liking:
+
+.. code:: shell
+
+    fmristudy -v --push --study bar.study \
+        --fit look-at-{id}-{paradigm}-in-my-{study}.fit \
+        --reference-maps {id}-{paradigm}-my-untested-method.rigids \
+        --population-map my-funny-space-for-{id}.popmap
+
+This will change the file templates to:
+
+.. code:: shell
+
+    fmriinfo -v bar.study
+
+.. code::
+
+    File layout:
+    ------------
+    stimulus       : {cohort}-{id:04d}-{paradigm}-{date}.stimulus
+    session        : {cohort}-{id:04d}-{paradigm}-{date}.session
+    reference_maps : {id}-{paradigm}-my-untested-method.rigids
+    population_map : my-funny-space-for-{id}.popmap
+    result         : look-at-{id}-{paradigm}-in-my-{study}.fit
+
+Every token between curly brackets will be replaced accordingly.
+
+.. _protocol:
+
+Creating a study instance for multiple subjects
+...............................................
+
+Say, you have organised your study in a table :download:`protocol.csv`
+that contains at least the following columns:
+
+======   ==  ===============   ========   =====  ===
+cohort   id             date   paradigm   valid  epi
+======   ==  ===============   ========   =====  ===
+FOO       1  2013-04-22-0930        HFM    True    3
+FOO       1  2014-05-04-1700        WGT   False    3
+FOO       2  2014-05-04-1930        HFM    True    3
+FOO       2  2014-04-24-0645        WGT    True    3
+BAR       1  2015-07-23-0930        WGT    True    3
+BAR       2  2014-04-25-1400        WGT    True    3
+======   ==  ===============   ========   =====  ===
+
+In particular:
+
+- There should be a column called »cohort« that contains a unique label
+  for the cohort to which a subject belongs. Here, we have a study
+  consisting of two cohorts: »foo« and »bar«. If your study only has a
+  single cohort, simply name the cohort with the name of your study.
+
+- The column »id« contains integer ids which uniquely identify a subject
+  within its cohort.
+
+- The column »date« contains the date and time at which the respective
+  FMRI session of a subject has been taken place. If you are preforming
+  a longitudinal study with multiple measurements of the same subject
+  and with respect to the same stimulus design, this column will allow
+  you (and fmristats) to distinguish between them.
+
+- The column »paradigm« contains a short token of the name of the
+  stimulus design that has been used in the FMRI session.
+
+- The column »valid« indicates whether it can be assumed that this
+  session contains valid data or if this session should be excluded from
+  the downstream analysis. It may take one of two values: ``True`` or
+  ``False``. fmristats will exclude all and will not process any entries
+  that have been marked with ``False``.
+
+- The last column, ``epi`` codes the direction in which the EPI in the
+  session have been measured:
+
+    ==== =====================
+    epi  direction
+    ==== =====================
+    -3   superior to inferior
+    -2   anterior to posterior
+    -1   right to left
+     1   left to right
+     2   posterior to anterior
+     3   inferior to superior
+    ==== =====================
+
+    This information will be used by fmristats for handling slice
+    timing differences.
+
+If you save the above table as a CSV to a file ``protocol.csv``, the
+following creates a study instance for the above FMRI sessions:
+
+.. code::
+
+    csv2dataframe protocol.csv protocol.pkl
+
+    fmristudy --out tutorial.study --protocol protocol.pkl
+
+The tool ``csv2dataframe`` will parse the CSV-file, it will generate an
+index from the columns *cohort*, *id*, *paradigm*, and *date*, it will
+sort the index, and it will verified integrity of index. You can have a
+look at the created data frame by calling ``fmriinfo`` on the file:
+
+.. code::
+
+    fmriinfo protocol.pkl
+
+.. code::
+
+    protocol.pkl: protocol or covariates file:
+
+    Number of entries: 6
+    Entries:
+                                            valid  epi
+    cohort id paradigm date
+    BAR    1  WGT      2015-07-23 09:30:00   True    3
+           2  WGT      2014-04-25 14:00:00   True    3
+    FOO    1  HFM      2013-04-22 09:30:00   True    3
+              WGT      2014-05-04 17:00:00  False    3
+           2  HFM      2014-05-04 19:30:00   True    3
+              WGT      2014-04-24 06:45:00   True    3
+
+    Number of valid entries:
+                     valid  total
+    cohort paradigm
+    BAR    WGT           2      2
+    FOO    HFM           2      2
+           WGT           1      2
+
+If there are less then 12 entries in the protocol, ``fmriinfo`` will
+also show you all entries in the protocol. The file ``protocol.pkl`` is
+indeed noting else than a pickled DataFrame_: You have the full powers
+of Pandas_ at you disposal.
+
+The default file layout for multi-subject (multi-session) studies is:
+
+.. code:: shell
+
+    fmriinfo -v tutorial.study
+
+.. code::
+
+    File layout:
+    ------------
+    stimulus      : {study}/{paradigm}/{cohort}/{id:04d}/{cohort}-{id:04d}-{paradigm}-{date}.stimulus
+    session       : {study}/{paradigm}/{cohort}/{id:04d}/{cohort}-{id:04d}-{paradigm}-{date}.session
+    reference_maps: {study}/{paradigm}/{cohort}/{id:04d}/{cohort}-{id:04d}-{paradigm}-{date}-{rigids}.rigids
+    population_map: {study}/{paradigm}/{cohort}/{id:04d}/{cohort}-{id:04d}-{paradigm}-{date}-{space}-{psi}.popmap
+    result        : {study}/{paradigm}/{cohort}/{id:04d}/{cohort}-{id:04d}-{paradigm}-{date}-{space}-{psi}-{rigids}.fit
+
+This means that at the end of your analysis of, say, paradigm *WGT*,
+your file hierarchy will look something like this:
+
+.. code:: shell
+
+    results
+    └── WGT
+        └── BAR
+            ├── 0002
+            │   ├── AGB300-0002-WGT-2014-04-24-0930-mni152-ants-pcm.fit
+            │   ├── AGB300-0002-WGT-2014-04-24-0930-mni152-ants.popmap
+            │   ├── AGB300-0002-WGT-2014-04-24-0930-pcm.rigids
+            │   ├── AGB300-0002-WGT-2014-04-24.0930-session
+            │   └── AGB300-0002-WGT-2014-04-24.0930-stimulus
+            ├── 0003
+            │   ├── AGB300-0003-WGT-2014-04-25-1445-mni152-ants-pcm.fit
+            │   ├── AGB300-0003-WGT-2014-04-25-1445-mni152-ants.popmap
+            │   ├── AGB300-0003-WGT-2014-04-25-1445-pcm.rigids
+            │   ├── AGB300-0003-WGT-2014-04-25.1445-session
+            │   └── AGB300-0003-WGT-2014-04-25.1445-stimulus
+            …
+
+Handling subject covariates
+...........................
+
+The table in :ref:`protocol` contains one entry per FMRI session and
+**not** one entry per subject. Indeed, fmristats (that is its interface)
+suggests to manage the covariates of subjects in a separate table
+:download:`covariates.csv` instead:
+
+======   ==  ======  ===  ==========   =====
+cohort   id     sex  age  handedness   valid
+======   ==  ======  ===  ==========   =====
+FOO       1  female   23        67.0    True
+FOO       2  female   24        49.0    True
+BAR       1  female   25        37.0   False
+BAR       2    male   26       -59.0    True
+======   ==  ======  ===  ==========   =====
+
+Covariates contain information about *subjects*, such as *age*, *sex*,
+case/control *status*, or *handedness*, whereas the protocol contains
+information *about FMRI sessions*. In a protocol there is one entry per
+FMRI session; in a covariates file there is one entry per subject.
+
+Again, there exists a column *valid* in the table that indicates whether
+a subject should be included or excluded from the downstream analysis.
+Here, for example, subject 1 in cohort BAR has been flagged as invalid,
+say, due to non-compliance of the subject. The column ``valid`` is
+optional and, if missing, will be set to ``True`` by default.
+
+fmristats will only include the data of an FMRI session in the
+statistical analysis when both: the FMRI session is marked as valid in
+the protocol **and** the respective subject is marked as valid in the
+covariates file. The reasoning is that fmristats assumes that any
+subject may have participated in multiple FMRI sessions and with respect
+to a variety different paradigms. The reason for why to exclude a
+particular FMRI session from a statistical analysis is typically complex
+but generally falls into two categories: Either the FMRI data are not of
+sufficient quality (severe movements of subject in the scanner,
+equipment failure, presentation software did not sync, …) or the subject
+had to be excluded due to other, external reasons (say due to
+non-compliance to the study protocol or other exclusion criteria). The
+former would be recorded in the *protocol table* the latter in the
+*covariates table*. The idea is that the covariate file may be
+maintained *independent* of the respective study protocol file.
+
+Whether to include covariates to you study is optional. You can include
+a covariates file to your study as follows:
+
+.. code:: shell
+
+    csv2dataframe covariates.csv covariates.pkl
+
+    fmristudy --out tutorial.study -v \
+        --protocol protocol.pkl \
+        --covariates covariates.pkl
+
+Again, have a look at the file that has been created:
+
+.. code:: shell
+
+    fmriinfo tutorial.study
+
+.. code::
+
+    tutorial.study: study file
+
+    Protocol:
+    ---------
+    Number of entries: 6
+    Entries:
+                                            valid  epi
+    cohort id paradigm date
+    BAR    1  WGT      2015-07-23 09:30:00   True    3
+           2  WGT      2014-04-25 14:00:00   True    3
+    FOO    1  HFM      2013-04-22 09:30:00   True    3
+              WGT      2014-05-04 17:00:00  False    3
+           2  HFM      2014-05-04 19:30:00   True    3
+              WGT      2014-04-24 06:45:00   True    3
+
+    Number of valid entries:
+                     valid  total
+    cohort paradigm
+    BAR    WGT           2      2
+    FOO    HFM           2      2
+           WGT           1      2
+
+    Covariates:
+    -----------
+    Number of entries: 4
+    Entries:
+                  sex  age  handedness  valid
+    cohort id
+    BAR    1   female   25        37.0  False
+           2     male   26       -59.0   True
+    FOO    1   female   23        67.0   True
+           2   female   24        49.0   True
+
+    Number of valid entries:
+                   valid  total
+    cohort sex
+    BAR    female      0      1
+           male        1      1
+    FOO    female      2      2
+
+Defining subsamples
+...................
+
+Say, in your analysis, you are working with stronger inclusion/exclusion
+criteria than the study that you are using for your data. Then you may
+include or *recorde* this information in a
+:download:`subjects_to_exclude.csv` in which you mark all subject as
+invalid that do not comply to your inclusion criteria:
+
+======  ==  =====
+cohort  id  valid
+======  ==  =====
+FOO      1  False
+BAR      2  False
+======  ==  =====
+
+But, of course, you want to use all the information of your master
+study. The solution is to update your covariates file:
+
+.. code:: shell
+
+    csv2dataframe subjects_to_exclude.csv subjects_to_exclude.pkl
+
+    fmristudy -pv \
+        --protocol protocol.pkl \
+        --covariates covariates.pkl \
+        --covariates-update subjects_to_exclude.pkl
+
+    fmriinfo subjects_to_exclude.pkl
+    fmriinfo tutorial.study
+
+Say, you have done some extensive quality controlling of the FMRI
+sessions that your would like to include in your study but the
+information has not yet entered the official database. As you may have
+guessed, the solution is to update your protocol file with a
+:download:`sessions_to_exclude.csv`:
+
+======   ==  ========   =====  ===
+cohort   id  paradigm   valid  epi
+======   ==  ========   =====  ===
+FOO       1       HFM    True    3
+FOO       1       WGT   False    3
+FOO       2       HFM    True    3
+FOO       2       WGT    True    3
+BAR       1       WGT    True    3
+BAR       2       WGT    True    3
+======   ==  ========   =====  ===
+
+.. code:: shell
+
+    csv2dataframe sessions_to_exclude.csv sessions_to_exclude.pkl
+
+    fmristudy -pv \
+        --protocol protocol.pkl \
+        --covariates covariates.pkl \
+        --protocol-update sessions_to_exclude.pkl
+
+    fmriinfo sessions_to_exclude.pkl
+    fmriinfo tutorial.study
+
+As the example suggests, it is possible to omit columns from the tables
+used for the update (here the »date«-column). The update will then apply
+to all entries in the protocol or covariates table that match at least
+the entries in the update table.
+
+Say, we are (only) interested in the analysis of a single paradigm (say
+WGT) that tests the language processing of subjects in a simple word
+generation task. And say, we only interested in a right-handed
+population (say with a `Waterloo Handedness Score`_ above +20). We
+select the respective sample from the pool of available subjects by:
+
+.. code:: shell
+
+    fmristudy --out tutorial.study -v \
+        --protocol protocol.pkl \
+        --covariates covariates.pkl \
+        --paradigm WGT --covariates-query  'handedness > 20'
+
+.. _Pandas: https://pandas.pydata.org/pandas-docs/stable/
+
+.. _DataFrame: https://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe
+
+.. _`Waterloo Handedness Score`: https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf
+
+Including a template in standard space in the study instance
+............................................................
+
+If you are planing to compare the fitted parameter and statistic fields
+of the subjects in your sample, you will likely work with a template in
+standard space that you would like to provide as a reference to
+``fmrisample``, ``ants4pop``, or ``fsl4pop``. You may add the template
+to your study instance right at the start. This will assure that all
+tools will work with the same template and in the same standard space:
+
+.. code:: shell
+
+    nii2image --name mni152 \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm_brain.nii.gz \
+        vb-template.image
+
+    nii2image --name mni152-t1 \
+        /usr/share/data/fsl-mni152-templates/MNI152_T1_2mm.nii.gz \
+        vb-background.image
+
+    fmristudy --out tutorial.study -v \
+        --protocol protocol.pkl \
+        --covariates covariates.pkl \
+        --vb-image vb-template.image \
+        --vb-background-image vb-background.image
+
+        --vb-ati-image vb-ati.image \
+
+FAQ: I have only recorded the date but not the time of my FMRI sessions
+.......................................................................
+
+Say, your protocol table looks as follows
+:download:`protocol-short.csv`:
+
+======   ==  ==========   ========   =====  ===
+cohort   id        date   paradigm   valid  epi
+======   ==  ==========   ========   =====  ===
+FOO       1  2013-04-22        HFM    True    3
+FOO       1  2014-05-04        WGT   False    3
+FOO       2  2014-05-04        HFM    True    3
+FOO       2  2014-04-24        WGT    True    3
+BAR       1  2015-07-23        WGT    True    3
+BAR       2  2014-04-25        WGT    True    3
+======   ==  ==========   ========   =====  ===
+
+If you save the above table to ``protocol-short.csv``, then adding
+``--strftime short`` will successfully parse your file:
+
+.. code::
+
+    csv2dataframe protocol-short.csv protocol-short.pkl --strftime short
+
+If you also add the same argument ``--strftime short`` to ``fmristudy``
+when creating your study instance:
+
+.. code::
+
+    fmristudy -v --out tutorial.study \
+        --protocol protocol.pkl --strftime short
+
+Then this will also change the date/time-format string when creating or
+searching for files. This means that at the end of your analysis of,
+say, paradigm *WGT*, your file hierarchy will look as follows:
+
+.. code:: shell
+
+    results
+    └── WGT
+        └── BAR
+            ├── 0002
+            │   ├── AGB300-0002-WGT-2014-04-24-mni152-ants-pcm.fit
+            │   ├── AGB300-0002-WGT-2014-04-24-mni152-ants.popmap
+            │   ├── AGB300-0002-WGT-2014-04-24-pcm.rigids
+            │   ├── AGB300-0002-WGT-2014-04-24.session
+            │   └── AGB300-0002-WGT-2014-04-24.stimulus
+            ├── 0003
+            │   ├── AGB300-0003-WGT-2014-04-25-mni152-ants-pcm.fit
+            │   ├── AGB300-0003-WGT-2014-04-25-mni152-ants.popmap
+            │   ├── AGB300-0003-WGT-2014-04-25-pcm.rigids
+            │   ├── AGB300-0003-WGT-2014-04-25.session
+            │   └── AGB300-0003-WGT-2014-04-25.stimulus
+            …
+
+Example: Analysing multiple subjects
+....................................
+
+The following goes through an example of analysing the paradigm »WGT«
+that tests the language processing of subjects in a simple word
+generation task in a right-handed population (with a `Waterloo
+Handedness Score`_ above +20).
+
+.. code:: shell
+
+    fmristudy --out tutorial.study -v \
+        --protocol protocol.pkl \
+        --protocol-update sessions_to_exclude.pkl \
+        --covariates covariates.pkl \
+        --covariates-query  'waterloo > 20' \
+        --vb-image vb-template.image \
+        --vb-ati-image vb-ati.image \
+        --vb-background-image vb-background.image \
+        --paradigm WGT \
+        --strftime short
+
+Assuming you have saved the stimulus information and FMRI data in the
+following systematic:
+
+.. code::
+
+    raw
+    ├── mat
+    │   └── WGT
+    │       ├── AGB300-0001-WGT-2014-04-22.mat
+    │       ├── AGB300-0002-WGT-2014-04-24.mat
+    │       ├── AGB300-0003-WGT-2014-04-25.mat
+    …       …
+    │       ├── AGB300-0116-WGT-2016-04-04.mat
+    │       ├── AGB300-0117-WGT-2016-04-05.mat
+    │       └── AGB300-0119-WGT-2016-04-18.mat
+    └── nii
+        └── WGT
+            ├── AGB300-0001-WGT-2014-04-22.nii
+            ├── AGB300-0002-WGT-2014-04-24.nii
+            ├── AGB300-0003-WGT-2014-04-25.nii
+            …
+            ├── AGB300-0116-WGT-2016-04-04.nii
+            ├── AGB300-0117-WGT-2016-04-05.nii
+            └── AGB300-0119-WGT-2016-04-18.nii
+
+Then the following code will parse the MATLAB-coded stimulus design and
+the Nifti1-file of the subjects, and it will run a foreground/background
+detection on each FMRI:
+
+.. code:: shell
+
+    # Stimulus Design for all subjects
+    mat2block -v --mat-prefix 'raw/mat/{paradigm}'
+
+    # Session Data for all subjects
+    nii2session -v --detect-foreground \
+        --nii-prefix 'raw/nii/{paradigm}' --id 2
+
+The above path-prefixes are indeed the default. If you have organised
+your files the same way, you may omit the respective arguments.
+
+The following will fit subject movements by a principal components
+method and the population maps using ANTS. Then it will fit the default,
+nested model to the FMRI. After that non-brain areas are pruned from the
+resulting statistics fields.
+
+.. code:: shell
+
+    # Head movement estimates for all subjects
+    fmririgids -vp --cycle 42 84 102
+
+    # Assessment of tracking ability
+    ref2plot -v --window 2 1 1
+
+    # The mni152 population map for each subject
+    ants4pop -vp --cycle 42 84 102
+
+    # Fit
+    fmrifit -v --stimulus-block letter --window 2 1 1 --id 20 100
+
+    # Prune statistics field
+    fsl4prune -v

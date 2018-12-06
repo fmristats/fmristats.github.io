@@ -1,25 +1,9 @@
 Some notes on speed
 -------------------
 
-Currently, the software is a pure Python3 implementation building on top
-of many well established packages such as Numpy and Scipy, which may
-(depending on your installation) take advantage of LAPLACK and BLAST.
-Speed is unfortunately nevertheless an issue of the current
-implantation. On a Intel(R) Core(TM) i5-4440 CPU @ 3.10GHz please allow
-a minimum of 7h to fit a signal model to data of a 5 minute, 64x64x30
-FMRI session. fmristats has some multiprocessor capabilities, though,
-which allow to fit multiple subjects in parallel on as many cores which
-you are able to spare. If you have access to 40 cores, you will also
-only need 7h for 40 subjects.
+On a Intel(R) Core(TM) i5-4440 CPU @ 3.10GHz with 4 cores the fit a
+signal model to data of an approximately 5 minute long FMRI session (230
+scan cycles, 30 slices, 64x64 in-plane resolution) takes approximately:
+4h 15min.
 
-The bottleneck in the program is known, and I plan to port the
-respective part to C and also to move the calculation to the GPU. This
-should speed the fitting by a factor of 1000. [#]_
-
-.. [#] Interessted in contributing? The source code is hosted at
-    GitHub. Fork the project. Speed up the calculation. Send me a pull
-    request.
-
-Fitting the population model to the summary statistics is faster.
-
-
+Fitting the population model is faster.

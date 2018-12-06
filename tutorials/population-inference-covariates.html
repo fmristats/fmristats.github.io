@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Population inference (adjust for covariates) &mdash; fmristats 0.0.6 documentation</title>
+  <title>Population inference: How to adjust for covariates &mdash; fmristats 0.1.0 documentation</title>
   
 
   
@@ -28,8 +28,8 @@
   <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Subject inference (at one coordinate)" href="subject-inference-at-one-point.html" />
-    <link rel="prev" title="Population inference (confirmative)" href="population-inference-confirmative.html" /> 
+    <link rel="next" title="Thresholding" href="thresholding.html" />
+    <link rel="prev" title="Population inference: Exploratory study" href="population-inference-explorative.html" /> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -58,7 +58,7 @@
             
             
               <div class="version">
-                0.0
+                0.1
               </div>
             
           
@@ -83,26 +83,17 @@
             
             
               <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="very-quick-start.html">Getting to know fmristats</a></li>
-<li class="toctree-l1"><a class="reference internal" href="quick-start.html">Semi-Automated Analysis of Multiple Subjects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference (set-up)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference (explorative)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference (confirmative)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference (adjust for covariates)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject inference (at one coordinate)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Population inference: How to adjust for covariates</a></li>
 <li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
-<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
-</ul>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html">Estimating the signal model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#estimating-the-population-model">Estimating the population model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-ants">Wrappers to ANTS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#wrappers-to-fsl">Wrappers to FSL</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-the-nifti1">Export to the Nifti1</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#export-to-pdf-png-and-jpg">Export to PDF, PNG, and JPG</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#the-protocol-interface">The protocol interface</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../cli.html#query-information">Query information</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
@@ -151,7 +142,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-      <li>Population inference (adjust for covariates)</li>
+      <li>Population inference: How to adjust for covariates</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -170,13 +161,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="population-inference-adjust-for-covariates">
-<h1>Population inference (adjust for covariates)<a class="headerlink" href="#population-inference-adjust-for-covariates" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="population-inference-how-to-adjust-for-covariates">
+<h1>Population inference: How to adjust for covariates<a class="headerlink" href="#population-inference-how-to-adjust-for-covariates" title="Permalink to this headline">¶</a></h1>
 <p>In case you need to adjust for covariates in the population model:</p>
 <div class="code python highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">fmristats</span> <span class="k">import</span> <span class="o">*</span>
 
-<span class="n">pop</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">smp</span><span class="p">,</span> <span class="s1">&#39;status + smoking + sex + cohort&#39;</span><span class="p">)</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">pop</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">PopulationModel</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="s1">&#39;status + smoking + sex + cohort&#39;</span><span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -189,10 +180,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="subject-inference-at-one-point.html" class="btn btn-neutral float-right" title="Subject inference (at one coordinate)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="thresholding.html" class="btn btn-neutral float-right" title="Thresholding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="population-inference-confirmative.html" class="btn btn-neutral" title="Population inference (confirmative)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="population-inference-explorative.html" class="btn btn-neutral" title="Population inference: Exploratory study" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -201,7 +192,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017-2018, Thomas W. D. Möbius.
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
 
     </p>
   </div>
@@ -220,21 +211,24 @@
 
   
 
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'../',
-            VERSION:'0.0.6',
-            LANGUAGE:'None',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="../_static/jquery.js"></script>
-      <script type="text/javascript" src="../_static/underscore.js"></script>
-      <script type="text/javascript" src="../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
 
   
 

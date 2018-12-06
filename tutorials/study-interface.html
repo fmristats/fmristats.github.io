@@ -1,0 +1,1045 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Analysing multiple subjects &mdash; fmristats 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Subject analysis: Prune a statistics field from non-brain areas" href="subject-remove-non-brain-areas.html" />
+    <link rel="prev" title="Getting to know fmristats" href="getting-started.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Analysing multiple subjects</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#creating-a-study-instance-for-multiple-subjects">Creating a study instance for multiple subjects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#handling-subject-covariates">Handling subject covariates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-subsamples">Defining subsamples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#including-a-template-in-standard-space-in-the-study-instance">Including a template in standard space in the study instance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#faq-i-have-only-recorded-the-date-but-not-the-time-of-my-fmri-sessions">FAQ: I have only recorded the date but not the time of my FMRI sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#example-analysing-multiple-subjects">Example: Analysing multiple subjects</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="thresholding.html">Thresholding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="run-on-server.html">Run the analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Analysing multiple subjects</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/tutorials/study-interface.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="analysing-multiple-subjects">
+<span id="study-interface"></span><h1>Analysing multiple subjects<a class="headerlink" href="#analysing-multiple-subjects" title="Permalink to this headline">¶</a></h1>
+<p>fmristats provides a variety of command line tools which allow access to
+most of its functionality.</p>
+<p>Before you start, a small but important warning: more »traditional«
+approaches to FMRI data analysis recommend or encourage user to first
+spatially smooth data prior to the statistical data analysis and to
+apply motion or slice timing corrections. In fmristats, spatial
+smoothing is an integral part of the model fitting process itself. When
+using fmristats:</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<ul class="simple">
+<li>DO NOT alter your images.</li>
+<li>DO NOT perform any kind of motion correction.</li>
+<li>DO NOT correct for slice timing differences.</li>
+<li>DO NOT smooth your data.</li>
+</ul>
+<p class="last">Your statistical analysis will benefit, you will gain power, and you
+will be rewarded with valid statistical tests.</p>
+</div>
+<div class="section" id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>At the beginning of the <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">Getting to know fmristats</span></a>-chapter, we had created a
+single subject study for the subject number <em>42</em> in a study called <cite>foo</cite>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">o</span> <span class="n">foo</span><span class="o">.</span><span class="n">study</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">foo</span> \
+    <span class="o">--</span><span class="nb">id</span> <span class="mi">42</span> \
+    <span class="o">--</span><span class="n">datetime</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">1354</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">HFM</span> \
+    <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">subject</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span>
+</pre></div>
+</div>
+<p>This created a default file layout for all files that fmristats may
+create or may expect as input: You can see the file layout that has been
+created by increasing the verbosity of <code class="docutils literal notranslate"><span class="pre">fmriinfo</span></code>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="o">-</span><span class="n">v</span> <span class="n">foo</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="n">layout</span><span class="p">:</span>
+<span class="o">------------</span>
+<span class="n">stimulus</span>       <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">stimulus</span>
+<span class="n">session</span>        <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">session</span>
+<span class="n">reference_maps</span> <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">rigids</span>
+<span class="n">population_map</span> <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">popmap</span>
+<span class="n">result</span>         <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<p>Whenever the in- or output of any files or filenames match this template
+you may simply omit the respective argument in any fmristats command
+line tool. For example, instead of writing:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">fit</span>            <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">fit</span> \
+    <span class="o">--</span><span class="n">session</span>        <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">session</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">rigids</span> \
+    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">my</span><span class="o">-</span><span class="n">subject</span><span class="o">.</span><span class="n">popmap</span> \
+    <span class="o">--</span><span class="n">window</span><span class="o">-</span><span class="n">radius</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> \
+    <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span>
+</pre></div>
+</div>
+<p>You may simply write:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">study</span> <span class="n">foo</span><span class="o">.</span><span class="n">study</span> \
+    <span class="o">--</span><span class="n">window</span><span class="o">-</span><span class="n">radius</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> \
+    <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span>
+</pre></div>
+</div>
+<p>If the file <code class="docutils literal notranslate"><span class="pre">foo.study</span></code> is in your current directory, you may even
+omit the <code class="docutils literal notranslate"><span class="pre">--study</span></code> argument:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">window</span><span class="o">-</span><span class="n">radius</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> \
+    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">faces</span> \
+    <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">shapes</span>
+</pre></div>
+</div>
+<p>At the end of the <a class="reference internal" href="getting-started.html#getting-started"><span class="std std-ref">Getting to know fmristats</span></a>-chapter, we had created a
+single subject study for the subject number <em>23</em> in a study called <cite>bar</cite>:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">-</span><span class="n">v</span> <span class="o">-</span><span class="n">o</span> <span class="n">bar</span><span class="o">.</span><span class="n">study</span> \
+    <span class="o">--</span><span class="n">cohort</span> <span class="n">bar</span> \
+    <span class="o">--</span><span class="nb">id</span> <span class="mi">23</span> \
+    <span class="o">--</span><span class="n">datetime</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mi">0933</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">HFM</span> \
+    <span class="o">--</span><span class="n">single</span><span class="o">-</span><span class="n">subject</span> <span class="n">yes</span>
+</pre></div>
+</div>
+<p>Instead of providing <code class="docutils literal notranslate"><span class="pre">fmristudy</span></code> with a string to
+<code class="docutils literal notranslate"><span class="pre">--single-subject</span></code>, we had simply written »yes« to the option. This
+created the file templates:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="o">-</span><span class="n">v</span> <span class="n">bar</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="n">layout</span><span class="p">:</span>
+<span class="o">------------</span>
+<span class="n">stimulus</span>       <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">stimulus</span>
+<span class="n">session</span>        <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">session</span>
+<span class="n">reference_maps</span> <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">rigids</span><span class="p">}</span><span class="o">.</span><span class="n">rigids</span>
+<span class="n">population_map</span> <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">space</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">psi</span><span class="p">}</span><span class="o">.</span><span class="n">popmap</span>
+<span class="n">result</span>         <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">space</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">psi</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">rigids</span><span class="p">}</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<p>And at the end of the analysis, our directory contained the files:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">bar</span><span class="o">-</span><span class="mi">0023</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mi">0933</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">ants</span><span class="o">-</span><span class="n">pcm</span><span class="o">.</span><span class="n">fit</span>
+<span class="n">bar</span><span class="o">-</span><span class="mi">0023</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mi">0933</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">ants</span><span class="o">.</span><span class="n">popmap</span>
+<span class="n">bar</span><span class="o">-</span><span class="mi">0023</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mi">0933</span><span class="o">-</span><span class="n">pcm</span><span class="o">.</span><span class="n">rigids</span>
+<span class="n">bar</span><span class="o">-</span><span class="mi">0023</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mf">0933.</span><span class="n">session</span>
+<span class="n">bar</span><span class="o">-</span><span class="mi">0023</span><span class="o">-</span><span class="n">HFM</span><span class="o">-</span><span class="mi">2017</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">29</span><span class="o">-</span><span class="mf">0933.</span><span class="n">stimulus</span>
+</pre></div>
+</div>
+<p>As you can see, templates my be as complex or as simple as you like. You
+may modify the templates too your liking:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">push</span> <span class="o">--</span><span class="n">study</span> <span class="n">bar</span><span class="o">.</span><span class="n">study</span> \
+    <span class="o">--</span><span class="n">fit</span> <span class="n">look</span><span class="o">-</span><span class="n">at</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="ow">in</span><span class="o">-</span><span class="n">my</span><span class="o">-</span><span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">.</span><span class="n">fit</span> \
+    <span class="o">--</span><span class="n">reference</span><span class="o">-</span><span class="n">maps</span> <span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="n">my</span><span class="o">-</span><span class="n">untested</span><span class="o">-</span><span class="n">method</span><span class="o">.</span><span class="n">rigids</span> \
+    <span class="o">--</span><span class="n">population</span><span class="o">-</span><span class="nb">map</span> <span class="n">my</span><span class="o">-</span><span class="n">funny</span><span class="o">-</span><span class="n">space</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">.</span><span class="n">popmap</span>
+</pre></div>
+</div>
+<p>This will change the file templates to:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="o">-</span><span class="n">v</span> <span class="n">bar</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="n">layout</span><span class="p">:</span>
+<span class="o">------------</span>
+<span class="n">stimulus</span>       <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">stimulus</span>
+<span class="n">session</span>        <span class="p">:</span> <span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">session</span>
+<span class="n">reference_maps</span> <span class="p">:</span> <span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="n">my</span><span class="o">-</span><span class="n">untested</span><span class="o">-</span><span class="n">method</span><span class="o">.</span><span class="n">rigids</span>
+<span class="n">population_map</span> <span class="p">:</span> <span class="n">my</span><span class="o">-</span><span class="n">funny</span><span class="o">-</span><span class="n">space</span><span class="o">-</span><span class="k">for</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">.</span><span class="n">popmap</span>
+<span class="n">result</span>         <span class="p">:</span> <span class="n">look</span><span class="o">-</span><span class="n">at</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="ow">in</span><span class="o">-</span><span class="n">my</span><span class="o">-</span><span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<p>Every token between curly brackets will be replaced accordingly.</p>
+</div>
+<div class="section" id="creating-a-study-instance-for-multiple-subjects">
+<span id="protocol"></span><h2>Creating a study instance for multiple subjects<a class="headerlink" href="#creating-a-study-instance-for-multiple-subjects" title="Permalink to this headline">¶</a></h2>
+<p>Say, you have organised your study in a table <a class="reference download internal" href="../_downloads/protocol.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">protocol.csv</span></code></a>
+that contains at least the following columns:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="5%" />
+<col width="38%" />
+<col width="21%" />
+<col width="13%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">cohort</th>
+<th class="head">id</th>
+<th class="head">date</th>
+<th class="head">paradigm</th>
+<th class="head">valid</th>
+<th class="head">epi</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>FOO</td>
+<td>1</td>
+<td>2013-04-22-0930</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>1</td>
+<td>2014-05-04-1700</td>
+<td>WGT</td>
+<td>False</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>FOO</td>
+<td>2</td>
+<td>2014-05-04-1930</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>2</td>
+<td>2014-04-24-0645</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>BAR</td>
+<td>1</td>
+<td>2015-07-23-0930</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>BAR</td>
+<td>2</td>
+<td>2014-04-25-1400</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>In particular:</p>
+<ul>
+<li><p class="first">There should be a column called »cohort« that contains a unique label
+for the cohort to which a subject belongs. Here, we have a study
+consisting of two cohorts: »foo« and »bar«. If your study only has a
+single cohort, simply name the cohort with the name of your study.</p>
+</li>
+<li><p class="first">The column »id« contains integer ids which uniquely identify a subject
+within its cohort.</p>
+</li>
+<li><p class="first">The column »date« contains the date and time at which the respective
+FMRI session of a subject has been taken place. If you are preforming
+a longitudinal study with multiple measurements of the same subject
+and with respect to the same stimulus design, this column will allow
+you (and fmristats) to distinguish between them.</p>
+</li>
+<li><p class="first">The column »paradigm« contains a short token of the name of the
+stimulus design that has been used in the FMRI session.</p>
+</li>
+<li><p class="first">The column »valid« indicates whether it can be assumed that this
+session contains valid data or if this session should be excluded from
+the downstream analysis. It may take one of two values: <code class="docutils literal notranslate"><span class="pre">True</span></code> or
+<code class="docutils literal notranslate"><span class="pre">False</span></code>. fmristats will exclude all and will not process any entries
+that have been marked with <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</li>
+<li><p class="first">The last column, <code class="docutils literal notranslate"><span class="pre">epi</span></code> codes the direction in which the EPI in the
+session have been measured:</p>
+<blockquote>
+<div><table border="1" class="docutils">
+<colgroup>
+<col width="16%" />
+<col width="84%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">epi</th>
+<th class="head">direction</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>-3</td>
+<td>superior to inferior</td>
+</tr>
+<tr class="row-odd"><td>-2</td>
+<td>anterior to posterior</td>
+</tr>
+<tr class="row-even"><td>-1</td>
+<td>right to left</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>left to right</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>posterior to anterior</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>inferior to superior</td>
+</tr>
+</tbody>
+</table>
+<p>This information will be used by fmristats for handling slice
+timing differences.</p>
+</div></blockquote>
+</li>
+</ul>
+<p>If you save the above table as a CSV to a file <code class="docutils literal notranslate"><span class="pre">protocol.csv</span></code>, the
+following creates a study instance for the above FMRI sessions:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">csv2dataframe</span> <span class="n">protocol</span><span class="o">.</span><span class="n">csv</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmristudy</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
+</div>
+<p>The tool <code class="docutils literal notranslate"><span class="pre">csv2dataframe</span></code> will parse the CSV-file, it will generate an
+index from the columns <em>cohort</em>, <em>id</em>, <em>paradigm</em>, and <em>date</em>, it will
+sort the index, and it will verified integrity of index. You can have a
+look at the created data frame by calling <code class="docutils literal notranslate"><span class="pre">fmriinfo</span></code> on the file:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span><span class="p">:</span> <span class="n">protocol</span> <span class="ow">or</span> <span class="n">covariates</span> <span class="n">file</span><span class="p">:</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">entries</span><span class="p">:</span> <span class="mi">6</span>
+<span class="n">Entries</span><span class="p">:</span>
+                                        <span class="n">valid</span>  <span class="n">epi</span>
+<span class="n">cohort</span> <span class="nb">id</span> <span class="n">paradigm</span> <span class="n">date</span>
+<span class="n">BAR</span>    <span class="mi">1</span>  <span class="n">WGT</span>      <span class="mi">2015</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+       <span class="mi">2</span>  <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span> <span class="mi">14</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+<span class="n">FOO</span>    <span class="mi">1</span>  <span class="n">HFM</span>      <span class="mi">2013</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+          <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">04</span> <span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="kc">False</span>    <span class="mi">3</span>
+       <span class="mi">2</span>  <span class="n">HFM</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">04</span> <span class="mi">19</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+          <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">24</span> <span class="mi">06</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">valid</span> <span class="n">entries</span><span class="p">:</span>
+                 <span class="n">valid</span>  <span class="n">total</span>
+<span class="n">cohort</span> <span class="n">paradigm</span>
+<span class="n">BAR</span>    <span class="n">WGT</span>           <span class="mi">2</span>      <span class="mi">2</span>
+<span class="n">FOO</span>    <span class="n">HFM</span>           <span class="mi">2</span>      <span class="mi">2</span>
+       <span class="n">WGT</span>           <span class="mi">1</span>      <span class="mi">2</span>
+</pre></div>
+</div>
+<p>If there are less then 12 entries in the protocol, <code class="docutils literal notranslate"><span class="pre">fmriinfo</span></code> will
+also show you all entries in the protocol. The file <code class="docutils literal notranslate"><span class="pre">protocol.pkl</span></code> is
+indeed noting else than a pickled <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/dsintro.html#dataframe">DataFrame</a>: You have the full powers
+of <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/">Pandas</a> at you disposal.</p>
+<p>The default file layout for multi-subject (multi-session) studies is:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="o">-</span><span class="n">v</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">File</span> <span class="n">layout</span><span class="p">:</span>
+<span class="o">------------</span>
+<span class="n">stimulus</span>      <span class="p">:</span> <span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">stimulus</span>
+<span class="n">session</span>       <span class="p">:</span> <span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">.</span><span class="n">session</span>
+<span class="n">reference_maps</span><span class="p">:</span> <span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">rigids</span><span class="p">}</span><span class="o">.</span><span class="n">rigids</span>
+<span class="n">population_map</span><span class="p">:</span> <span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">space</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">psi</span><span class="p">}</span><span class="o">.</span><span class="n">popmap</span>
+<span class="n">result</span>        <span class="p">:</span> <span class="p">{</span><span class="n">study</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">/</span><span class="p">{</span><span class="n">cohort</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="nb">id</span><span class="p">:</span><span class="mi">04</span><span class="n">d</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">paradigm</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">date</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">space</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">psi</span><span class="p">}</span><span class="o">-</span><span class="p">{</span><span class="n">rigids</span><span class="p">}</span><span class="o">.</span><span class="n">fit</span>
+</pre></div>
+</div>
+<p>This means that at the end of your analysis of, say, paradigm <em>WGT</em>,
+your file hierarchy will look something like this:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>results
+└── WGT
+    └── BAR
+        ├── 0002
+        │   ├── AGB300-0002-WGT-2014-04-24-0930-mni152-ants-pcm.fit
+        │   ├── AGB300-0002-WGT-2014-04-24-0930-mni152-ants.popmap
+        │   ├── AGB300-0002-WGT-2014-04-24-0930-pcm.rigids
+        │   ├── AGB300-0002-WGT-2014-04-24.0930-session
+        │   └── AGB300-0002-WGT-2014-04-24.0930-stimulus
+        ├── 0003
+        │   ├── AGB300-0003-WGT-2014-04-25-1445-mni152-ants-pcm.fit
+        │   ├── AGB300-0003-WGT-2014-04-25-1445-mni152-ants.popmap
+        │   ├── AGB300-0003-WGT-2014-04-25-1445-pcm.rigids
+        │   ├── AGB300-0003-WGT-2014-04-25.1445-session
+        │   └── AGB300-0003-WGT-2014-04-25.1445-stimulus
+        …
+</pre></div>
+</div>
+</div>
+<div class="section" id="handling-subject-covariates">
+<h2>Handling subject covariates<a class="headerlink" href="#handling-subject-covariates" title="Permalink to this headline">¶</a></h2>
+<p>The table in <a class="reference internal" href="#protocol"><span class="std std-ref">Creating a study instance for multiple subjects</span></a> contains one entry per FMRI session and
+<strong>not</strong> one entry per subject. Indeed, fmristats (that is its interface)
+suggests to manage the covariates of subjects in a separate table
+<a class="reference download internal" href="../_downloads/covariates.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">covariates.csv</span></code></a> instead:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="6%" />
+<col width="19%" />
+<col width="9%" />
+<col width="31%" />
+<col width="16%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">cohort</th>
+<th class="head">id</th>
+<th class="head">sex</th>
+<th class="head">age</th>
+<th class="head">handedness</th>
+<th class="head">valid</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>FOO</td>
+<td>1</td>
+<td>female</td>
+<td>23</td>
+<td>67.0</td>
+<td>True</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>2</td>
+<td>female</td>
+<td>24</td>
+<td>49.0</td>
+<td>True</td>
+</tr>
+<tr class="row-even"><td>BAR</td>
+<td>1</td>
+<td>female</td>
+<td>25</td>
+<td>37.0</td>
+<td>False</td>
+</tr>
+<tr class="row-odd"><td>BAR</td>
+<td>2</td>
+<td>male</td>
+<td>26</td>
+<td>-59.0</td>
+<td>True</td>
+</tr>
+</tbody>
+</table>
+<p>Covariates contain information about <em>subjects</em>, such as <em>age</em>, <em>sex</em>,
+case/control <em>status</em>, or <em>handedness</em>, whereas the protocol contains
+information <em>about FMRI sessions</em>. In a protocol there is one entry per
+FMRI session; in a covariates file there is one entry per subject.</p>
+<p>Again, there exists a column <em>valid</em> in the table that indicates whether
+a subject should be included or excluded from the downstream analysis.
+Here, for example, subject 1 in cohort BAR has been flagged as invalid,
+say, due to non-compliance of the subject. The column <code class="docutils literal notranslate"><span class="pre">valid</span></code> is
+optional and, if missing, will be set to <code class="docutils literal notranslate"><span class="pre">True</span></code> by default.</p>
+<p>fmristats will only include the data of an FMRI session in the
+statistical analysis when both: the FMRI session is marked as valid in
+the protocol <strong>and</strong> the respective subject is marked as valid in the
+covariates file. The reasoning is that fmristats assumes that any
+subject may have participated in multiple FMRI sessions and with respect
+to a variety different paradigms. The reason for why to exclude a
+particular FMRI session from a statistical analysis is typically complex
+but generally falls into two categories: Either the FMRI data are not of
+sufficient quality (severe movements of subject in the scanner,
+equipment failure, presentation software did not sync, …) or the subject
+had to be excluded due to other, external reasons (say due to
+non-compliance to the study protocol or other exclusion criteria). The
+former would be recorded in the <em>protocol table</em> the latter in the
+<em>covariates table</em>. The idea is that the covariate file may be
+maintained <em>independent</em> of the respective study protocol file.</p>
+<p>Whether to include covariates to you study is optional. You can include
+a covariates file to your study as follows:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">csv2dataframe</span> <span class="n">covariates</span><span class="o">.</span><span class="n">csv</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmristudy</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span>
+</pre></div>
+</div>
+<p>Again, have a look at the file that has been created:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmriinfo</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tutorial</span><span class="o">.</span><span class="n">study</span><span class="p">:</span> <span class="n">study</span> <span class="n">file</span>
+
+<span class="n">Protocol</span><span class="p">:</span>
+<span class="o">---------</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">entries</span><span class="p">:</span> <span class="mi">6</span>
+<span class="n">Entries</span><span class="p">:</span>
+                                        <span class="n">valid</span>  <span class="n">epi</span>
+<span class="n">cohort</span> <span class="nb">id</span> <span class="n">paradigm</span> <span class="n">date</span>
+<span class="n">BAR</span>    <span class="mi">1</span>  <span class="n">WGT</span>      <span class="mi">2015</span><span class="o">-</span><span class="mi">07</span><span class="o">-</span><span class="mi">23</span> <span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+       <span class="mi">2</span>  <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">25</span> <span class="mi">14</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+<span class="n">FOO</span>    <span class="mi">1</span>  <span class="n">HFM</span>      <span class="mi">2013</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">22</span> <span class="mi">09</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+          <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">04</span> <span class="mi">17</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>  <span class="kc">False</span>    <span class="mi">3</span>
+       <span class="mi">2</span>  <span class="n">HFM</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">05</span><span class="o">-</span><span class="mi">04</span> <span class="mi">19</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+          <span class="n">WGT</span>      <span class="mi">2014</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">24</span> <span class="mi">06</span><span class="p">:</span><span class="mi">45</span><span class="p">:</span><span class="mi">00</span>   <span class="kc">True</span>    <span class="mi">3</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">valid</span> <span class="n">entries</span><span class="p">:</span>
+                 <span class="n">valid</span>  <span class="n">total</span>
+<span class="n">cohort</span> <span class="n">paradigm</span>
+<span class="n">BAR</span>    <span class="n">WGT</span>           <span class="mi">2</span>      <span class="mi">2</span>
+<span class="n">FOO</span>    <span class="n">HFM</span>           <span class="mi">2</span>      <span class="mi">2</span>
+       <span class="n">WGT</span>           <span class="mi">1</span>      <span class="mi">2</span>
+
+<span class="n">Covariates</span><span class="p">:</span>
+<span class="o">-----------</span>
+<span class="n">Number</span> <span class="n">of</span> <span class="n">entries</span><span class="p">:</span> <span class="mi">4</span>
+<span class="n">Entries</span><span class="p">:</span>
+              <span class="n">sex</span>  <span class="n">age</span>  <span class="n">handedness</span>  <span class="n">valid</span>
+<span class="n">cohort</span> <span class="nb">id</span>
+<span class="n">BAR</span>    <span class="mi">1</span>   <span class="n">female</span>   <span class="mi">25</span>        <span class="mf">37.0</span>  <span class="kc">False</span>
+       <span class="mi">2</span>     <span class="n">male</span>   <span class="mi">26</span>       <span class="o">-</span><span class="mf">59.0</span>   <span class="kc">True</span>
+<span class="n">FOO</span>    <span class="mi">1</span>   <span class="n">female</span>   <span class="mi">23</span>        <span class="mf">67.0</span>   <span class="kc">True</span>
+       <span class="mi">2</span>   <span class="n">female</span>   <span class="mi">24</span>        <span class="mf">49.0</span>   <span class="kc">True</span>
+
+<span class="n">Number</span> <span class="n">of</span> <span class="n">valid</span> <span class="n">entries</span><span class="p">:</span>
+               <span class="n">valid</span>  <span class="n">total</span>
+<span class="n">cohort</span> <span class="n">sex</span>
+<span class="n">BAR</span>    <span class="n">female</span>      <span class="mi">0</span>      <span class="mi">1</span>
+       <span class="n">male</span>        <span class="mi">1</span>      <span class="mi">1</span>
+<span class="n">FOO</span>    <span class="n">female</span>      <span class="mi">2</span>      <span class="mi">2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="defining-subsamples">
+<h2>Defining subsamples<a class="headerlink" href="#defining-subsamples" title="Permalink to this headline">¶</a></h2>
+<p>Say, in your analysis, you are working with stronger inclusion/exclusion
+criteria than the study that you are using for your data. Then you may
+include or <em>recorde</em> this information in a
+<a class="reference download internal" href="../_downloads/subjects_to_exclude.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">subjects_to_exclude.csv</span></code></a> in which you mark all subject as
+invalid that do not comply to your inclusion criteria:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="15%" />
+<col width="38%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">cohort</th>
+<th class="head">id</th>
+<th class="head">valid</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>FOO</td>
+<td>1</td>
+<td>False</td>
+</tr>
+<tr class="row-odd"><td>BAR</td>
+<td>2</td>
+<td>False</td>
+</tr>
+</tbody>
+</table>
+<p>But, of course, you want to use all the information of your master
+study. The solution is to update your covariates file:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">csv2dataframe</span> <span class="n">subjects_to_exclude</span><span class="o">.</span><span class="n">csv</span> <span class="n">subjects_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmristudy</span> <span class="o">-</span><span class="n">pv</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span><span class="o">-</span><span class="n">update</span> <span class="n">subjects_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmriinfo</span> <span class="n">subjects_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">fmriinfo</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<p>Say, you have done some extensive quality controlling of the FMRI
+sessions that your would like to include in your study but the
+information has not yet entered the official database. As you may have
+guessed, the solution is to update your protocol file with a
+<a class="reference download internal" href="../_downloads/sessions_to_exclude.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">sessions_to_exclude.csv</span></code></a>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="25%" />
+<col width="8%" />
+<col width="33%" />
+<col width="21%" />
+<col width="13%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">cohort</th>
+<th class="head">id</th>
+<th class="head">paradigm</th>
+<th class="head">valid</th>
+<th class="head">epi</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>FOO</td>
+<td>1</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>1</td>
+<td>WGT</td>
+<td>False</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>FOO</td>
+<td>2</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>2</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>BAR</td>
+<td>1</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>BAR</td>
+<td>2</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">csv2dataframe</span> <span class="n">sessions_to_exclude</span><span class="o">.</span><span class="n">csv</span> <span class="n">sessions_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmristudy</span> <span class="o">-</span><span class="n">pv</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">protocol</span><span class="o">-</span><span class="n">update</span> <span class="n">sessions_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+
+<span class="n">fmriinfo</span> <span class="n">sessions_to_exclude</span><span class="o">.</span><span class="n">pkl</span>
+<span class="n">fmriinfo</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span>
+</pre></div>
+</div>
+<p>As the example suggests, it is possible to omit columns from the tables
+used for the update (here the »date«-column). The update will then apply
+to all entries in the protocol or covariates table that match at least
+the entries in the update table.</p>
+<p>Say, we are (only) interested in the analysis of a single paradigm (say
+WGT) that tests the language processing of subjects in a simple word
+generation task. And say, we only interested in a right-handed
+population (say with a <a class="reference external" href="https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf">Waterloo Handedness Score</a> above +20). We
+select the respective sample from the pool of available subjects by:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">WGT</span> <span class="o">--</span><span class="n">covariates</span><span class="o">-</span><span class="n">query</span>  <span class="s1">&#39;handedness &gt; 20&#39;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="including-a-template-in-standard-space-in-the-study-instance">
+<h2>Including a template in standard space in the study instance<a class="headerlink" href="#including-a-template-in-standard-space-in-the-study-instance" title="Permalink to this headline">¶</a></h2>
+<p>If you are planing to compare the fitted parameter and statistic fields
+of the subjects in your sample, you will likely work with a template in
+standard space that you would like to provide as a reference to
+<code class="docutils literal notranslate"><span class="pre">fmrisample</span></code>, <code class="docutils literal notranslate"><span class="pre">ants4pop</span></code>, or <code class="docutils literal notranslate"><span class="pre">fsl4pop</span></code>. You may add the template
+to your study instance right at the start. This will assure that all
+tools will work with the same template and in the same standard space:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">mni152</span> \
+    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm_brain</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span>
+
+<span class="n">nii2image</span> <span class="o">--</span><span class="n">name</span> <span class="n">mni152</span><span class="o">-</span><span class="n">t1</span> \
+    <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">data</span><span class="o">/</span><span class="n">fsl</span><span class="o">-</span><span class="n">mni152</span><span class="o">-</span><span class="n">templates</span><span class="o">/</span><span class="n">MNI152_T1_2mm</span><span class="o">.</span><span class="n">nii</span><span class="o">.</span><span class="n">gz</span> \
+    <span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>
+
+<span class="n">fmristudy</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span>
+
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> \
+</pre></div>
+</div>
+</div>
+<div class="section" id="faq-i-have-only-recorded-the-date-but-not-the-time-of-my-fmri-sessions">
+<h2>FAQ: I have only recorded the date but not the time of my FMRI sessions<a class="headerlink" href="#faq-i-have-only-recorded-the-date-but-not-the-time-of-my-fmri-sessions" title="Permalink to this headline">¶</a></h2>
+<p>Say, your protocol table looks as follows
+<a class="reference download internal" href="../_downloads/protocol-short.csv" download=""><code class="xref download docutils literal notranslate"><span class="pre">protocol-short.csv</span></code></a>:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="6%" />
+<col width="29%" />
+<col width="24%" />
+<col width="15%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">cohort</th>
+<th class="head">id</th>
+<th class="head">date</th>
+<th class="head">paradigm</th>
+<th class="head">valid</th>
+<th class="head">epi</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>FOO</td>
+<td>1</td>
+<td>2013-04-22</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>1</td>
+<td>2014-05-04</td>
+<td>WGT</td>
+<td>False</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>FOO</td>
+<td>2</td>
+<td>2014-05-04</td>
+<td>HFM</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>FOO</td>
+<td>2</td>
+<td>2014-04-24</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-even"><td>BAR</td>
+<td>1</td>
+<td>2015-07-23</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+<tr class="row-odd"><td>BAR</td>
+<td>2</td>
+<td>2014-04-25</td>
+<td>WGT</td>
+<td>True</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>If you save the above table to <code class="docutils literal notranslate"><span class="pre">protocol-short.csv</span></code>, then adding
+<code class="docutils literal notranslate"><span class="pre">--strftime</span> <span class="pre">short</span></code> will successfully parse your file:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">csv2dataframe</span> <span class="n">protocol</span><span class="o">-</span><span class="n">short</span><span class="o">.</span><span class="n">csv</span> <span class="n">protocol</span><span class="o">-</span><span class="n">short</span><span class="o">.</span><span class="n">pkl</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span>
+</pre></div>
+</div>
+<p>If you also add the same argument <code class="docutils literal notranslate"><span class="pre">--strftime</span> <span class="pre">short</span></code> to <code class="docutils literal notranslate"><span class="pre">fmristudy</span></code>
+when creating your study instance:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span>
+</pre></div>
+</div>
+<p>Then this will also change the date/time-format string when creating or
+searching for files. This means that at the end of your analysis of,
+say, paradigm <em>WGT</em>, your file hierarchy will look as follows:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span>results
+└── WGT
+    └── BAR
+        ├── 0002
+        │   ├── AGB300-0002-WGT-2014-04-24-mni152-ants-pcm.fit
+        │   ├── AGB300-0002-WGT-2014-04-24-mni152-ants.popmap
+        │   ├── AGB300-0002-WGT-2014-04-24-pcm.rigids
+        │   ├── AGB300-0002-WGT-2014-04-24.session
+        │   └── AGB300-0002-WGT-2014-04-24.stimulus
+        ├── 0003
+        │   ├── AGB300-0003-WGT-2014-04-25-mni152-ants-pcm.fit
+        │   ├── AGB300-0003-WGT-2014-04-25-mni152-ants.popmap
+        │   ├── AGB300-0003-WGT-2014-04-25-pcm.rigids
+        │   ├── AGB300-0003-WGT-2014-04-25.session
+        │   └── AGB300-0003-WGT-2014-04-25.stimulus
+        …
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-analysing-multiple-subjects">
+<h2>Example: Analysing multiple subjects<a class="headerlink" href="#example-analysing-multiple-subjects" title="Permalink to this headline">¶</a></h2>
+<p>The following goes through an example of analysing the paradigm »WGT«
+that tests the language processing of subjects in a simple word
+generation task in a right-handed population (with a <a class="reference external" href="https://www.ucl.ac.uk/medical-education/resources/Waterloo/WatFoot_HandQuest36items-Elias1998.pdf">Waterloo
+Handedness Score</a> above +20).</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fmristudy</span> <span class="o">--</span><span class="n">out</span> <span class="n">tutorial</span><span class="o">.</span><span class="n">study</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">protocol</span> <span class="n">protocol</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">protocol</span><span class="o">-</span><span class="n">update</span> <span class="n">sessions_to_exclude</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span> <span class="n">covariates</span><span class="o">.</span><span class="n">pkl</span> \
+    <span class="o">--</span><span class="n">covariates</span><span class="o">-</span><span class="n">query</span>  <span class="s1">&#39;waterloo &gt; 20&#39;</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">template</span><span class="o">.</span><span class="n">image</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">ati</span><span class="o">.</span><span class="n">image</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">-</span><span class="n">image</span> <span class="n">vb</span><span class="o">-</span><span class="n">background</span><span class="o">.</span><span class="n">image</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">WGT</span> \
+    <span class="o">--</span><span class="n">strftime</span> <span class="n">short</span>
+</pre></div>
+</div>
+<p>Assuming you have saved the stimulus information and FMRI data in the
+following systematic:</p>
+<div class="code highlight-default notranslate"><div class="highlight"><pre><span></span>raw
+├── mat
+│   └── WGT
+│       ├── AGB300-0001-WGT-2014-04-22.mat
+│       ├── AGB300-0002-WGT-2014-04-24.mat
+│       ├── AGB300-0003-WGT-2014-04-25.mat
+…       …
+│       ├── AGB300-0116-WGT-2016-04-04.mat
+│       ├── AGB300-0117-WGT-2016-04-05.mat
+│       └── AGB300-0119-WGT-2016-04-18.mat
+└── nii
+    └── WGT
+        ├── AGB300-0001-WGT-2014-04-22.nii
+        ├── AGB300-0002-WGT-2014-04-24.nii
+        ├── AGB300-0003-WGT-2014-04-25.nii
+        …
+        ├── AGB300-0116-WGT-2016-04-04.nii
+        ├── AGB300-0117-WGT-2016-04-05.nii
+        └── AGB300-0119-WGT-2016-04-18.nii
+</pre></div>
+</div>
+<p>Then the following code will parse the MATLAB-coded stimulus design and
+the Nifti1-file of the subjects, and it will run a foreground/background
+detection on each FMRI:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Stimulus Design for all subjects</span>
+<span class="n">mat2block</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">mat</span><span class="o">-</span><span class="n">prefix</span> <span class="s1">&#39;raw/mat/</span><span class="si">{paradigm}</span><span class="s1">&#39;</span>
+
+<span class="c1"># Session Data for all subjects</span>
+<span class="n">nii2session</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span> \
+    <span class="o">--</span><span class="n">nii</span><span class="o">-</span><span class="n">prefix</span> <span class="s1">&#39;raw/nii/</span><span class="si">{paradigm}</span><span class="s1">&#39;</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span>
+</pre></div>
+</div>
+<p>The above path-prefixes are indeed the default. If you have organised
+your files the same way, you may omit the respective arguments.</p>
+<p>The following will fit subject movements by a principal components
+method and the population maps using ANTS. Then it will fit the default,
+nested model to the FMRI. After that non-brain areas are pruned from the
+resulting statistics fields.</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Head movement estimates for all subjects</span>
+<span class="n">fmririgids</span> <span class="o">-</span><span class="n">vp</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span> <span class="mi">84</span> <span class="mi">102</span>
+
+<span class="c1"># Assessment of tracking ability</span>
+<span class="n">ref2plot</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span>
+
+<span class="c1"># The mni152 population map for each subject</span>
+<span class="n">ants4pop</span> <span class="o">-</span><span class="n">vp</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span> <span class="mi">84</span> <span class="mi">102</span>
+
+<span class="c1"># Fit</span>
+<span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">20</span> <span class="mi">100</span>
+
+<span class="c1"># Prune statistics field</span>
+<span class="n">fsl4prune</span> <span class="o">-</span><span class="n">v</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="subject-remove-non-brain-areas.html" class="btn btn-neutral float-right" title="Subject analysis: Prune a statistics field from non-brain areas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getting-started.html" class="btn btn-neutral" title="Getting to know fmristats" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
