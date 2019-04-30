@@ -1,0 +1,26 @@
+# This files encodes the layout of the FSL design matrix
+# ------------------------------------------------------
+#
+# In FSL, the experimental design matrix that is saved on disk does not
+# yet contain an intercept column. The command line function
+# 'fsl2design' will add an intercept to the front of the matrix for you.
+#
+# Single values will mark positions in the matrix starting with 0.
+# Multiple values will be interpreted as contrasts and filled with 0 up
+# to the number of parameters.
+#
+# Average left is contained in the second column (column 1), average
+# right is contained in the forth column (column 3), the third and fifth
+# columns contain the derivatives of the second and third columns.
+#
+# You may add all contrasts of interest here and feed this file to
+# fmrifit (recommended), but you may also add new contrasts to this list
+# at a later stage in analysis, too.
+#
+# Comments start with #, blank lines are ignored.
+
+intercept  : 0
+left       : 1
+right      : 3
+left>right : 0, 1, 0, -1
+right>left : 0, -1, 0, 1

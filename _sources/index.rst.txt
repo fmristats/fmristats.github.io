@@ -3,22 +3,7 @@ Modelling the data and not the images in FMRI
 
 .. important::
 
-    **Everything new in 0.1.0:** Well, not everything but well enough to
-    justify a version increase.
-
-    * Most importantly, fmristats is a lot faster than before. You may
-      now expect the calculations to be finished in around 4h.
-
-    * The API now consistently builds around the *study instance* that
-      has been introduced in 0.0.4. This makes the whole user interface
-      much more streamlined and, well, consistent. To get an idea of the
-      changes, please have a look at the :ref:`getting-started` and
-      :ref:`study-interface` chapters.
-
-    * Last but not least, the documentation has been polished a lot.
-
-    Unfortunately, version 0.1.0 is *not* backwards compatible with
-    versions <0.1.0. Please upgrade to the most recent version.
+   Check out :ref:`new`!
 
 What is it?
 ...........
@@ -153,6 +138,14 @@ Python interface
    :maxdepth: 2
 
    modules
+
+Change log
+----------
+
+.. toctree::
+   :maxdepth: 2
+
+   new
 
 Indices and tables
 ------------------

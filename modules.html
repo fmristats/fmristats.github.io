@@ -28,6 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="What is new" href="new.html" />
     <link rel="prev" title="Some notes on speed" href="tutorials/notes.html" /> 
 
   
@@ -106,6 +107,9 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-fmristats.pmodel">The FMRI Population Model</a></li>
 </ul>
 </li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="new.html">What is new</a></li>
 </ul>
 
             
@@ -1148,7 +1152,7 @@ the reference of the diffeomorphism.</p>
 <dd><p>The identity map</p>
 <p>Sets the standard space equal to the coordinate system of the
 scanner and the diffeomorphism from standard space to subject
-reference space to different rigid body transformation.</p>
+reference space to different rigid body transformations.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1976,8 +1980,95 @@ ati-reference field that is stored in the PopulationMap.</p>
 </dd></dl>
 
 <dl class="class">
+<dt id="fmristats.smodel.SignalFit">
+<em class="property">class </em><code class="descclassname">fmristats.smodel.</code><code class="descname">SignalFit</code><span class="sig-paren">(</span><em>coordinates</em>, <em>params</em>, <em>cov_params</em>, <em>mse</em>, <em>population_map</em>, <em>hyperparameters</em>, <em>parameter_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Result of a FMRI fitting</p>
+<p>Defines a class for the result, i.e., the estimated effect field of
+an FMRI experiments, fitted by the function attribute of the <cite>FMRI</cite>
+class.</p>
+<dl class="method">
+<dt id="fmristats.smodel.SignalFit.get_field">
+<code class="descname">get_field</code><span class="sig-paren">(</span><em>parameter</em>, <em>value=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit.get_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the scalar field for the parameter</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>parameter</strong> (<em>int</em><em> or </em><em>str</em><em> or </em><em>list</em><em>(</em><em>int</em><em>) or </em><em>np.array</em>) – Must int or a key in the parameter_dict.</li>
+<li><strong>value</strong> (<em>str</em>) – The value string can be either point, stderr, or tstatistic.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The queried field</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image">Image</a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The parameter_dict can either contain the position of a
+parameter in the parameter field or a contrast of parameters in
+the field. The form can either be a single integer, a list of
+integers or an arrays. Example: {‘intercept’ : 0,
+‘bold_contrast’ : [0,1,0,-1,0,0,0,0,0]}</p>
+<p>The counting starts at 0, hence 0 is the first parameter (and
+typically the intercept), 1 is the second parameter in the
+design matrix (and typically the first non-constant parameter),
+and so on.</p>
+<p>The value string can be either point, stderr, or tstatistic.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalFit.mask">
+<code class="descname">mask</code><span class="sig-paren">(</span><em>mask=True</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit.mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply mask to parameter fields</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalFit.norm_to">
+<code class="descname">norm_to</code><span class="sig-paren">(</span><em>reference_field</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit.norm_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Norm the part of the statistics field that has a unit, to a
+reference field.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>reference_field</strong> (<a class="reference internal" href="#fmristats.diffeomorphisms.Image" title="fmristats.diffeomorphisms.Image"><em>Image</em></a>) – The reference field for the unit.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalFit.norm_to_ati">
+<code class="descname">norm_to_ati</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit.norm_to_ati" title="Permalink to this definition">¶</a></dt>
+<dd><p>Norm the part of the statistics field that has a unit, to the
+ati-reference field that is stored in the PopulationMap.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalFit.save">
+<code class="descname">save</code><span class="sig-paren">(</span><em>file</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalFit.save" title="Permalink to this definition">¶</a></dt>
+<dd><p>Save instance to disk</p>
+<p>This will save the current instance to disk for later use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>file</strong> (<em>str</em>) – File name.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="fmristats.smodel.SignalModel">
-<em class="property">class </em><code class="descclassname">fmristats.smodel.</code><code class="descname">SignalModel</code><span class="sig-paren">(</span><em>session</em>, <em>reference_maps</em>, <em>population_map</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">fmristats.smodel.</code><code class="descname">SignalModel</code><span class="sig-paren">(</span><em>session, reference_maps, population_map, formula='C(task)/C(block, Sum)', parameter=['intercept', 'task']</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel" title="Permalink to this definition">¶</a></dt>
 <dd><p>The signal model</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -2059,6 +2150,54 @@ space.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="fmristats.smodel.SignalModel.design_AT_coordinate">
+<code class="descname">design_AT_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.design_AT_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.design_AT_index">
+<code class="descname">design_AT_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.design_AT_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.design_AT_subject_coordinate">
+<code class="descname">design_AT_subject_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.design_AT_subject_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.smodel.SignalModel.fit">
 <code class="descname">fit</code><span class="sig-paren">(</span><em>mask=True</em>, <em>verbose=True</em>, <em>backend='numba'</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the signal model to data</p>
@@ -2079,6 +2218,55 @@ take precedence: ‘vb’&gt; ‘vb_background’&gt; ‘vb_estimate’ &gt;
 </td>
 </tr>
 <tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">Fitted field.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.fit_AT_coordinate">
+<code class="descname">fit_AT_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit_AT_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given with
+respect to the coordinate system of the population space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.fit_AT_index">
+<code class="descname">fit_AT_index</code><span class="sig-paren">(</span><em>index</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit_AT_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – The index at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.fit_AT_subject_coordinate">
+<code class="descname">fit_AT_subject_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit_AT_subject_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</li>
+<li><strong>formula</strong> (<em>str</em>) – A formula.</li>
+</ul>
 </td>
 </tr>
 </tbody>
@@ -2116,7 +2304,7 @@ respect to the coordinate system of the population space.</p>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.fit_at_subject_coordinate">
-<code class="descname">fit_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>formula='signal~C(task)/C(block</em>, <em>Sum)'</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">fit_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>formula=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.fit_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the signal model to data at specified coordinates given
 with respect to the coordinate system of the subject reference
 space.</p>
@@ -2127,10 +2315,6 @@ space.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</li>
 <li><strong>formula</strong> (<em>str</em>) – A formula.</li>
-<li><strong>also_return_data</strong> (<em>bool</em>) – If the formula does not contain time, the design matrix
-(design) will not contain time as a covariate. If
-also_return_data is True, this will also return the data
-matrix.</li>
 </ul>
 </td>
 </tr>
@@ -2242,6 +2426,55 @@ the acquisition grid</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="fmristats.smodel.SignalModel.model_AT_coordinate">
+<code class="descname">model_AT_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_AT_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given with
+respect to the coordinate system of the population space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.model_AT_index">
+<code class="descname">model_AT_index</code><span class="sig-paren">(</span><em>index</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_AT_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>index</strong> (<em>tuple</em>) – The index at which to fit the model</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.model_AT_subject_coordinate">
+<code class="descname">model_AT_subject_coordinate</code><span class="sig-paren">(</span><em>x</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_AT_subject_coordinate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit the signal model to data at specified coordinates given
+with respect to the coordinate system of the subject reference
+space.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</li>
+<li><strong>formula</strong> (<em>str</em>) – A formula.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="fmristats.smodel.SignalModel.model_at_coordinate">
 <code class="descname">model_at_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the signal model to data at specified coordinates given with
@@ -2272,7 +2505,7 @@ respect to the coordinate system of the population space.</p>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.model_at_subject_coordinate">
-<code class="descname">model_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>formula='signal~C(task)/C(block</em>, <em>Sum)'</em>, <em>also_return_data=False</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">model_at_subject_coordinate</code><span class="sig-paren">(</span><em>x</em>, <em>formula=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.model_at_subject_coordinate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fit the signal model to data at specified coordinates given
 with respect to the coordinate system of the subject reference
 space.</p>
@@ -2283,10 +2516,6 @@ space.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>x</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em><em>, </em><em>dtype: float</em>) – The coordinates at which to fit the model</li>
 <li><strong>formula</strong> (<em>str</em>) – A formula.</li>
-<li><strong>also_return_data</strong> (<em>bool</em>) – If the formula does not contain time, the design matrix
-(design) will not contain time as a covariate. If
-also_return_data is True, this will also return the data
-matrix.</li>
 </ul>
 </td>
 </tr>
@@ -2311,15 +2540,17 @@ matrix.</li>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.set_data">
-<code class="descname">set_data</code><span class="sig-paren">(</span><em>burn_in=4</em>, <em>demean=True</em>, <em>dropna=True</em>, <em>include_background=False</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_data</code><span class="sig-paren">(</span><em>burn_in=4</em>, <em>demean=False</em>, <em>dropna=True</em>, <em>include_background=False</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the observation matrix</p>
+<p>This will set the attributes .observations, .valid, .data, and
+.dataframe.</p>
 <p class="rubric">Notes</p>
-<p>The observations will be an array of the following shape:</p>
+<p>The observations are an array of the following shape:</p>
 <blockquote>
 <div><dl class="docutils">
 <dt>ndarray, shape (n,x,y,z,9), dtype: float</dt>
 <dd>[…,:3] = coordinates of observation
-[…, 3] = MR signal response
+[…, 3] = the MR signal response
 […, 4] = time of observation
 […, 5] = task during time of observation
 […, 6] = block number during time of observation
@@ -2327,20 +2558,56 @@ matrix.</li>
 […, 8] = slice number</dd>
 </dl>
 </div></blockquote>
-<p>The data in this array is the basis of all model fits.</p>
+<p>The data in this array are the basis of all model fits.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.set_design">
-<code class="descname">set_design</code><span class="sig-paren">(</span><em>formula='C(task)/C(block, Sum)', parameter=['intercept', 'task'], verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_design" title="Permalink to this definition">¶</a></dt>
-<dd><p>Create the design matrix</p>
+<code class="descname">set_design</code><span class="sig-paren">(</span><em>formula=None</em>, <em>parameter=None</em>, <em>return_design_matrix=False</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or create the design matrix</p>
+<p>This will set the attribute .design, and it will overwrite the
+attributes .valid, .data, .dataframe, and potentially .formula,
+and .parameter_dict.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"></td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>design</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>m</em><em>,</em><em>n</em><em>,</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>,</em><em>p</em><em>) or </em><em>(</em><em>m</em><em>,</em><em>n</em><em>,</em><em>p</em><em>) or </em><em>(</em><em>m</em><em>,</em><em>p</em><em>)</em>) – Design matrix for the m scan cycles with n scans per cycle
+on the grid x, y, z with p number of parameters</li>
+<li><strong>formula</strong> (<em>None</em><em> or </em><em>str</em>) – If X is None, this formula will be used to create the design
+matrix. If formula is None, the default stored in .formula
+will be used. Otherwise .formula will be overwritten</li>
+<li><strong>parameter</strong> (<em>list</em><em>(</em><em>str</em><em>)</em>) – A list of parameter names</li>
+<li><strong>return_design_matrix</strong> (<em>bool</em>) – If True, return the design matrix</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">DesignMatrix</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">None or DesignMatrix</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.set_design_to">
+<code class="descname">set_design_to</code><span class="sig-paren">(</span><em>design</em>, <em>hasconst</em>, <em>verbose=True</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_design_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or create the design matrix</p>
+<p>This will set the attribute .design.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>design</strong> (<em>ndarray</em><em>, </em><em>shape</em><em> (</em><em>m</em><em>,</em><em>n</em><em>,</em><em>x</em><em>,</em><em>y</em><em>,</em><em>z</em><em>,</em><em>p</em><em>) or </em><em>(</em><em>m</em><em>,</em><em>n</em><em>,</em><em>p</em><em>) or </em><em>(</em><em>m</em><em>,</em><em>p</em><em>)</em>) – Design matrix for the m scan cycles with n scans per cycle
+on the grid x, y, z with p number of parameters</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"></td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">None</td>
 </tr>
 </tbody>
 </table>
@@ -2349,19 +2616,21 @@ matrix.</li>
 <dl class="method">
 <dt id="fmristats.smodel.SignalModel.set_hyperparameters">
 <code class="descname">set_hyperparameters</code><span class="sig-paren">(</span><em>scale_type='max'</em>, <em>factor=3</em>, <em>scale=None</em>, <em>mass=None</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_hyperparameters" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set up hyperparameters for field estimation</p>
-<p>All parameters which control details the effect field estimation
-and which are not per se sample design specific are called
-Hyperparameters.</p>
+<dd><p>Set the hyperparameter for MB estimation</p>
+<p>Set the width of the spatial weighting scheme for MB
+estimation.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>scale_type</strong> (<em>str</em>) – One of min, max (default), diagonal</li>
-<li><strong>scale</strong> (<em>float</em>) – Standard deviation of the Gaussian used to weight
+<li><strong>scale</strong> (<em>None</em><em> or </em><em>float</em>) – Standard deviation of the Gaussian used to weight
 observations with respect to distance to point.</li>
-<li><strong>mass</strong> (<em>float</em><em> (</em><em>optional</em><em>)</em>) – </li>
+<li><strong>factor</strong> (<em>float</em>) – Controls the centre mass of the Gaussian used to weight
+observations with respect to distance to point.</li>
+<li><strong>mass</strong> (<em>None</em><em> or </em><em>float</em><em> (</em><em>optional</em><em>)</em>) – Centre mass of the Gaussian used to weight
+observations with respect to distance to point.</li>
 </ul>
 </td>
 </tr>
@@ -2372,6 +2641,12 @@ observations with respect to distance to point.</li>
 for you if you set the scale_type.</p>
 <p>Factor takes precedence to mass, as I will assume if you are
 setting the mass, you know what you are doing.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="fmristats.smodel.SignalModel.set_stimulus_design">
+<code class="descname">set_stimulus_design</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#fmristats.smodel.SignalModel.set_stimulus_design" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and set the stimulus design of the session</p>
 </dd></dl>
 
 </dd></dl>
@@ -2504,6 +2779,8 @@ summary statistics for <em>all</em> fields in the sample.</li>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="new.html" class="btn btn-neutral float-right" title="What is new" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="tutorials/notes.html" class="btn btn-neutral" title="Some notes on speed" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

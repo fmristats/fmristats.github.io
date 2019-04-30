@@ -629,7 +629,7 @@ detection on each FMRI:
 
     # Session Data for all subjects
     nii2session -v --detect-foreground \
-        --nii-prefix 'raw/nii/{paradigm}' --id 2
+        --nii-prefix 'raw/nii/{paradigm}'
 
 The above path-prefixes are indeed the default. If you have organised
 your files the same way, you may omit the respective arguments.
@@ -651,7 +651,7 @@ resulting statistics fields.
     ants4pop -vp --cycle 42 84 102
 
     # Fit
-    fmrifit -v --stimulus-block letter --window 2 1 1 --id 20 100
+    fmrifit -v --stimulus-block letter --window 2 1 1
 
     # Prune statistics field
     fsl4prune -v

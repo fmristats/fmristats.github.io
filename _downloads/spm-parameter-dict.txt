@@ -1,0 +1,23 @@
+# This files encodes the layout of the SPM design matrix
+# ------------------------------------------------------
+#
+# In SPM, the experimental design matrix encodes the intercept in the
+# last column. (Although the location of the intercept is ultimately
+# arbitrary, this is very uncommon.) Average left is coded in the first
+# column, average right in the second column.
+#
+# You may add all contrasts of interest here and feed this file to
+# fmrifit (recommended), but you may also add new contrasts to this list
+# at a later stage in analysis, too.
+#
+# Comments start with #, blank lines are ignored.
+#
+# Single values will mark positions in the matrix starting with 0.
+# Multiple values will be interpreted as contrasts and filled with 0 up
+# to the number of parameters.
+
+intercept  : -1
+left       : 0
+right      : 1
+left>right : 1, -1
+right>left : -1, 1

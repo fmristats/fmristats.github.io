@@ -1,0 +1,92 @@
+.. _new:
+
+What is new
+===========
+
+.. admonition:: 0.1.1: News on the interface front.
+
+    **Design matrices:**
+
+    * Whereas previously you had to provide `fmrifit` with a formal
+      description of the experimental design, you may now provide
+      `fmrifit` with a custom design matrix. Have a look at the new
+      command line function (CLF) `csv2design`.
+
+    * You would like to use FSL together with fmristats? You can now
+      provide `fmrifit` with FSL's own design matrix. Have a look at the
+      new CLF `fsl2design`.
+
+    * You would like to use SPM together with fmristats? You can now
+      provide `fmrifit` with SPM's own design matrix. Have a look at the
+      new CLF `spm2design`.
+
+    **BOLD contrasts:**
+
+    * You can now calculate any BOLD contrast post-hoc after fitting
+      your model to the FMRI data. This means you don't need to provide
+      `fmrifit` with a fixed, a-priory defined list of BOLD contrasts
+      any more.
+
+    * You can now also specify BOLD contrasts in the form of a *named
+      dictionary*. This named dictionary can be re-use when analysing
+      multible subjects. Have a look at the files:
+
+        - If you are using FSL: :download:`fsl-parameter-dict.txt`.
+        - If you are using SPM: :download:`spm-parameter-dict.txt`.
+
+    **Head movements and reference spaces:**
+
+    * The interface has grown and now gives you even more options. Have
+      a look at `fmririgids`.
+
+    * You would like to use the head movement estimates as they were
+      estimated by FSL? Have a look at the new `fsl2rigids`.
+
+    * You would like to use the head movement estimates as they were
+      estimated by SPM? Have a look at the new `spm2rigids`.
+
+    Together, your analysis may now look as follows:
+
+    .. code:: shell
+
+        # Use the head movements as estimated by SPM
+        spm2rigids -v \
+            --study-name abc --cohort run0 --id 0 --datetime 2019-01-22-1300 \
+            --paradigm ckq
+            --par rp_run0_5.txt \
+            --par-path raw3/fmristats_01/run0/realign \
+
+        # Analyse your data in native space (the space isometric to the subject)
+        fmripop -v \
+            --study-name abc --cohort run0 --id 0 --datetime 2019-01-22-1300 \
+            --paradigm ckq
+            --vb-name isospm \
+            --rigids spm --diffeomorphism-nb identity --resolution 0. \
+
+        # Fit the data
+        fmrifit -v \
+            --study-name abc --cohort run0 --id 0 --datetime 2019-01-22-1300 \
+            --paradigm ckq \
+            --vb-name isospm --diffeomorphism identity --rigids spm \
+            --stimulus-block left --control-block right --fwhm 5 \
+            --use-custom-design --design spm --parameter-dict spm-parameter-dict.txt
+
+    Last but not least, the in-line documentation has further been
+    polished.
+
+.. admonition:: Everything new in 0.1.0: Well, not everything but well
+    enough to justify a version increase.
+
+    * Most importantly, fmristats is a lot faster than before. You may
+      now expect the calculations to be finished in around 4h.
+
+    * The API now consistently builds around the *study instance* that
+      has been introduced in 0.0.4. This makes the whole user interface
+      much more streamlined and, well, consistent. To get an idea of the
+      changes, please have a look at the :ref:`getting-started` and
+      :ref:`study-interface` chapters.
+
+    * Last but not least, the documentation has been polished a lot.
+
+    Unfortunately, version 0.1.0 is *not* backwards compatible with
+    versions <0.1.0. Please upgrade to the most recent version.

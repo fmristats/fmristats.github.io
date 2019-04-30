@@ -1,0 +1,322 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>What is new &mdash; fmristats 0.1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Modules" href="modules.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> fmristats
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/getting-started.html">Getting to know fmristats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/study-interface.html">Analysing multiple subjects</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/subject-remove-non-brain-areas.html">Subject analysis: Prune a statistics field from non-brain areas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/subject-inference-at-one-point.html">Subject analysis: Inference at a single coordinate</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-preliminaries.html">Population inference: Create a sample for further analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-confirmative.html">Population inference: Confirmation study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-explorative.html">Population inference: Exploratory study</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/population-inference-covariates.html">Population inference: How to adjust for covariates</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/thresholding.html">Thresholding</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/run-on-server.html">Run the analysis on a server</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorials/notes.html">Some notes on speed</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">What is new</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">fmristats</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>What is new</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/new.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="what-is-new">
+<span id="new"></span><h1>What is new<a class="headerlink" href="#what-is-new" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-news-on-the-interface-front admonition">
+<p class="first admonition-title">0.1.1: News on the interface front.</p>
+<p><strong>Design matrices:</strong></p>
+<ul class="simple">
+<li>Whereas previously you had to provide <cite>fmrifit</cite> with a formal
+description of the experimental design, you may now provide
+<cite>fmrifit</cite> with a custom design matrix. Have a look at the new
+command line function (CLF) <cite>csv2design</cite>.</li>
+<li>You would like to use FSL together with fmristats? You can now
+provide <cite>fmrifit</cite> with FSL’s own design matrix. Have a look at the
+new CLF <cite>fsl2design</cite>.</li>
+<li>You would like to use SPM together with fmristats? You can now
+provide <cite>fmrifit</cite> with SPM’s own design matrix. Have a look at the
+new CLF <cite>spm2design</cite>.</li>
+</ul>
+<p><strong>BOLD contrasts:</strong></p>
+<ul>
+<li><p class="first">You can now calculate any BOLD contrast post-hoc after fitting
+your model to the FMRI data. This means you don’t need to provide
+<cite>fmrifit</cite> with a fixed, a-priory defined list of BOLD contrasts
+any more.</p>
+</li>
+<li><p class="first">You can now also specify BOLD contrasts in the form of a <em>named
+dictionary</em>. This named dictionary can be re-use when analysing
+multible subjects. Have a look at the files:</p>
+<blockquote>
+<div><ul class="simple">
+<li>If you are using FSL: <a class="reference download internal" href="_downloads/fsl-parameter-dict.txt" download=""><code class="xref download docutils literal notranslate"><span class="pre">fsl-parameter-dict.txt</span></code></a>.</li>
+<li>If you are using SPM: <a class="reference download internal" href="_downloads/spm-parameter-dict.txt" download=""><code class="xref download docutils literal notranslate"><span class="pre">spm-parameter-dict.txt</span></code></a>.</li>
+</ul>
+</div></blockquote>
+</li>
+</ul>
+<p><strong>Head movements and reference spaces:</strong></p>
+<ul class="simple">
+<li>The interface has grown and now gives you even more options. Have
+a look at <cite>fmririgids</cite>.</li>
+<li>You would like to use the head movement estimates as they were
+estimated by FSL? Have a look at the new <cite>fsl2rigids</cite>.</li>
+<li>You would like to use the head movement estimates as they were
+estimated by SPM? Have a look at the new <cite>spm2rigids</cite>.</li>
+</ul>
+<p>Together, your analysis may now look as follows:</p>
+<div class="code shell highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the head movements as estimated by SPM</span>
+<span class="n">spm2rigids</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">study</span><span class="o">-</span><span class="n">name</span> <span class="n">abc</span> <span class="o">--</span><span class="n">cohort</span> <span class="n">run0</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">0</span> <span class="o">--</span><span class="n">datetime</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="mi">1300</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">ckq</span>
+    <span class="o">--</span><span class="n">par</span> <span class="n">rp_run0_5</span><span class="o">.</span><span class="n">txt</span> \
+    <span class="o">--</span><span class="n">par</span><span class="o">-</span><span class="n">path</span> <span class="n">raw3</span><span class="o">/</span><span class="n">fmristats_01</span><span class="o">/</span><span class="n">run0</span><span class="o">/</span><span class="n">realign</span> \
+
+<span class="c1"># Analyse your data in native space (the space isometric to the subject)</span>
+<span class="n">fmripop</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">study</span><span class="o">-</span><span class="n">name</span> <span class="n">abc</span> <span class="o">--</span><span class="n">cohort</span> <span class="n">run0</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">0</span> <span class="o">--</span><span class="n">datetime</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="mi">1300</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">ckq</span>
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">isospm</span> \
+    <span class="o">--</span><span class="n">rigids</span> <span class="n">spm</span> <span class="o">--</span><span class="n">diffeomorphism</span><span class="o">-</span><span class="n">nb</span> <span class="n">identity</span> <span class="o">--</span><span class="n">resolution</span> <span class="mf">0.</span> \
+
+<span class="c1"># Fit the data</span>
+<span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> \
+    <span class="o">--</span><span class="n">study</span><span class="o">-</span><span class="n">name</span> <span class="n">abc</span> <span class="o">--</span><span class="n">cohort</span> <span class="n">run0</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">0</span> <span class="o">--</span><span class="n">datetime</span> <span class="mi">2019</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mi">22</span><span class="o">-</span><span class="mi">1300</span> \
+    <span class="o">--</span><span class="n">paradigm</span> <span class="n">ckq</span> \
+    <span class="o">--</span><span class="n">vb</span><span class="o">-</span><span class="n">name</span> <span class="n">isospm</span> <span class="o">--</span><span class="n">diffeomorphism</span> <span class="n">identity</span> <span class="o">--</span><span class="n">rigids</span> <span class="n">spm</span> \
+    <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">left</span> <span class="o">--</span><span class="n">control</span><span class="o">-</span><span class="n">block</span> <span class="n">right</span> <span class="o">--</span><span class="n">fwhm</span> <span class="mi">5</span> \
+    <span class="o">--</span><span class="n">use</span><span class="o">-</span><span class="n">custom</span><span class="o">-</span><span class="n">design</span> <span class="o">--</span><span class="n">design</span> <span class="n">spm</span> <span class="o">--</span><span class="n">parameter</span><span class="o">-</span><span class="nb">dict</span> <span class="n">spm</span><span class="o">-</span><span class="n">parameter</span><span class="o">-</span><span class="nb">dict</span><span class="o">.</span><span class="n">txt</span>
+</pre></div>
+</div>
+<p class="last">Last but not least, the in-line documentation has further been
+polished.</p>
+</div>
+<div class="admonition-everything-new-in-0-1-0-well-not-everything-but-well-enough-to-justify-a-version-increase admonition">
+<p class="first admonition-title">Everything new in 0.1.0: Well, not everything but well
+enough to justify a version increase.</p>
+<ul class="simple">
+<li>Most importantly, fmristats is a lot faster than before. You may
+now expect the calculations to be finished in around 4h.</li>
+<li>The API now consistently builds around the <em>study instance</em> that
+has been introduced in 0.0.4. This makes the whole user interface
+much more streamlined and, well, consistent. To get an idea of the
+changes, please have a look at the <a class="reference internal" href="tutorials/getting-started.html#getting-started"><span class="std std-ref">Getting to know fmristats</span></a> and
+<a class="reference internal" href="tutorials/study-interface.html#study-interface"><span class="std std-ref">Analysing multiple subjects</span></a> chapters.</li>
+<li>Last but not least, the documentation has been polished a lot.</li>
+</ul>
+<p class="last">Unfortunately, version 0.1.0 is <em>not</em> backwards compatible with
+versions &lt;0.1.0. Please upgrade to the most recent version.</p>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="modules.html" class="btn btn-neutral" title="Modules" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017-2018, Thomas W. D. Möbius
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'./',
+              VERSION:'0.1.0',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

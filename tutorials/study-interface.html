@@ -107,6 +107,9 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
 </ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../new.html">What is new</a></li>
+</ul>
 
             
           
@@ -945,7 +948,7 @@ detection on each FMRI:</p>
 
 <span class="c1"># Session Data for all subjects</span>
 <span class="n">nii2session</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">detect</span><span class="o">-</span><span class="n">foreground</span> \
-    <span class="o">--</span><span class="n">nii</span><span class="o">-</span><span class="n">prefix</span> <span class="s1">&#39;raw/nii/</span><span class="si">{paradigm}</span><span class="s1">&#39;</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">2</span>
+    <span class="o">--</span><span class="n">nii</span><span class="o">-</span><span class="n">prefix</span> <span class="s1">&#39;raw/nii/</span><span class="si">{paradigm}</span><span class="s1">&#39;</span>
 </pre></div>
 </div>
 <p>The above path-prefixes are indeed the default. If you have organised
@@ -964,7 +967,7 @@ resulting statistics fields.</p>
 <span class="n">ants4pop</span> <span class="o">-</span><span class="n">vp</span> <span class="o">--</span><span class="n">cycle</span> <span class="mi">42</span> <span class="mi">84</span> <span class="mi">102</span>
 
 <span class="c1"># Fit</span>
-<span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span> <span class="o">--</span><span class="nb">id</span> <span class="mi">20</span> <span class="mi">100</span>
+<span class="n">fmrifit</span> <span class="o">-</span><span class="n">v</span> <span class="o">--</span><span class="n">stimulus</span><span class="o">-</span><span class="n">block</span> <span class="n">letter</span> <span class="o">--</span><span class="n">window</span> <span class="mi">2</span> <span class="mi">1</span> <span class="mi">1</span>
 
 <span class="c1"># Prune statistics field</span>
 <span class="n">fsl4prune</span> <span class="o">-</span><span class="n">v</span>
